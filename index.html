@@ -1,0 +1,2019 @@
+<!doctype html>
+<html lang="sr-Latn-ME">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Album priča · studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Lora:ital,wght@0,400;1,400;1,500&family=Pacifico&family=Bebas+Neue&family=Playfair+Display:wght@700;800&family=Oswald:wght@500;600&family=Fredoka:wght@400;600&family=Baloo+2:wght@500;800&family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Great+Vibes&family=Fraunces:opsz,wght@9..144,700&family=Caveat:wght@500;700&display=swap">
+<style id="pageSize">@page{size:210mm 297mm;margin:0}</style>
+<style>
+:root{
+  --desk:#DAD6CF; --bar:#F7F5F1; --line:#CFC9BF; --ink:#22252B; --muted:#6E6A63; --btn:#22252B; --btn-ink:#F7F5F1;
+  --chip:#ECE8E1; --ok:#2F7A4F; --warn:#B4562C; --focus:#2E6BE6;
+  --ui:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){ :root{
+  --desk:#1E1F22; --bar:#2A2B2F; --line:#3A3B40; --ink:#ECEAE5; --muted:#A39F98; --btn:#ECEAE5; --btn-ink:#1E1F22; --chip:#34353A; color-scheme:dark } }
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--desk);color:var(--ink);font:14px/1.45 var(--ui);overflow:hidden}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.hidden{display:none!important}
+
+/* traka */
+#bar{height:56px;display:flex;align-items:center;gap:8px;padding:0 14px;background:var(--bar);border-bottom:1px solid var(--line)}
+#trayBtn{display:none}
+@media (max-width:760px){#trayBtn{display:inline-block}}
+#bar .brand{font-weight:900;letter-spacing:-.02em;font-size:16px;white-space:nowrap}
+#bar .brand span{font-family:Lora,serif;font-style:italic;font-weight:400;color:var(--muted)}
+#bar .sep{width:1px;height:26px;background:var(--line)}
+#bar input.name{font:600 15px var(--ui);border:1px solid transparent;background:transparent;color:var(--ink);padding:6px 8px;border-radius:6px;min-width:0;width:200px}
+#bar input.name:hover,#bar input.name:focus{border-color:var(--line);background:var(--desk)}
+.grow{flex:1}
+.b{border:1px solid var(--line);background:var(--bar);padding:7px 12px;border-radius:7px;font-weight:600;font-size:13px;white-space:nowrap}
+.b:hover{background:var(--chip)}
+.b.dark{background:var(--btn);color:var(--btn-ink);border-color:var(--btn)}
+.b.dark:hover{opacity:.9}
+.b.sm{padding:4px 8px;font-size:12px}
+.b.on{background:var(--btn);color:var(--btn-ink)}
+select.b{appearance:auto;max-width:230px}
+.count{font-size:12px;color:var(--muted);white-space:nowrap;border:0;background:none;padding:4px}
+.count b{color:var(--ink)}
+.count.bad b{color:var(--warn)}
+.count.bad{text-decoration:underline dotted}
+
+/* glavni dio */
+#main{position:absolute;top:56px;left:0;right:0;bottom:0;display:flex}
+#tray{width:248px;flex:none;background:var(--bar);border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
+#tray .th{padding:12px 12px 8px;display:flex;flex-direction:column;gap:8px;border-bottom:1px solid var(--line)}
+#tray .th .row{display:flex;gap:6px;align-items:center}
+#tray .th h3{margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+#tray .hint{font-size:12px;color:var(--muted)}
+#thumbs{flex:1;overflow:auto;padding:10px 12px 20px;display:grid;grid-template-columns:1fr 1fr;gap:8px;align-content:start}
+#thumbs.drag{outline:2px dashed var(--focus);outline-offset:-6px}
+.th-i{position:relative;height:100px;border-radius:6px;overflow:hidden;background:var(--chip);cursor:grab}
+.th-i img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.th-i .u{position:absolute;right:4px;top:4px;background:var(--btn);color:var(--btn-ink);font-size:10px;font-weight:700;border-radius:9px;padding:1px 6px}
+.th-i .x{position:absolute;left:4px;top:4px;width:20px;height:20px;border-radius:50%;border:0;background:rgba(0,0,0,.55);color:#fff;font-size:12px;line-height:20px;padding:0;display:none}
+.th-i:hover .x{display:block}
+.th-i.used img{opacity:.55}
+.empty-tray{grid-column:1/-1;border:1.5px dashed var(--line);border-radius:10px;padding:22px 14px;text-align:center;color:var(--muted);font-size:13px}
+#canvas{flex:1;overflow:auto;position:relative;min-width:0}
+#spreads{display:flex;flex-direction:column;align-items:center;gap:64px;padding:64px 24px 120px}
+.spread{display:flex;gap:2px;position:relative}
+.spread .lbl{display:none;position:absolute;top:-58px;left:0;right:0;display:flex;justify-content:space-between;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.holder{position:relative}
+.holder.empty .pgz{visibility:hidden}
+.pgz{zoom:var(--z,.5)}
+.page-tools{position:absolute;left:0;right:0;bottom:100%;margin-bottom:2px;padding:2px 0;background:var(--desk);display:flex;gap:4px;align-items:center;justify-content:flex-end;opacity:.85;transition:opacity .15s;z-index:5;flex-wrap:wrap}
+.holder:hover .page-tools,.holder:focus-within .page-tools{opacity:1}
+.page-tools .tname{margin-right:auto;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.page-tools .b{padding:3px 7px;font-size:11.5px;border-radius:6px}
+.page-tools select.b{padding:2px 4px;max-width:150px}
+.page-tools .b.del.armed{background:var(--warn);color:#fff;border-color:var(--warn)}
+.addbtw{position:absolute;top:50%;transform:translateY(-50%);width:26px;height:26px;border-radius:50%;border:1px solid var(--line);background:var(--bar);font-weight:700;line-height:22px;padding:0;opacity:0;transition:opacity .15s;z-index:6}
+.holder:hover .addbtw{opacity:1}
+.holder.left .addbtw{left:-34px} .holder.right .addbtw{right:-34px}
+.pop{position:absolute;z-index:30;background:var(--bar);border:1px solid var(--line);border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.18);padding:12px;width:310px;display:flex;flex-direction:column;gap:8px;max-height:80vh;overflow:auto}
+.pop label{font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:3px}
+.pop label.ck{flex-direction:row;align-items:center;gap:6px;color:var(--ink)}
+.pop input,.pop select{font:13px var(--ui);padding:6px 8px;border:1px solid var(--line);border-radius:6px;background:var(--desk);color:var(--ink)}
+.pop .r{display:flex;gap:6px}
+.pop .r>*{flex:1;min-width:0}
+
+/* dijalozi */
+.ov{position:fixed;inset:0;background:rgba(20,20,22,.45);display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
+.dlg{background:var(--bar);border-radius:14px;max-width:920px;width:100%;max-height:calc(100% - 32px);overflow:auto;padding:22px 24px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.dlg h2{margin:0 0 4px;font-size:20px;letter-spacing:-.02em}
+.dlg p.s{margin:0 0 16px;color:var(--muted)}
+.dlg h4{margin:18px 0 8px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.picker{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:10px}
+.pick{border:1px solid var(--line);border-radius:10px;background:var(--desk);padding:7px;display:flex;flex-direction:column;gap:5px;align-items:stretch;text-align:left}
+button.pick:hover{border-color:var(--ink)}
+.pick span{font-size:12px;font-weight:600;line-height:1.2}
+.pick small{font-size:11px;color:var(--muted);font-weight:400;line-height:1.25}
+.mini{position:relative;aspect-ratio:210/297;background:#fff;border-radius:3px;overflow:hidden}
+.mini.dk{background:#3b3f47}.mini.cl{background:#EFE6D8}
+.mini i{position:absolute;background:#C9C3B8;border-radius:1px}
+.mini i.t{background:#8E887E;border-radius:2px}
+.mini i.d{background:#E3B58A;border-radius:50%;opacity:.55}
+.mini i.r{background:#ECE5DA}
+.mini i.g{background:transparent;border:1px dashed #A8A196}
+.mini i.a{background:linear-gradient(#F3E1C8,#C9D9C9)}
+.mini i.m{background:radial-gradient(#B9C7BB 30%,transparent 31%) 0 0/6px 6px}
+.addrow{display:flex;justify-content:center;padding:6px 0 0}
+.pick.cur{border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+button.prow{font:inherit;color:inherit;cursor:pointer}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chipb{border:1px solid var(--line);background:var(--desk);border-radius:20px;padding:6px 12px;font-weight:600;font-size:13px}
+.chipb.on{background:var(--btn);color:var(--btn-ink);border-color:var(--btn)}
+#toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--btn);color:var(--btn-ink);padding:10px 16px;border-radius:10px;font-size:13px;display:flex;gap:14px;align-items:center;z-index:60;box-shadow:0 8px 24px rgba(0,0,0,.25);max-width:92vw}
+#toast button{background:none;border:0;color:inherit;font-weight:700;text-decoration:underline;padding:0;white-space:nowrap}
+#busy{position:fixed;inset:0;background:rgba(20,20,22,.55);z-index:70;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:600;font-size:15px}
+
+/* početni ekran */
+#home{position:fixed;inset:0;background:var(--desk);z-index:40;overflow:auto}
+#home .in{max-width:1100px;margin:0 auto;padding:40px 24px 80px}
+#home h1{font-size:44px;line-height:1;letter-spacing:-.04em;margin:0;font-weight:900}
+#home h1 em{font-family:Lora,serif;font-weight:400;letter-spacing:-.01em}
+#home .lead{color:var(--muted);max-width:64ch;margin:12px 0 18px}
+#home .hacts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:26px}
+.albums{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:22px}
+.acard{display:flex;flex-direction:column;gap:8px}
+.acard .cv{aspect-ratio:210/297;border-radius:4px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.18);cursor:pointer;position:relative;background:#eee}
+.cv svg{display:block;width:100%;height:100%}
+.cv .tt{position:absolute;left:6%;right:6%;top:9%;text-align:center;font-size:22px;line-height:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.acard .meta{display:flex;justify-content:space-between;align-items:center;gap:6px}
+.acard .meta b{font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
+.acard .meta small{color:var(--muted);font-size:12px}
+.newcard{aspect-ratio:210/297;border:2px dashed var(--line);border-radius:4px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px;color:var(--muted);background:transparent;font-weight:600}
+.newcard:hover{border-color:var(--ink);color:var(--ink)}
+.newcard b{font-size:34px;font-weight:300;line-height:1}
+.themes{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px}
+.tpick{border:2px solid transparent;border-radius:8px;padding:2px;background:none;display:flex;flex-direction:column;gap:5px;font-weight:600;font-size:12px;text-align:center}
+.tpick .cv{aspect-ratio:210/297;border-radius:4px;overflow:hidden;position:relative;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.tpick .cv .tt{font-size:12px}
+.tpick.on{border-color:var(--ink)}
+.form{display:grid;gap:12px}
+.form label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted);font-weight:600}
+.form input,.form select{font:15px var(--ui);padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:var(--desk);color:var(--ink)}
+.form .r{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form .r3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.dlg .acts{display:flex;justify-content:flex-end;gap:8px;margin-top:18px;align-items:center}
+.note{background:var(--chip);border-radius:8px;padding:10px 12px;font-size:12.5px;color:var(--ink)}
+.note.warn{background:#F6E1D6;color:#6B2E12}
+.note.ok{background:#DCEFE3;color:#1E4D31}
+.plan{font-size:13px;font-weight:600}
+.warnbar{background:#B4562C;color:#fff;padding:8px 14px;font-size:13px}
+.plist{display:flex;flex-direction:column;gap:6px}
+.prow{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:8px;padding:8px 10px;background:var(--desk)}
+.prow b{flex:1}
+.prow small{color:var(--muted)}
+
+/* =========================================================
+   STRANE ALBUMA (mm; boje i fontovi iz teme)
+   ========================================================= */
+.page{position:relative;overflow:hidden;box-shadow:0 2px 14px rgba(0,0,0,.18);font-family:var(--ui);color:var(--t-text)}
+.trim{position:absolute;width:210mm;height:297mm}
+.page *{box-sizing:border-box}
+.trim>*{position:absolute}
+.art svg,.deco svg{display:block;width:100%;height:100%}
+.deco{pointer-events:none}
+.tx{outline:none;border-radius:1mm;white-space:pre-wrap;cursor:text;overflow:visible;word-break:break-word}
+.tx.one{white-space:nowrap}
+.tx:hover{box-shadow:0 0 0 .4mm rgba(46,107,230,.35)}
+.tx:focus{box-shadow:0 0 0 .5mm rgba(46,107,230,.8)}
+.tx[data-ph]:empty::before{content:attr(data-ph);opacity:.38}
+.s-display,.s-title,.s-num{font-family:var(--fd);font-weight:var(--fdw);text-transform:var(--fdc);letter-spacing:var(--fdl);font-style:var(--fdi);color:var(--t-title);line-height:1.12}
+.s-script{font-family:var(--fs);color:var(--t-accent);line-height:1.15;font-weight:500}
+.s-label{font-family:var(--ui);font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:var(--t-accent);line-height:1.3}
+.s-body{font-family:var(--fb);font-style:var(--fbi);line-height:1.55;color:var(--t-text)}
+.s-cap{font-family:var(--fb);font-style:italic;color:var(--t-ink);opacity:.8;line-height:1.3}
+.s-pcap{font-family:var(--fs);color:#3a3a3a;text-align:center;line-height:1;position:absolute;white-space:nowrap;overflow:visible}
+.ondark .s-display,.ondark .s-title,.ondark .s-num,.ondark .s-body,.ondark .s-cap{color:var(--t-ondark)}
+.ondark .s-label{color:var(--t-ondark);opacity:.85}
+.shadow{text-shadow:0 0 5mm rgba(0,0,0,.45)}
+.folio{position:absolute;bottom:8mm;font:700 7pt var(--ui);color:var(--t-ink);opacity:.5}
+.page.L .folio{left:14mm} .page.R .folio{right:14mm}
+.ondark .folio{color:var(--t-ondark)}
+.lines{opacity:.35;background:repeating-linear-gradient(to bottom,transparent 0,transparent calc(100% / var(--n) - .3mm),var(--lc) calc(100% / var(--n) - .3mm),var(--lc) calc(100% / var(--n)))}
+.mapw svg{display:block;width:100%;height:100%}
+
+/* okviri */
+.fr-polaroid,.fr-border{background:#fff;box-shadow:0 .5mm 2.2mm rgba(0,0,0,.2)}
+.fr-circleb{background:var(--t-paper);border-radius:50%}
+.slot{position:absolute;overflow:hidden;background:var(--t-soft)}
+.slot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;cursor:grab;user-select:none;-webkit-user-drag:none}
+.slot img:active{cursor:grabbing}
+.slot .hint{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.2mm;font:600 8.5pt var(--ui);color:var(--t-ink);opacity:.5;cursor:pointer;text-align:center;padding:2mm;overflow:hidden}
+.slot .hint small{font-weight:400;font-size:7pt}
+.slot .hint svg{width:8mm;height:8mm;flex:none}
+.slot.sm .hint span,.slot.sm .hint small{display:none}
+.slot.over{box-shadow:inset 0 0 0 1.2mm #2E6BE6}
+.slot .st{position:absolute;right:2mm;top:2mm;display:none;gap:1mm;z-index:3}
+.slot.has:hover .st{display:flex}
+.slot .st button{width:7mm;height:7mm;border-radius:50%;border:0;background:rgba(0,0,0,.6);color:#fff;font:700 10pt/7mm var(--ui);padding:0}
+.slot .lr{position:absolute;left:2mm;bottom:2mm;background:#B4562C;color:#fff;font:700 6.5pt var(--ui);padding:.6mm 1.6mm;border-radius:2mm;z-index:2;pointer-events:none}
+.slot .lr.bad{background:#B3261E}
+.slot.glue{background:transparent;border:.6mm dashed color-mix(in srgb,var(--t-ink) 60%,transparent)}
+.slot.glue.has{border:0}
+
+@media (max-width:760px){
+  html,body{max-width:100vw;overflow-x:hidden}
+  #bar{overflow-x:auto;overflow-y:hidden;gap:6px;padding:0 8px;scrollbar-width:none}
+  #bar .brand,#bar .sep{display:none}
+  #bar input.name{width:120px;flex:none}
+  #bar .b{padding:6px 9px}
+  #home .in{padding:24px 14px 60px}
+  #home h1{font-size:30px}
+  .albums{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+  .ov{padding:8px;align-items:flex-start}
+  .dlg{padding:16px 14px;max-height:calc(100% - 16px)}
+  .themes{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .picker{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+  .form .r,.form .r3{grid-template-columns:1fr}
+  .form .r3 label{grid-column:auto!important}
+  .dlg .acts{position:sticky;bottom:-16px;background:var(--bar);padding:10px 0;margin-bottom:-16px}
+  #spreads{padding:70px 8px 120px;gap:70px}
+  .spread{flex-direction:column;gap:70px}
+  .holder.empty{display:none}
+  .addbtw{display:none}
+  #toast{left:8px;right:8px;transform:none;bottom:10px}
+  #tray{position:absolute;left:0;top:0;bottom:0;z-index:20;transform:translateX(-100%);transition:transform .2s}
+  #tray.open{transform:none}
+  #bar .hide-s{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* štampa */
+@media print{
+  html,body{height:auto;overflow:visible;background:#fff}
+  #bar,#tray,#home,.ov,#toast,#busy,.page-tools,.addbtw,.spread .lbl,.warnbar,#popRoot,.addrow{display:none!important}
+  #main{position:static;display:block}
+  #canvas{overflow:visible}
+  #spreads{display:block;padding:0}
+  .spread{display:contents}
+  .holder.empty{display:none}
+  .pgz{zoom:1!important}
+  .page{box-shadow:none;break-after:page;page-break-after:always;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .page.lastp{break-after:auto;page-break-after:auto}
+  .slot .hint,.slot .st,.slot .lr{display:none!important}
+  .slot:not(.has){background:transparent}
+  .slot.glue{border-color:transparent}
+  .tx[data-ph]:empty::before{content:none}
+  .tx{box-shadow:none!important}
+}
+</style>
+</head>
+<body>
+<div id="bar">
+  <button class="b sm" id="trayBtn">Slike</button>
+  <div class="brand">Album <span>priča</span></div>
+  <div class="sep"></div>
+  <button class="b" id="homeBtn">Svi albumi</button>
+  <input class="name" id="projName" aria-label="Naziv albuma" spellcheck="false">
+  <select class="b hide-s" id="themeSel" aria-label="Tema albuma"></select>
+  <button class="b hide-s" id="metaBtn">Podaci albuma</button>
+  <div class="grow"></div>
+  <button class="count" id="count"></button>
+  <button class="b hide-s" id="zoomOut" aria-label="Umanji">−</button>
+  <button class="b hide-s" id="zoomIn" aria-label="Uvećaj">+</button>
+  <button class="b" id="addPageBtn">+ Strana</button>
+  <button class="b hide-s" id="backupBtn">Sačuvaj kopiju</button>
+  <button class="b dark" id="printBtn">PDF za štampu</button>
+</div>
+<div id="main">
+  <aside id="tray">
+    <div class="th">
+      <div class="row"><h3>Moje slike</h3><div class="grow"></div><span class="hint" id="imgCount"></span></div>
+      <button class="b dark" id="addImgBtn">+ Dodaj slike</button>
+      <div class="row">
+        <select class="b sm" id="sortSel" style="flex:1" aria-label="Redoslijed slika"><option value="date">Po datumu</option><option value="name">Po nazivu</option><option value="added">Kako su dodate</option></select>
+        <label class="hint" style="display:flex;gap:4px;align-items:center;white-space:nowrap"><input type="checkbox" id="unusedOnly"> nove</label>
+      </div>
+      <button class="b" id="autoBtn">Složi automatski</button>
+    </div>
+    <div id="thumbs"></div>
+  </aside>
+  <section id="canvas"><div id="spreads"></div></section>
+</div>
+
+<div id="home" class="hidden"><div class="in">
+  <h1>Album <em>priča</em> studio</h1>
+  <p class="lead">Napravi album za putovanje, bebu, rođendan, vjenčanje ili porodicu. Izabereš stil i broj slika, program složi kolaž strane, ti ubaciš slike i izvezeš PDF u A4 formatu spreman za štampariju.</p>
+  <div class="hacts"><button class="b" id="libBtn">Kolaži i teme</button><button class="b" id="restoreBtn">Otvori kopiju (.album)</button></div>
+  <div class="albums" id="albums"></div>
+</div></div>
+
+<input type="file" id="fileImgs" accept="image/*" multiple hidden>
+<input type="file" id="fileOne" accept="image/*" hidden>
+<input type="file" id="fileMany" accept="image/*" multiple hidden>
+<input type="file" id="fileBackup" accept=".album,application/json" hidden>
+<input type="file" id="filePack" accept=".kolaz,.json,application/json" multiple hidden>
+<div id="toast" class="hidden"></div>
+<div id="busy" class="hidden"></div>
+<div id="popRoot"></div>
+<div id="dlgRoot"></div>
+<script>
+const MAPDATA = {"land":[[[-166,68.8],[-162,70.2],[-156,71.3],[-148,70.3],[-141,69.6],[-135,69],[-128,70],[-120,69],[-114,68],[-108,68.5],[-100,67.8],[-96,68.5],[-94,71],[-90,68.8],[-86,68],[-82,67],[-87,64],[-90,63],[-94,60],[-93,58.7],[-88,56.8],[-85,55.2],[-82,53],[-80,51.3],[-79,54],[-77,57],[-78,60],[-77.5,62.3],[-73,62],[-69,60],[-65,60.3],[-62,58],[-60,55.5],[-56,52.5],[-59,48.5],[-64,49.2],[-66,45],[-61,45.6],[-66,44],[-70,43.5],[-70,41.7],[-74,40.5],[-76,37],[-75.5,35.3],[-78,33.8],[-81,31.5],[-80.5,28],[-80,25.3],[-81.5,25.2],[-82.7,27.5],[-83,29.5],[-85,30],[-89,30.3],[-90,29],[-94,29.6],[-97.2,27.5],[-97.5,24],[-97.8,22],[-96,19],[-94.5,18.2],[-91,19],[-90.3,21],[-87,21.5],[-87.6,18.5],[-88.3,16],[-84,15.8],[-83.2,15],[-83.6,11],[-81.5,9],[-79.5,9.5],[-77.4,8.6],[-78,7.2],[-80,7.3],[-82,8.2],[-85.7,10],[-86,11.5],[-87.5,13],[-91,13.9],[-94,16],[-96.5,15.7],[-98.5,16.3],[-101,17.3],[-105.5,20],[-105.7,22.5],[-107.5,24.5],[-109.5,26.5],[-112,29],[-114.7,31.7],[-114.2,30],[-112.5,27.5],[-110,24],[-109.5,23],[-112,24.8],[-114,27.5],[-115.8,30],[-117.1,32.5],[-118.5,34],[-120.6,34.6],[-122.5,37.5],[-124,40.4],[-124.5,43],[-124,46.2],[-124.7,48.4],[-123,49],[-127,50.5],[-130,54],[-133,57.5],[-137,58.5],[-140,59.7],[-146,60.6],[-150,59.5],[-152,60.5],[-154,57.5],[-158,56],[-162,55],[-164.5,54.5],[-159,58],[-162,58.6],[-162,60],[-165,61],[-165,63],[-161,64.5],[-166,65],[-168,65.6]],[[-73,78],[-66,81],[-55,82.3],[-40,83.5],[-25,83],[-18,81.5],[-12,81],[-19,78],[-19,75],[-22,72],[-22,70],[-25,68.5],[-32,68],[-35,66],[-40,64.5],[-43,60],[-48,61],[-51,64],[-53,66.5],[-54,70],[-56,72.5],[-58,75.5],[-66,76.5]],[[-85,73.6],[-80,73.5],[-73,71.5],[-68,70],[-64,67],[-62,66],[-65,63],[-66,62],[-71,63],[-74,64.5],[-78,64.5],[-74,66],[-74,68.5],[-80,70],[-89,71]],[[-90,77],[-80,76.5],[-75,78.5],[-70,80.5],[-62,82],[-75,83],[-88,82],[-95,80]],[[-118,69],[-101,68.5],[-100,70],[-104,73],[-115,73.5],[-120,71.5]],[[-125,71.8],[-115,73.5],[-117,75.5],[-124,74.5]],[[-95,74],[-80,74.5],[-80,76],[-93,77],[-97,76]],[[-100,72],[-93,72],[-90,74],[-98,74]],[[-117,75.5],[-105,75],[-104,77.5],[-115,78],[-120,76.5]],[[-59.4,47.6],[-55,46.8],[-52.7,47.5],[-53,49.5],[-55.5,51.6],[-57.5,50.8]],[[-85,21.9],[-82,23.2],[-77,22.3],[-74.2,20.2],[-77.7,19.9],[-81,21.5]],[[-74.4,18.5],[-72.8,19.9],[-69.7,19.3],[-68.4,18.6],[-71.3,17.6]],[[-77.4,8.6],[-75,10.8],[-71.5,12.4],[-70,11.5],[-68,10.6],[-64,10.6],[-61.5,10.5],[-60,8.5],[-57,6],[-52,5],[-51,4],[-50,1.8],[-49,0],[-44.5,-2.5],[-41.5,-2.9],[-38.5,-3.7],[-35.2,-5.4],[-34.8,-7.5],[-35.5,-9.5],[-37.5,-12],[-39,-13.5],[-39.2,-17.7],[-40.5,-20.5],[-42,-23],[-45,-23.8],[-48.5,-26.5],[-48.7,-28.5],[-51,-31.5],[-53.5,-34],[-56,-34.8],[-58.5,-34.5],[-57.5,-36.5],[-57.6,-38.2],[-62,-39],[-62.3,-40.8],[-65,-41],[-65,-42.5],[-63.5,-42.8],[-65.3,-44.5],[-67.5,-46.4],[-66,-47.5],[-69,-50.5],[-68.4,-52.3],[-68,-54.9],[-70,-55],[-74,-52.5],[-75.5,-48],[-74,-44],[-73.5,-41.5],[-73.6,-37],[-71.5,-32.5],[-71.4,-28.5],[-70.4,-23.5],[-70.3,-18.3],[-71.5,-17.3],[-76,-14],[-78,-10.5],[-79.8,-7],[-81.2,-6],[-80.3,-3.5],[-80.9,-1.8],[-80,0.8],[-78.8,1.5],[-77.2,3.9],[-77.4,6.6]],[[-9.5,38.8],[-8.9,42],[-9.3,43.2],[-7,43.7],[-3,43.4],[-1.6,43.4],[-1.2,46],[-2.4,47.3],[-4.6,48.4],[-1.5,48.7],[-1.3,49.6],[1.5,50.2],[2.5,51.1],[4,51.8],[5,53.2],[8.5,53.7],[8.6,55.5],[8.2,57],[10.5,57.7],[10.6,56.2],[10,55],[12,54.3],[14,54],[18.6,54.6],[21,55.5],[21.2,56.7],[23.5,57.3],[24.4,57.8],[23.5,58.9],[28,59.5],[30,60],[28.5,60.6],[22.5,60.2],[21.4,61.5],[21.5,63.2],[25,65],[25.4,65.6],[22.2,65.8],[21,64.5],[19,63.3],[17.5,62.4],[17.3,61],[18.8,60],[18.5,59.3],[16.5,57.3],[16.5,56.2],[14.2,55.4],[12.8,55.6],[12.6,56.5],[11.2,58.8],[10.5,59.5],[8,58],[6,58.3],[5,60],[5,62],[7,62.8],[10,64],[13,66],[15,68.3],[18,69.8],[22,70.3],[26,71],[30,70],[31,69.8],[33,69.3],[36,69],[41,67.5],[39.5,66],[34.8,66],[34.5,64.5],[37,63.8],[40.5,64.7],[44,66.2],[44,68.3],[48,67.7],[53,68.8],[55,68.4],[60,68.7],[60.8,69.9],[66,69],[68.5,68.2],[66.8,71],[68.3,73],[70,73.4],[72.5,72.8],[75,72.5],[80,72.3],[80.5,73.6],[87,74.9],[90,75.5],[98,76.3],[104,77.7],[108,76.7],[112,76],[113.5,73.5],[119,73],[127,73.5],[129,71],[132,71.8],[139,71.5],[140,72.5],[147,72.3],[150,71.6],[155,71],[160,70.8],[166,69.6],[170,70],[176,69.8],[180,68.9],[180,65.5],[178.5,64.5],[177,62.5],[173,61],[170,60],[166,60],[163.5,59.9],[162.5,57.5],[162.3,56],[160,53.5],[158.5,52.5],[156.7,51],[156.3,53],[155.6,56],[156.8,57.8],[158.5,58.2],[160,60],[161,61.5],[157,61.8],[154,59.2],[152,59],[147,59.3],[143,59.3],[141,58.5],[138,56.5],[135.2,54.7],[138,53.5],[140.5,53.5],[141,52],[140.4,50],[140.2,48.4],[138.5,47],[136,44],[133,42.8],[131,42.6],[129.7,41],[128,39],[129.4,36.8],[129.4,35.5],[126.5,34.4],[126.5,37],[125.2,37.7],[124.7,39.6],[121.8,40.5],[121,40.9],[119,39.2],[117.8,38.9],[118.8,37.4],[120.8,37.8],[122.5,37],[120,35],[120.9,32],[121.9,31],[121.5,28],[119.5,25.5],[117.5,23.7],[114,22.3],[111,21.5],[110,20.3],[109.7,21.5],[108,21.5],[106.7,20.5],[105.7,19],[106.5,17.5],[108.8,15.4],[109.4,12],[107,10.4],[105,8.8],[104.8,10.4],[103,11.2],[100.5,13.5],[99.2,10.5],[100.3,8.3],[101.3,6.8],[103.4,4.3],[103.5,1.5],[104.2,1.4],[103.5,1.3],[101.3,2.8],[100.3,5.4],[98.3,8.3],[98.5,10],[98.6,13],[97.7,16.4],[96,16.3],[94.3,16],[94.5,18.5],[92.3,20.7],[91.8,22.5],[90.5,22],[88,21.6],[86.9,20.4],[85,19.4],[82.3,16.6],[80.3,15.6],[80.2,13],[79.8,10.3],[78.2,8.9],[77.5,8.1],[76.5,9],[75,12.7],[73.5,16],[72.8,19.2],[72.6,21.3],[72.3,22.3],[70.5,20.9],[69,22.4],[70.3,22.9],[68.4,23.7],[66.7,25.4],[64.5,25.2],[61.5,25.1],[58.6,25.6],[57.3,25.8],[56.4,27.1],[54.7,26.5],[51.5,27.9],[50.2,30],[48.9,30.4],[48,30],[48.5,28.5],[49.5,27],[50.2,26.2],[50.6,25.3],[51.6,24.2],[54,24.1],[56,24.9],[56.4,26.3],[56.8,24.5],[58.6,23.6],[59.8,22.5],[58.5,20.5],[57.7,19],[55.5,17.8],[52.2,16],[48.8,14],[45,12.9],[43.5,12.6],[42.8,15.5],[42.7,16.8],[41,19],[39,21.5],[38.5,23.5],[36.6,25.8],[35,28],[34.9,29.5],[34.3,27.9],[33.6,28.5],[32.6,29.9],[32.3,31.2],[34.2,31.3],[35,33],[35.9,35],[36.2,36.6],[34.6,36.8],[32.5,36.1],[30.5,36.3],[29,36.6],[27.3,37],[26.4,38.5],[26.2,39.5],[26.7,40.4],[29,41],[31,41.1],[35,42],[38,41],[41.5,41.5],[41.6,42.6],[39.8,43.4],[38,44.5],[36.6,45.2],[35,44.6],[33.5,44.5],[32.6,45.5],[33.6,46.1],[31.5,46.6],[30.7,46.5],[29.6,45.2],[28.6,44],[27.9,42.7],[28.9,41.3],[26,40.6],[24,40.8],[23.5,40.3],[22.6,40.3],[22.8,39.4],[23,38.2],[22.9,36.5],[21.7,36.8],[21.3,37.8],[21.1,38.4],[20.7,39.2],[20,39.7],[19.4,40.9],[19.5,41.9],[18.5,42.5],[16.5,43.5],[15.2,44.3],[14.5,45.3],[13.6,45.7],[12.4,45.4],[12.4,44.2],[13.6,43.5],[14.2,42.2],[16,41.3],[18.5,40.2],[17.2,40.4],[16.5,39.6],[17.1,38.9],[16.1,37.9],[15.7,38.2],[15.7,40],[14.5,40.6],[12.4,41.7],[10.5,42.9],[10.2,43.9],[8.8,44.4],[7.5,43.8],[6.5,43.1],[4.6,43.4],[3,42.8],[3.2,41.9],[1,41],[0,39.8],[-0.3,38.6],[-0.8,37.6],[-2.1,36.7],[-4.4,36.7],[-5.6,36],[-6.3,36.8],[-7.4,37.2],[-8.9,37],[-8.8,38.4]],[[-180,68.9],[-175,67.5],[-170,66.2],[-172,65],[-180,65]],[[-5.9,35.8],[-2,35.1],[1,36.5],[3,36.8],[8.6,36.9],[10.3,37.2],[11,36.8],[10.2,35],[11,33.3],[15.2,32.3],[15.7,31.4],[18.9,30.3],[20,32],[21.5,32.8],[25,31.9],[29,30.9],[31,31.6],[32.3,31.3],[32.5,29.9],[32.6,28],[33.9,26.6],[35.5,24],[36.9,22],[37.4,18.5],[38.6,18],[39.7,15.3],[41.2,14.5],[43.3,12.4],[44,10.5],[45,10.4],[47.5,11.1],[51.2,11.8],[51,10.4],[49.7,7.5],[48,4.5],[46,2],[43.1,-0.5],[41,-2],[40,-3.5],[39.3,-5],[39.3,-8],[40.4,-10.5],[40.5,-14.5],[39,-16.8],[35.6,-20.5],[35.5,-24],[32.6,-25.9],[32.8,-28.5],[31,-30.5],[28,-33],[25.7,-34],[22,-34.4],[20,-34.8],[18.4,-34.2],[18.3,-32.3],[17.3,-30],[15.2,-27],[14.5,-22.8],[13,-20.5],[11.8,-17.2],[12,-15],[13.6,-12],[13.2,-9],[12.2,-6],[11.1,-3.9],[9.4,-1],[9.5,1],[9.8,3],[8.9,4],[7,4.4],[5,5.5],[4.3,6.3],[2,6.3],[-1,5.1],[-3,5.1],[-7.5,4.4],[-9.5,5.5],[-11.5,6.9],[-13,8.3],[-13.4,9.5],[-15,11],[-16.7,12.4],[-17.5,14.7],[-16.5,16.2],[-16.3,19],[-17,21],[-15.9,23.7],[-14.5,26],[-12,28.2],[-9.8,30],[-9.8,31.5],[-8.4,33.3],[-6.8,34.1]],[[49.3,-12],[50.5,-15.5],[49.7,-16.8],[47.8,-22.6],[47,-25],[45.2,-25.6],[43.7,-23.5],[43.2,-21.8],[44.3,-20],[44,-17.3],[46.3,-15.8],[48,-13.5]],[[-5.7,50],[-3,50.6],[1.4,51.2],[1.7,52.7],[0.3,53.4],[-0.1,54.4],[-1.6,55.6],[-2.2,56.4],[-1.8,57.6],[-3.3,58.6],[-5,58.6],[-6.2,57.4],[-5.6,56.3],[-5,55],[-3,54.9],[-3.4,54.3],[-2.9,53.5],[-4.6,53.3],[-4.2,52.3],[-5.2,51.7],[-3.4,51.4]],[[-6,52.2],[-6.2,53.9],[-5.6,54.6],[-7.3,55.3],[-8.5,54.4],[-10,54],[-9.8,53.3],[-9.5,52.5],[-10.3,51.9],[-8.5,51.6]],[[-22.5,63.8],[-18,63.4],[-14,64.4],[-13.6,65.5],[-15,66.3],[-18,66.1],[-22,66.4],[-24,65.5],[-22,64.5]],[[8.4,39],[9.8,39.1],[9.7,41],[9.5,43],[8.6,42.6],[8.6,41],[8.2,40.6]],[[12.4,38],[15.6,38.2],[15.1,36.7],[12.5,37.6]],[[23.5,35.6],[26.3,35.3],[24.5,34.8]],[[32.3,34.7],[34.6,35.6],[33.6,34.6]],[[11,78.5],[16,76.5],[21,77.5],[28,80],[20,80.5],[12,79.8]],[[52,71.3],[57.5,70.6],[55.5,73],[60,75.5],[68.5,76.9],[64,77],[57,75.5],[53,73.5]],[[96,79],[100,78],[105,79],[102,81],[95,80.5]],[[136,74.5],[142,73.5],[150,75],[142,76],[138,75.5]],[[130.9,34],[132.5,35.4],[135.5,35.7],[136.7,37.3],[138.5,37.6],[140,39.8],[140,41.3],[141.5,41.3],[142,39.5],[141,37],[140.8,35.7],[139.8,35],[138.8,34.6],[136.8,34.3],[135.2,33.6],[133,34.3]],[[129.6,33.4],[131.2,33.8],[132,32.8],[131.3,31.3],[130.2,31.3],[129.8,32.7]],[[132.2,33.2],[134.7,34],[134.3,33.3],[133,32.7]],[[140,41.5],[139.8,42.6],[141.3,43.3],[141.7,45.4],[144,44.2],[145.4,43.3],[143.3,42],[141,41.9]],[[142,46],[143.5,46.5],[143,49.5],[144.5,49],[143.2,52],[142.8,54.4],[142.2,53.5],[141.7,51],[142,48]],[[120.1,23],[121,25.2],[122,25],[121,22]],[[108.6,19],[110,20.1],[111,19.6],[109.6,18.2]],[[79.8,8.2],[80.2,9.8],[81.9,7.5],[81.2,6.2],[80.1,6]],[[120,16.3],[120.6,18.5],[122.2,18.5],[122,16],[124,13.5],[123,13],[121,14],[120.6,14.5]],[[122,10],[124,11.5],[125.5,11],[124.5,9.5],[123,9.3]],[[122,7],[123.5,8],[125.5,9.8],[126.6,7.3],[125.4,5.6],[124,6.6]],[[95.3,5.6],[97.5,5.2],[100.4,2.3],[103.7,-1],[106,-3],[105.8,-5.8],[104.5,-5.9],[102.3,-4],[100.3,-1],[98.7,1.7]],[[105.2,-6.8],[106.1,-6],[108.5,-6.4],[110.6,-6.9],[112.6,-6.9],[114.5,-7.8],[112.5,-8.4],[108.5,-7.8],[106.4,-7.4]],[[109,1.5],[109.7,2],[111.4,2.7],[113,3.2],[115.4,5.3],[117.2,7],[119.2,5.4],[118,4.3],[117.7,1],[117.5,-0.8],[116.5,-2.5],[116,-4],[114.5,-3.6],[111,-3.2],[110.2,-2.9],[109.6,-1.3],[109,0.4]],[[119.4,-5.5],[120.5,-5.5],[121,-2.5],[123,-1],[125,1.5],[120.5,1],[119.8,-1]],[[115,-8.2],[119,-8.4],[124,-8.2],[127,-8.4],[124,-10.2],[119,-9],[115,-8.9]],[[131,-1.4],[134,-0.8],[135.5,-3.3],[138,-1.6],[141,-2.6],[145,-4.3],[147.5,-6.2],[147,-7.5],[150.7,-10.5],[147.5,-10.2],[146,-8],[144,-7.6],[142.5,-9.3],[141,-9.1],[139,-8.1],[137.8,-8.3],[138.6,-6.6],[136,-4.6],[133.6,-4],[132,-2.8],[132.5,-2.3]],[[113.5,-22],[114,-26],[115,-30],[115,-34],[118,-35],[123,-33.9],[126,-32.3],[131,-31.5],[134,-32.7],[135.8,-34.9],[137.7,-33],[138.5,-35.6],[140,-37.8],[143.5,-38.8],[146.3,-39],[148,-37.8],[150,-37.4],[151.3,-33.8],[153,-31],[153.6,-28],[153,-25.3],[151,-23.4],[149.5,-22.3],[146.3,-19],[145.4,-15],[143.5,-14],[142.5,-10.7],[141.5,-13],[141.7,-15.5],[140.6,-17.6],[139.3,-17.4],[136.5,-15.6],[136.8,-12.2],[132.6,-11.5],[130.3,-12.6],[129.4,-15],[126.4,-14],[124,-16.4],[122.2,-17.8],[121,-19.6],[117,-20.6],[114.6,-21.8]],[[144.7,-40.7],[148.3,-40.9],[148,-43.2],[146,-43.6],[145.2,-42.2]],[[172.7,-34.4],[174.3,-35.3],[175.3,-37],[176.5,-37.7],[178.5,-37.7],[177.9,-39.2],[176.8,-40],[175.2,-41.6],[174.6,-39.9],[173.8,-39.2],[174.6,-37.5]],[[172.7,-40.5],[174.3,-41.4],[173.3,-43],[171.2,-44.5],[170.6,-45.9],[169,-46.6],[166.5,-46],[168.4,-44],[170.6,-42.9],[172.1,-41]]],"holes":[[[47,44.5],[47.6,45.6],[49.3,46.5],[51.2,47],[53,46.8],[53.1,45.2],[51.3,44.5],[51.8,42.8],[52.8,41.7],[53,40.3],[54,38],[53.9,37],[51.5,36.8],[49.5,37.5],[49,38.5],[49.5,40.3],[48.8,41.8],[47,43.5]]],"places":{"Albanija":[41.1,20.0],"Amalfi":[40.63,14.6],"Amsterdam":[52.37,4.9],"Andaluzija":[37.4,-4.6],"Argentina":[-35.0,-65.0],"Australija":[-25.5,134.0],"Austrija":[47.6,14.1],"Azori":[37.8,-25.5],"Azurna obala":[43.6,7.0],"Bali":[-8.4,115.2],"Bangkok":[13.75,100.5],"Barselona":[41.39,2.17],"Bavarska":[48.8,11.5],"Belgija":[50.6,4.6],"Beč":[48.2,16.37],"Bosna i Hercegovina":[44.0,17.8],"Brazil":[-10.0,-52.0],"Budimpešta":[47.5,19.04],"Bugarska":[42.7,25.5],"Crna Gora":[42.7,19.3],"Danska":[56.0,10.0],"Dubai":[25.2,55.3],"Egipat":[26.6,30.0],"Engleska":[52.5,-1.5],"Filipini":[12.9,121.8],"Finska":[64.0,26.0],"Florida":[27.8,-81.7],"Francuska":[46.6,2.4],"Grčka":[39.2,22.0],"Havaji":[20.8,-156.3],"Holandija":[52.2,5.5],"Hong Kong":[22.3,114.17],"Hrvatska":[45.1,15.5],"Indija":[22.0,79.0],"Indonezija":[-2.5,118.0],"Irska":[53.2,-8.0],"Island":[64.9,-18.6],"Istanbul":[41.0,28.98],"Italija":[42.6,12.6],"Japan":[36.5,138.5],"Jordan":[31.0,36.0],"Južna Afrika":[-29.0,25.0],"Južna Koreja":[36.5,127.8],"Kairo":[30.04,31.24],"Kalifornija":[37.0,-120.0],"Kanada":[57.0,-101.0],"Kanarska ostrva":[28.3,-16.0],"Kapadokija":[38.6,34.8],"Kenija":[0.5,38.0],"Kina":[35.0,104.0],"Kipar":[35.0,33.2],"Kolumbija":[4.6,-74.1],"Krit":[35.24,24.8],"Kuba":[21.5,-79.5],"Las Vegas":[36.17,-115.14],"London":[51.5,-0.13],"Madeira":[32.75,-16.95],"Madrid":[40.4,-3.7],"Maldivi":[3.2,73.2],"Mallorca":[39.6,2.9],"Malta":[35.9,14.4],"Marakeš":[31.63,-8.0],"Maroko":[31.8,-7.1],"Mauricijus":[-20.3,57.6],"Mađarska":[47.2,19.4],"Meksiko":[23.6,-102.5],"Njemačka":[51.1,10.4],"Njujork":[40.71,-74.0],"Norveška":[61.5,9.0],"Novi Zeland":[-41.5,172.5],"Oman":[21.5,57.0],"Pariz":[48.86,2.35],"Peking":[39.9,116.4],"Peru":[-9.2,-75.0],"Poljska":[52.0,19.1],"Portugal":[39.6,-8.0],"Prag":[50.08,14.43],"Provansa":[43.9,5.8],"Puket":[7.9,98.4],"Rim":[41.9,12.5],"Rumunija":[45.9,25.0],"Rusija":[60.0,95.0],"SAD":[39.5,-98.5],"Santorini":[36.4,25.43],"Sejšeli":[-4.6,55.5],"Seul":[37.57,126.98],"Sicilija":[37.6,14.0],"Singapur":[1.35,103.82],"Sjeverna Makedonija":[41.6,21.7],"Slovenija":[46.15,14.99],"Srbija":[44.0,20.8],"Tajland":[15.5,101.0],"Tanzanija":[-6.4,34.9],"Tokio":[35.68,139.69],"Toskana":[43.4,11.0],"Tunis":[34.0,9.4],"Turska":[39.0,35.2],"UAE":[24.0,54.0],"Ujedinjeni Arapski Emirati":[24.0,54.0],"Velika Britanija":[54.0,-2.5],"Vijetnam":[16.0,107.0],"Zanzibar":[-6.1,39.3],"Češka":[49.8,15.5],"Čile":[-33.4,-70.6],"Šangaj":[31.23,121.47],"Škotska":[56.8,-4.2],"Španija":[40.2,-3.6],"Šri Lanka":[7.8,80.7],"Švajcarska":[46.8,8.2],"Švedska":[62.5,16.0]}};
+/* ======================================================================
+   OSNOVNI PAKET: teme (boje, fontovi, ilustracije) i kolaž strane
+   Sve mjere kolaža su u milimetrima na A4 strani (210 × 297).
+   ====================================================================== */
+const n1 = v => +(+v).toFixed(1);
+const SV = (vb, inner, par) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg"${par ? ` preserveAspectRatio="${par}"` : ""}>${inner}</svg>`;
+const DR = {
+  leaf(x, y, s, rot, f, v = "#fff") {
+    return `<g transform="translate(${x} ${y}) rotate(${rot}) scale(${n1(s / 100)})"><path d="M0 48C-32 32-44-2-28-26C-18-40-6-46 0-46C6-46 18-40 28-26C44-2 32 32 0 48Z" fill="${f}"/><path d="M0 44V-38M0-18L-20-26M0-4L-28-10M0 10L-26 8M0-18L20-26M0-4L28-10M0 10L26 8M0 24L-16 26M0 24L16 26" stroke="${v}" stroke-width="2.6" stroke-linecap="round" fill="none" opacity=".75"/></g>`;
+  },
+  flower(x, y, r, f, c) {
+    let o = "";
+    for (let i = 0; i < 5; i++) { const a = i * 72 * Math.PI / 180 - Math.PI / 2; o += `<circle cx="${n1(x + Math.cos(a) * r * .55)}" cy="${n1(y + Math.sin(a) * r * .55)}" r="${n1(r * .5)}" fill="${f}"/>`; }
+    return o + `<circle cx="${x}" cy="${y}" r="${n1(r * .3)}" fill="${c}"/>`;
+  },
+  star(x, y, r, f) {
+    let p = [];
+    for (let i = 0; i < 10; i++) { const a = (-90 + i * 36) * Math.PI / 180, rr = i % 2 ? r * .45 : r; p.push(n1(x + Math.cos(a) * rr) + "," + n1(y + Math.sin(a) * rr)); }
+    return `<polygon points="${p.join(" ")}" fill="${f}"/>`;
+  },
+  sun(x, y, r, f, rays = true) {
+    let o = `<circle cx="${x}" cy="${y}" r="${r}" fill="${f}"/>`;
+    if (rays) for (let i = 0; i < 12; i++) { const a = i * 30 * Math.PI / 180; o += `<line x1="${n1(x + Math.cos(a) * r * 1.25)}" y1="${n1(y + Math.sin(a) * r * 1.25)}" x2="${n1(x + Math.cos(a) * r * 1.6)}" y2="${n1(y + Math.sin(a) * r * 1.6)}" stroke="${f}" stroke-width="${n1(r * .13)}" stroke-linecap="round"/>`; }
+    return o;
+  },
+  snow(x, y, r, s, w) {
+    let o = `<g stroke="${s}" stroke-width="${w}" stroke-linecap="round" fill="none">`;
+    for (let k = 0; k < 6; k++) o += `<g transform="rotate(${k * 60} ${x} ${y})"><line x1="${x}" y1="${y}" x2="${x}" y2="${n1(y - r)}"/><polyline points="${n1(x - r * .24)},${n1(y - r * .78)} ${x},${n1(y - r * .55)} ${n1(x + r * .24)},${n1(y - r * .78)}"/></g>`;
+    return o + "</g>";
+  },
+  pine(x, y, w, h, f, t) {
+    let o = `<rect x="${n1(x - w * .07)}" y="${n1(y - h * .12)}" width="${n1(w * .14)}" height="${n1(h * .12)}" fill="${t || f}"/>`;
+    for (let i = 0; i < 3; i++) { const bw = w * (1 - i * .22), by = y - h * .1 - i * h * .24, ay = by - h * .42; o += `<polygon points="${n1(x - bw / 2)},${n1(by)} ${x},${n1(ay)} ${n1(x + bw / 2)},${n1(by)}" fill="${f}"/>`; }
+    return o;
+  },
+  mountain(x, y, w, h, f, snow) {
+    let o = `<polygon points="${n1(x - w / 2)},${y} ${x},${n1(y - h)} ${n1(x + w / 2)},${y}" fill="${f}"/>`;
+    if (snow) o += `<polygon points="${n1(x - w * .13)},${n1(y - h * .74)} ${x},${n1(y - h)} ${n1(x + w * .13)},${n1(y - h * .74)} ${n1(x + w * .06)},${n1(y - h * .68)} ${x},${n1(y - h * .77)} ${n1(x - w * .06)},${n1(y - h * .68)}" fill="${snow}"/>`;
+    return o;
+  },
+  cloud(x, y, s, f) {
+    return `<g fill="${f}"><circle cx="${x}" cy="${y}" r="${n1(s * .3)}"/><circle cx="${n1(x + s * .3)}" cy="${n1(y + s * .07)}" r="${n1(s * .22)}"/><circle cx="${n1(x - s * .3)}" cy="${n1(y + s * .09)}" r="${n1(s * .2)}"/><rect x="${n1(x - s * .5)}" y="${n1(y + s * .05)}" width="${s}" height="${n1(s * .24)}" rx="${n1(s * .12)}"/></g>`;
+  },
+  heart(x, y, s, f) {
+    return `<path transform="translate(${x} ${y}) scale(${n1(s / 2)})" d="M0 .3C0-.1-.5-.35-.75-.05C-1 .25-.5.75 0 1.05C.5.75 1 .25.75-.05C.5-.35 0-.1 0 .3Z" fill="${f}"/>`;
+  },
+  moon(x, y, r, f) { return `<path d="M${x} ${n1(y - r)}A${r} ${r} 0 1 0 ${x} ${n1(y + r)}A${n1(r * .55)} ${r} 0 1 1 ${x} ${n1(y - r)}Z" fill="${f}"/>`; },
+  balloon(x, y, r, f) {
+    return `<path d="M${x} ${n1(y + r * 1.28)}q${n1(r * .35)} ${n1(r * .7)} 0 ${n1(r * 1.4)}t0 ${n1(r * 1.4)}" stroke="#00000055" stroke-width=".6" fill="none"/><ellipse cx="${x}" cy="${y}" rx="${r}" ry="${n1(r * 1.18)}" fill="${f}"/><polygon points="${n1(x - r * .13)},${n1(y + r * 1.3)} ${n1(x + r * .13)},${n1(y + r * 1.3)} ${x},${n1(y + r * 1.13)}" fill="${f}"/><ellipse cx="${n1(x - r * .38)}" cy="${n1(y - r * .42)}" rx="${n1(r * .17)}" ry="${n1(r * .3)}" fill="#fff" opacity=".35"/>`;
+  },
+  palm(x, y, h, t, f, flip) {
+    const tx = x + h * .16, ty = y - h;
+    let o = `<g${flip ? ` transform="translate(${2 * x} 0) scale(-1 1)"` : ""}><path d="M${x} ${y}Q${n1(x + h * .12)} ${n1(y - h * .5)} ${n1(tx)} ${n1(ty)}" stroke="${t}" stroke-width="${n1(h * .055)}" stroke-linecap="round" fill="none"/>`;
+    for (const a of [-172, -145, -115, -72, -38, -8, 22]) { const r = a * Math.PI / 180, cx = tx + Math.cos(r) * h * .25, cy = ty + Math.sin(r) * h * .25 + h * .05; o += `<ellipse cx="${n1(cx)}" cy="${n1(cy)}" rx="${n1(h * .28)}" ry="${n1(h * .06)}" transform="rotate(${a + (a < -90 ? -14 : 14)} ${n1(cx)} ${n1(cy)})" fill="${f}"/>`; }
+    return o + `<circle cx="${n1(tx - 1.5)}" cy="${n1(ty + 3)}" r="${n1(h * .03)}" fill="${t}"/><circle cx="${n1(tx + 2)}" cy="${n1(ty + 4)}" r="${n1(h * .03)}" fill="${t}"/></g>`;
+  },
+  waves(y, amp, n, f, W = 210, H = 297) {
+    const s = W / n; let d = `M0 ${y}`;
+    for (let i = 0; i < n; i++) d += `q${n1(s / 4)} ${-amp} ${n1(s / 2)} 0t${n1(s / 2)} 0`;
+    return `<path d="${d}V${H}H0Z" fill="${f}"/>`;
+  },
+  wline(x, y, w, amp, n, s, sw) {
+    const st = w / n; let d = `M${x} ${y}`;
+    for (let i = 0; i < n; i++) d += `q${n1(st / 4)} ${-amp} ${n1(st / 2)} 0t${n1(st / 2)} 0`;
+    return `<path d="${d}" stroke="${s}" stroke-width="${sw}" fill="none" stroke-linecap="round"/>`;
+  },
+  skyline(y, f, W = 210, k = 1) {
+    const hs = [30, 52, 38, 70, 44, 92, 56, 40, 64, 34, 78, 48, 30, 58, 42, 66];
+    let o = "", x = 0, i = 0;
+    while (x < W) { const h = hs[i % hs.length] * k, w = 13 * k; o += `<rect x="${n1(x)}" y="${n1(y - h)}" width="${n1(w - .8 * k)}" height="${n1(h + 1)}" fill="${f}"/>`; if (hs[i % hs.length] === 92) o += `<polygon points="${n1(x)},${n1(y - h)} ${n1(x + w / 2)},${n1(y - h - 22 * k)} ${n1(x + w - .8 * k)},${n1(y - h)}" fill="${f}"/>`; x += w; i++; }
+    return o;
+  },
+  boat(x, y, s, hull, a, b) {
+    return `<polygon points="${n1(x - s)},${y} ${n1(x + s)},${y} ${n1(x + s * .7)},${n1(y + s * .3)} ${n1(x - s * .7)},${n1(y + s * .3)}" fill="${hull}"/><line x1="${x}" y1="${y}" x2="${x}" y2="${n1(y - s * 1.5)}" stroke="${hull}" stroke-width="${n1(s * .06)}"/><polygon points="${n1(x + s * .05)},${n1(y - s * 1.4)} ${n1(x + s * .05)},${n1(y - s * .12)} ${n1(x + s * .85)},${n1(y - s * .12)}" fill="${a}"/><polygon points="${n1(x - s * .05)},${n1(y - s * 1.2)} ${n1(x - s * .05)},${n1(y - s * .12)} ${n1(x - s * .62)},${n1(y - s * .12)}" fill="${b}"/>`;
+  },
+  lifebuoy(x, y, r, a, b, ink) {
+    const c = 2 * Math.PI * r;
+    return `<circle cx="${x}" cy="${y}" r="${r}" stroke="${b}" stroke-width="${n1(r * .42)}" fill="none"/><circle cx="${x}" cy="${y}" r="${r}" stroke="${a}" stroke-width="${n1(r * .42)}" fill="none" stroke-dasharray="${n1(c / 8)} ${n1(c / 8)}"/><circle cx="${x}" cy="${y}" r="${n1(r * 1.21)}" stroke="${ink}" stroke-width=".8" fill="none"/><circle cx="${x}" cy="${y}" r="${n1(r * .79)}" stroke="${ink}" stroke-width=".8" fill="none"/>`;
+  },
+  compass(x, y, r, c, n) {
+    let o = `<circle cx="${x}" cy="${y}" r="${r}" fill="none" stroke="${c}" stroke-width="${n1(r * .08)}"/><circle cx="${x}" cy="${y}" r="${n1(r * .8)}" fill="none" stroke="${c}" stroke-width="${n1(r * .03)}"/>`;
+    for (let i = 0; i < 4; i++) o += `<line transform="rotate(${i * 90} ${x} ${y})" x1="${x}" y1="${n1(y - r * .8)}" x2="${x}" y2="${n1(y - r * .62)}" stroke="${c}" stroke-width="${n1(r * .06)}"/>`;
+    return o + `<polygon points="${x},${n1(y - r * .66)} ${n1(x + r * .17)},${y} ${n1(x - r * .17)},${y}" fill="${n}"/><polygon points="${x},${n1(y + r * .66)} ${n1(x + r * .17)},${y} ${n1(x - r * .17)},${y}" fill="${c}"/><circle cx="${x}" cy="${y}" r="${n1(r * .07)}" fill="#fff"/>`;
+  },
+  tent(x, y, s, f, d) { return `<polygon points="${n1(x - s)},${y} ${x},${n1(y - s * 1.1)} ${n1(x + s)},${y}" fill="${f}"/><polygon points="${n1(x - s * .3)},${y} ${x},${n1(y - s * .75)} ${n1(x + s * .3)},${y}" fill="${d}"/><line x1="${n1(x - s * 1.3)}" y1="${y}" x2="${n1(x + s * 1.3)}" y2="${y}" stroke="${d}" stroke-width="1.4" stroke-linecap="round"/>`; },
+  plane(x, y, s, f, rot) { return `<g transform="translate(${x} ${y}) rotate(${rot}) scale(${n1(s / 24)}) translate(-12 -12)"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z" fill="${f}"/></g>`; },
+  ticket(x, y, w, h, f, c, hole) {
+    return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3" fill="${f}"/><circle cx="${n1(x + w * .7)}" cy="${y}" r="3" fill="${hole}"/><circle cx="${n1(x + w * .7)}" cy="${y + h}" r="3" fill="${hole}"/><line x1="${n1(x + w * .7)}" y1="${y + 4}" x2="${n1(x + w * .7)}" y2="${y + h - 4}" stroke="${c}" stroke-width="1" stroke-dasharray="2 2"/><rect x="${x + 6}" y="${y + 8}" width="${n1(w * .45)}" height="4" rx="2" fill="${c}"/><rect x="${x + 6}" y="${y + 16}" width="${n1(w * .3)}" height="3" rx="1.5" fill="${c}" opacity=".7"/><rect x="${x + 6}" y="${n1(y + h - 10)}" width="${n1(w * .5)}" height="3" rx="1.5" fill="${c}" opacity=".7"/>`;
+  },
+  cake(x, y, s, a, b, c, fl) {
+    let o = `<rect x="${n1(x - s)}" y="${n1(y - s * .62)}" width="${n1(2 * s)}" height="${n1(s * .62)}" rx="${n1(s * .08)}" fill="${a}"/><rect x="${n1(x - s * .72)}" y="${n1(y - s * 1.12)}" width="${n1(1.44 * s)}" height="${n1(s * .52)}" rx="${n1(s * .08)}" fill="${b}"/>`;
+    o += DR.wline(x - s * .72, y - s * 1.08, s * 1.44, s * .1, 4, c, s * .12) + DR.wline(x - s, y - s * .58, s * 2, s * .1, 5, c, s * .12);
+    for (const dx of [-.4, 0, .4]) o += `<rect x="${n1(x + dx * s - s * .05)}" y="${n1(y - s * 1.45)}" width="${n1(s * .1)}" height="${n1(s * .34)}" fill="${c}"/><ellipse cx="${n1(x + dx * s)}" cy="${n1(y - s * 1.55)}" rx="${n1(s * .07)}" ry="${n1(s * .12)}" fill="${fl}"/>`;
+    return o;
+  },
+  gift(x, y, s, f, rib) {
+    return `<rect x="${n1(x - s)}" y="${n1(y - s * 1.2)}" width="${n1(2 * s)}" height="${n1(s * 1.2)}" fill="${f}"/><rect x="${n1(x - s * 1.1)}" y="${n1(y - s * 1.5)}" width="${n1(2.2 * s)}" height="${n1(s * .34)}" fill="${f}"/><rect x="${n1(x - s * .14)}" y="${n1(y - s * 1.5)}" width="${n1(s * .28)}" height="${n1(s * 1.5)}" fill="${rib}"/><ellipse cx="${n1(x - s * .32)}" cy="${n1(y - s * 1.66)}" rx="${n1(s * .34)}" ry="${n1(s * .18)}" fill="none" stroke="${rib}" stroke-width="${n1(s * .12)}"/><ellipse cx="${n1(x + s * .32)}" cy="${n1(y - s * 1.66)}" rx="${n1(s * .34)}" ry="${n1(s * .18)}" fill="none" stroke="${rib}" stroke-width="${n1(s * .12)}"/>`;
+  },
+  rings(x, y, r, s, w) { return `<circle cx="${n1(x - r * .45)}" cy="${y}" r="${r}" fill="none" stroke="${s}" stroke-width="${w}"/><circle cx="${n1(x + r * .45)}" cy="${y}" r="${r}" fill="none" stroke="${s}" stroke-width="${w}"/><polygon points="${n1(x - r * .45)},${n1(y - r - r * .55)} ${n1(x - r * .2)},${n1(y - r - r * .25)} ${n1(x - r * .45)},${n1(y - r + .2)} ${n1(x - r * .7)},${n1(y - r - r * .25)}" fill="${s}"/>`; },
+  branch(x, y, len, rot, stem, leaf) {
+    let o = `<g transform="translate(${x} ${y}) rotate(${rot})"><path d="M0 0Q${n1(len * .08)} ${n1(-len * .5)} 0 ${-len}" stroke="${stem}" stroke-width="1.3" fill="none"/>`;
+    for (let i = 1; i <= 6; i++) { const t = i / 7, py = -len * t, r = len * (.075 - t * .03); o += `<ellipse cx="${n1(-r * 1.3)}" cy="${n1(py)}" rx="${n1(r * 1.1)}" ry="${n1(r * .8)}" fill="${leaf}"/><ellipse cx="${n1(r * 1.3 + len * .03)}" cy="${n1(py - r * .6)}" rx="${n1(r * 1.1)}" ry="${n1(r * .8)}" fill="${leaf}"/>`; }
+    return o + `<ellipse cx="0" cy="${-len}" rx="${n1(len * .035)}" ry="${n1(len * .05)}" fill="${leaf}"/></g>`;
+  },
+  pineBranch(x, y, len, rot, c) {
+    let o = `<g transform="translate(${x} ${y}) rotate(${rot})" stroke="${c}" stroke-linecap="round" fill="none"><line x1="0" y1="0" x2="0" y2="${-len}" stroke-width="1.6"/>`;
+    for (let t = .12; t < .98; t += .07) { const py = -len * t, l = len * .2 * (1 - t * .6); o += `<line x1="0" y1="${n1(py)}" x2="${n1(-l)}" y2="${n1(py - l * .7)}" stroke-width="1.1"/><line x1="0" y1="${n1(py)}" x2="${n1(l)}" y2="${n1(py - l * .7)}" stroke-width="1.1"/>`; }
+    return o + "</g>";
+  },
+  confetti(W, H, n, cols, seed = 7) {
+    let s = seed, o = ""; const R = () => (s = (s * 9301 + 49297) % 233280) / 233280;
+    for (let i = 0; i < n; i++) { const x = n1(R() * W), y = n1(R() * H), c = cols[i % cols.length]; o += R() < .5 ? `<rect x="${x}" y="${y}" width="${n1(2 + R() * 3)}" height="${n1(1.2 + R() * 1.4)}" transform="rotate(${Math.round(R() * 180)} ${x} ${y})" fill="${c}"/>` : `<circle cx="${x}" cy="${y}" r="${n1(.8 + R() * 1.4)}" fill="${c}"/>`; }
+    return o;
+  },
+  bunting(x0, x1, y, cols, fh, sag = 8) {
+    const n = Math.max(3, Math.round((x1 - x0) / (fh * .95))), w = (x1 - x0) / n;
+    let o = `<path d="M${x0} ${y}Q${n1((x0 + x1) / 2)} ${n1(y + sag * 2)} ${x1} ${y}" stroke="#00000055" stroke-width=".6" fill="none"/>`;
+    for (let i = 0; i < n; i++) { const t0 = i / n, t1 = (i + 1) / n, xa = x0 + w * i, xb = xa + w, ya = y + sag * 4 * t0 * (1 - t0), yb = y + sag * 4 * t1 * (1 - t1); o += `<polygon points="${n1(xa + .6)},${n1(ya)} ${n1(xb - .6)},${n1(yb)} ${n1((xa + xb) / 2)},${n1((ya + yb) / 2 + fh)}" fill="${cols[i % cols.length]}"/>`; }
+    return o;
+  },
+  birds(x, y, s, c) { return `<path d="M${x} ${y}q${n1(s * .5)} ${n1(-s * .5)} ${s} 0q${n1(s * .5)} ${n1(-s * .5)} ${s} 0" stroke="${c}" stroke-width="1" fill="none" stroke-linecap="round"/>`; },
+  dots(w, y, r, c, step = 10) { let o = ""; for (let x = r; x < w; x += step) o += `<circle cx="${n1(x)}" cy="${y}" r="${r}" fill="${c}"/>`; return o; },
+};
+
+/* ---------------- teme ---------------- */
+function T(id, name, cat, c, f, ph, art) { return { id, name, cat, c, f, ph, cover: art.cover, deco: art.deco }; }
+const F = {
+  disp: (d, w = 400, cs = "none", ls = "0", it = "normal") => ({ d, dw: w, dc: cs, dl: ls, di: it }),
+};
+const BT = {};
+// --- Tropi
+(() => {
+  const c = { paper: "#FFF8EE", bg: "#FDE3C8", soft: "#F3E6D3", title: "#E2574C", ink: "#0F5257", text: "#2F3B3C", accent: "#1A9E8F", a2: "#F4A93B", a3: "#2E7D4F", dark: "#0F5257", ondark: "#FDE3C8", dots: "#E8D3B8" };
+  BT.tropi = T("tropi", "Tropski raj", "putovanja", c, { ...F.disp("'Pacifico',cursive"), b: "'Lora',serif", bi: "italic", s: "'Caveat',cursive" }, { title: "Tropski raj", sub: "ljeto za pamćenje" }, {
+    cover: SV("0 0 210 297", `<rect width="210" height="297" fill="${c.bg}"/><circle cx="105" cy="186" r="74" fill="${c.a2}" opacity=".28"/><circle cx="105" cy="186" r="52" fill="${c.a2}"/>${DR.waves(196, 4, 6, c.accent)}${DR.waves(214, 5, 5, "#167F73")}${DR.waves(236, 4, 7, c.accent)}${DR.waves(258, 5, 6, c.dark)}${DR.palm(30, 262, 118, "#6B4430", c.a3)}${DR.palm(184, 270, 96, "#6B4430", "#256B44", true)}${DR.leaf(10, 286, 80, 35, c.a3, c.bg)}${DR.leaf(36, 300, 64, 8, "#256B44", c.bg)}${DR.leaf(202, 284, 82, -38, c.a3, c.bg)}${DR.leaf(176, 302, 60, -10, "#1F5E3C", c.bg)}${DR.flower(52, 276, 9, c.title, c.a2)}${DR.flower(160, 282, 7, c.title, c.a2)}`, "xMidYMid slice"),
+    deco: {
+      corner: SV("0 0 100 100", DR.leaf(30, 30, 82, 135, c.a3) + DR.leaf(52, 12, 58, 108, c.accent) + DR.leaf(12, 52, 58, 162, "#256B44") + DR.flower(18, 18, 10, c.title, c.a2), "xMinYMin meet"),
+      sticker: SV("0 0 100 100", DR.leaf(28, 64, 46, -122, c.a3) + DR.leaf(72, 64, 46, 122, "#256B44") + DR.flower(50, 48, 30, c.title, c.a2)),
+      sticker2: SV("0 0 100 100", `<circle cx="66" cy="34" r="16" fill="${c.a2}"/>` + DR.palm(40, 98, 80, "#6B4430", c.a3)),
+      divider: SV("0 0 200 20", DR.wline(2, 11, 196, 4, 8, c.accent, 1.6)),
+      band: SV("0 0 210 40", DR.waves(12, 3, 6, c.accent, 210, 40) + DR.waves(24, 3, 7, c.dark, 210, 40), "xMidYMax slice"),
+    }
+  });
+})();
+// --- More / ljeto
+(() => {
+  const c = { paper: "#FBFAF6", bg: "#D8ECF6", soft: "#E9F2F6", title: "#0C3B6E", ink: "#0C3B6E", text: "#24323F", accent: "#1F78C1", a2: "#F6C445", a3: "#E8604C", dark: "#0C3B6E", ondark: "#D8ECF6", dots: "#C9DCE7" };
+  BT.more = T("more", "Ljeto na moru", "putovanja", c, { ...F.disp("'Bebas Neue',sans-serif", 400, "uppercase", ".02em"), b: "'Lora',serif", bi: "italic", s: "'Caveat',cursive" }, { title: "Ljeto na moru", sub: "sunce, so i mi" }, {
+    cover: SV("0 0 210 297", `<rect width="210" height="297" fill="${c.bg}"/><circle cx="158" cy="146" r="40" fill="${c.a2}" opacity=".3"/><circle cx="158" cy="146" r="27" fill="${c.a2}"/>${DR.birds(36, 136, 8, c.ink)}${DR.birds(56, 150, 6, c.ink)}${DR.birds(74, 132, 5, c.ink)}${DR.boat(66, 199, 15, c.dark, "#fff", c.a3)}${DR.waves(200, 4, 5, c.accent)}${DR.waves(222, 4, 6, "#185F9E")}${DR.waves(246, 5, 5, c.dark)}${DR.waves(268, 4, 7, "#082A50")}`, "xMidYMid slice"),
+    deco: {
+      corner: SV("0 0 100 100", DR.sun(0, 0, 30, c.a2) + DR.wline(-4, 64, 60, 3, 3, c.accent, 1.6), "xMinYMin meet"),
+      sticker: SV("0 0 100 100", DR.lifebuoy(50, 50, 30, c.a3, "#fff", c.ink)),
+      sticker2: SV("0 0 100 100", DR.boat(50, 72, 26, c.dark, c.accent, c.a3) + DR.wline(14, 86, 72, 3, 3, c.accent, 1.6)),
+      divider: SV("0 0 200 20", DR.wline(2, 11, 196, 4, 8, c.accent, 1.6)),
+      band: SV("0 0 210 40", DR.waves(10, 3, 5, c.accent, 210, 40) + DR.waves(22, 3, 6, c.dark, 210, 40), "xMidYMax slice"),
+    }
+  });
+})();
+// --- Zima
+(() => {
+  const c = { paper: "#F7FAFC", bg: "#DCE9F2", soft: "#E8F0F6", title: "#1D3557", ink: "#1D3557", text: "#2B3A4A", accent: "#5B8DB8", a2: "#A9C6DE", a3: "#C8102E", dark: "#1D3557", ondark: "#E3EEF6", dots: "#CFDCE6" };
+  let flakes = ""; [[30, 150, 6], [70, 128, 4], [186, 168, 5], [120, 140, 3.5], [24, 196, 4], [176, 214, 3.5], [96, 170, 3]].forEach(([x, y, r]) => flakes += DR.snow(x, y, r, "#fff", .9));
+  BT.zima = T("zima", "Zimska bajka", "putovanja", c, { ...F.disp("'Playfair Display',serif", 800), b: "'Lora',serif", bi: "italic", s: "'Caveat',cursive" }, { title: "Zimska bajka", sub: "snijeg, planine i topli čaj" }, {
+    cover: SV("0 0 210 297", `<rect width="210" height="297" fill="${c.bg}"/>${DR.moon(162, 132, 14, "#fff")}${flakes}${DR.mountain(55, 246, 170, 104, c.a2, "#fff")}${DR.mountain(160, 246, 190, 124, c.accent, "#fff")}${DR.mountain(104, 252, 130, 76, "#7FA6C8", "#fff")}${DR.waves(240, 4, 4, "#fff")}${DR.pine(24, 272, 26, 62, c.dark)}${DR.pine(46, 278, 20, 46, "#2C4A6E")}${DR.pine(186, 274, 26, 62, c.dark)}${DR.pine(166, 282, 18, 40, "#2C4A6E")}`, "xMidYMid slice"),
+    deco: {
+      corner: SV("0 0 100 100", DR.snow(20, 20, 15, c.accent, 1.8) + DR.snow(48, 12, 8, c.a2, 1.3) + DR.snow(12, 48, 8, c.a2, 1.3) + DR.snow(42, 40, 5, c.accent, 1.1), "xMinYMin meet"),
+      sticker: SV("0 0 100 100", DR.snow(50, 50, 40, c.accent, 3.4)),
+      sticker2: SV("0 0 100 100", DR.pine(36, 94, 36, 80, c.dark) + DR.pine(68, 96, 26, 58, c.accent)),
+      divider: SV("0 0 200 20", DR.dots(200, 10, 1.3, c.accent, 9) + `<rect x="88" y="0" width="24" height="20" fill="${c.paper}"/>` + DR.snow(100, 10, 7, c.accent, 1.2)),
+      band: SV("0 0 210 40", DR.mountain(40, 40, 90, 30, c.a2, "#fff") + DR.mountain(118, 40, 110, 36, c.accent, "#fff") + DR.mountain(190, 40, 90, 26, c.a2, "#fff") + DR.pine(14, 40, 10, 22, c.dark) + DR.pine(26, 40, 8, 16, c.dark) + DR.pine(168, 40, 10, 22, c.dark) + DR.pine(200, 40, 9, 18, c.dark), "xMidYMax slice"),
+    }
+  });
+})();
+// --- Planine
+(() => {
+  const c = { paper: "#F8F4EA", bg: "#E7DFC9", soft: "#EEE7D5", title: "#2F4A3A", ink: "#2F4A3A", text: "#34372F", accent: "#C9792B", a2: "#8FAA7E", a3: "#4E6E58", dark: "#2F4A3A", ondark: "#EFE6CF", dots: "#DCD2BA" };
+  let pines = ""; for (let x = 6; x < 210; x += 15) pines += DR.pine(x, 282 + (x % 3) * 3, 14, 34 + (x % 4) * 5, c.dark);
+  BT.planine = T("planine", "Planine", "putovanja", c, { ...F.disp("'Oswald',sans-serif", 600, "uppercase", ".01em"), b: "'Lora',serif", bi: "italic", s: "'Caveat',cursive" }, { title: "Planine", sub: "staze, vrhovi i tišina" }, {
+    cover: SV("0 0 210 297", `<rect width="210" height="297" fill="${c.bg}"/><circle cx="142" cy="150" r="26" fill="${c.accent}"/>${DR.birds(46, 140, 7, c.ink)}${DR.birds(62, 152, 5, c.ink)}${DR.mountain(52, 256, 210, 124, c.a2, c.paper)}${DR.mountain(162, 258, 230, 140, c.a3, c.paper)}<path d="M0 252Q60 230 110 248T210 244V297H0Z" fill="${c.dark}"/>${pines}`, "xMidYMid slice"),
+    deco: {
+      corner: SV("0 0 100 100", DR.pineBranch(0, 0, 92, 135, c.a3) + DR.pineBranch(0, 0, 64, 112, c.a2) + DR.pineBranch(0, 0, 64, 158, c.a2), "xMinYMin meet"),
+      sticker: SV("0 0 100 100", DR.compass(50, 50, 38, c.dark, c.accent)),
+      sticker2: SV("0 0 100 100", DR.tent(46, 82, 32, c.accent, c.dark) + DR.pine(84, 84, 16, 40, c.a3)),
+      divider: SV("0 0 200 20", `<path d="M6 12Q50 2 100 10T194 8" stroke="${c.dark}" stroke-width="1.4" stroke-dasharray="4 3" fill="none"/><circle cx="6" cy="12" r="2.6" fill="${c.accent}"/><circle cx="194" cy="8" r="2.6" fill="${c.accent}"/>`),
+      band: SV("0 0 210 40", DR.mountain(40, 40, 100, 30, c.a2) + DR.mountain(120, 40, 120, 36, c.a3) + DR.mountain(196, 40, 90, 26, c.a2) + `<path d="M0 34Q60 28 110 34T210 32V40H0Z" fill="${c.dark}"/>`, "xMidYMax slice"),
+    }
+  });
+})();
+// --- Grad
+(() => {
+  const c = { paper: "#F6F1E9", bg: "#EADFCF", soft: "#ECE4D7", title: "#141414", ink: "#1A1A1A", text: "#2A2A2A", accent: "#D2402F", a2: "#E9B44C", a3: "#2E4F7A", dark: "#1A1A1A", ondark: "#F6F1E9", dots: "#D9CDBB" };
+  BT.grad = T("grad", "Gradski vikend", "putovanja", c, { ...F.disp("'Inter',sans-serif", 900, "uppercase", "-.03em"), b: "'Lora',serif", bi: "italic", s: "'Caveat',cursive" }, { title: "Pariz", sub: "tri dana, hiljadu ulica" }, {
+    cover: SV("0 0 210 297", `<rect width="210" height="297" fill="${c.bg}"/><circle cx="140" cy="176" r="48" fill="${c.accent}"/><path d="M30 196Q60 140 104 132" stroke="${c.dark}" stroke-width="1.1" stroke-dasharray="3 3" fill="none"/>${DR.plane(110, 130, 14, c.dark, 70)}${DR.skyline(254, c.dark)}<rect y="253" width="210" height="44" fill="${c.dark}"/>`, "xMidYMid slice"),
+    deco: {
+      corner: SV("0 0 100 100", `<path d="M6 70Q14 18 66 8" stroke="${c.dark}" stroke-width="1.4" stroke-dasharray="3 3" fill="none"/><circle cx="6" cy="72" r="3" fill="${c.accent}"/>` + DR.plane(74, 7, 14, c.dark, 78), "xMinYMin meet"),
+      sticker: SV("0 0 100 100", `<g transform="rotate(-12 50 50)">${DR.ticket(10, 30, 80, 40, c.accent, "#fff", c.paper)}</g>`),
+      sticker2: SV("0 0 100 100", DR.plane(50, 50, 62, c.dark, 40)),
+      divider: SV("0 0 200 20", `<line x1="6" y1="10" x2="194" y2="10" stroke="${c.dark}" stroke-width="1.2"/><circle cx="6" cy="10" r="3" fill="${c.accent}"/><circle cx="194" cy="10" r="3" fill="${c.accent}"/>`),
+      band: SV("0 0 210 40", DR.skyline(40, c.dark, 210, .38), "xMidYMax slice"),
+    }
+  });
+})();
+// --- Beba (plava)
+(() => {
+  const c = { paper: "#FBFCFE", bg: "#DDEAF6", soft: "#EAF1F9", title: "#3D5A80", ink: "#3D5A80", text: "#3B4655", accent: "#7FA9D3", a2: "#F2C66D", a3: "#F4D9C6", dark: "#3D5A80", ondark: "#EAF2FA" };
+  BT.bebad = T("bebad", "Naš dječak", "beba", c, { ...F.disp("'Fredoka',sans-serif", 600), b: "'Fredoka',sans-serif", bi: "normal", s: "'Caveat',cursive" }, { title: "Naš mali princ", sub: "prva godina" }, {
+    cover: SV("0 0 210 297", `<rect width="210" height="297" fill="${c.bg}"/>${DR.moon(150, 168, 24, c.a2)}${DR.star(62, 154, 6, c.a2)}${DR.star(92, 184, 4, c.a2)}${DR.star(182, 206, 5, c.a2)}${DR.star(38, 204, 3.5, c.a2)}${DR.star(118, 150, 3, "#fff")}${DR.cloud(40, 252, 56, "#fff")}${DR.cloud(160, 262, 70, "#fff")}${DR.cloud(100, 282, 84, "#fff")}<rect y="284" width="210" height="13" fill="#fff"/>`, "xMidYMid slice"),
+    deco: {
+      corner: SV("0 0 100 100", DR.cloud(26, 22, 40, c.bg) + DR.star(62, 16, 6, c.a2) + DR.star(16, 54, 4.5, c.a2) + DR.star(46, 44, 3, c.accent), "xMinYMin meet"),
+      sticker: SV("0 0 100 100", DR.moon(46, 52, 30, c.a2) + DR.star(78, 28, 7, c.a2) + DR.star(72, 68, 4, c.accent)),
+      sticker2: SV("0 0 100 100", DR.cloud(50, 46, 70, c.accent) + DR.star(30, 82, 4, c.a2) + DR.star(66, 84, 3, c.a2)),
+      divider: SV("0 0 200 20", [20, 60, 100, 140, 180].map((x, i) => DR.star(x, 10, i % 2 ? 3.5 : 5, i % 2 ? c.accent : c.a2)).join("")),
+      band: SV("0 0 210 40", DR.cloud(30, 30, 40, "#fff") + DR.cloud(90, 34, 50, "#fff") + DR.cloud(160, 30, 44, "#fff") + DR.cloud(206, 34, 40, "#fff") + `<rect y="36" width="210" height="4" fill="#fff"/>`, "xMidYMax slice"),
+    }
+  });
+})();
+// --- Beba (roza)
+(() => {
+  const c = { paper: "#FFFBFA", bg: "#F8E1E1", soft: "#FBEDED", title: "#B5546A", ink: "#8E4458", text: "#4A3B3F", accent: "#E39AAA", a2: "#9DB89A", a3: "#F6D4C2", dark: "#8E4458", ondark: "#FCEEEE" };
+  let fl = ""; [[24, 262, 14, "#fff"], [52, 276, 10, c.accent], [180, 258, 15, c.accent], [154, 276, 10, "#fff"], [104, 284, 12, c.title], [200, 286, 9, "#fff"]].forEach(([x, y, r, f]) => fl += DR.flower(x, y, r, f, c.a3));
+  BT.bebaz = T("bebaz", "Naša djevojčica", "beba", c, { ...F.disp("'Fredoka',sans-serif", 600), b: "'Fredoka',sans-serif", bi: "normal", s: "'Caveat',cursive" }, { title: "Naša mala princeza", sub: "prva godina" }, {
+    cover: SV("0 0 210 297", `<rect width="210" height="297" fill="${c.bg}"/>${DR.cloud(160, 160, 50, "#fff")}${DR.cloud(52, 190, 40, "#fff")}${DR.heart(104, 196, 18, c.accent)}${DR.heart(140, 214, 9, c.title)}${DR.heart(68, 224, 8, "#fff")}${DR.leaf(10, 276, 50, 40, c.a2, c.bg)}${DR.leaf(70, 290, 40, -20, c.a2, c.bg)}${DR.leaf(196, 272, 50, -40, c.a2, c.bg)}${DR.leaf(130, 292, 40, 25, c.a2, c.bg)}${fl}`, "xMidYMid slice"),
+    deco: {
+      corner: SV("0 0 100 100", DR.leaf(28, 28, 46, 135, c.a2) + DR.leaf(12, 48, 32, 160, c.a2) + DR.leaf(48, 12, 32, 110, c.a2) + DR.flower(18, 18, 13, c.accent, c.a3) + DR.flower(44, 32, 8, c.title, c.a3), "xMinYMin meet"),
+      sticker: SV("0 0 100 100", DR.heart(46, 30, 52, c.accent) + DR.heart(78, 66, 16, c.title)),
+      sticker2: SV("0 0 100 100", DR.leaf(28, 68, 36, -120, c.a2) + DR.leaf(72, 68, 36, 120, c.a2) + DR.flower(50, 48, 28, c.accent, c.a3)),
+      divider: SV("0 0 200 20", [40, 70, 100, 130, 160].map((x, i) => DR.heart(x, 5, i === 2 ? 9 : 6, i === 2 ? c.title : c.accent)).join("")),
+      band: SV("0 0 210 40", [[14, 30, 10, c.accent], [44, 34, 7, "#fff"], [76, 30, 9, c.title], [110, 34, 8, c.accent], [142, 30, 10, "#fff"], [174, 34, 7, c.accent], [202, 30, 9, c.title]].map(([x, y, r, f]) => DR.flower(x, y, r, f, c.a3)).join(""), "xMidYMax slice"),
+    }
+  });
+})();
+// --- Rođendan
+(() => {
+  const c = { paper: "#FFFDF7", bg: "#FFF1C9", soft: "#FFF5DA", title: "#E8505B", ink: "#2B2D42", text: "#33343F", accent: "#14B1AB", a2: "#F9A826", a3: "#7B5EA7", dark: "#2B2D42", ondark: "#FFF1C9" };
+  const cols = [c.title, c.accent, c.a2, c.a3];
+  BT.rodjendan = T("rodjendan", "Rođendanska žurka", "rodjendan", c, { ...F.disp("'Baloo 2',sans-serif", 800), b: "'Baloo 2',sans-serif", bi: "normal", s: "'Caveat',cursive" }, { title: "Srećan rođendan", sub: "naša velika proslava" }, {
+    cover: SV("0 0 210 297", `<rect width="210" height="297" fill="${c.bg}"/>${DR.bunting(-4, 214, 4, cols, 13, 6)}<g opacity=".8">${DR.confetti(210, 120, 40, cols, 3).replace(/<(rect|circle)([^>]*)\/>/g, (m) => m)}</g>${DR.balloon(150, 178, 22, c.title)}${DR.balloon(180, 156, 18, c.accent)}${DR.balloon(124, 158, 16, c.a3)}${DR.balloon(176, 204, 14, c.a2)}<rect y="266" width="210" height="31" fill="${c.a2}" opacity=".35"/>${DR.cake(58, 268, 32, c.title, "#fff", c.a2, c.a2)}`, "xMidYMid slice"),
+    deco: {
+      corner: SV("0 0 100 100", DR.balloon(26, 24, 15, c.title) + DR.balloon(52, 14, 11, c.accent) + DR.balloon(14, 54, 10, c.a2), "xMinYMin meet"),
+      sticker: SV("0 0 100 100", DR.cake(50, 86, 30, c.title, c.paper, c.a2, c.a2)),
+      sticker2: SV("0 0 100 100", DR.gift(50, 90, 26, c.accent, c.title)),
+      divider: SV("0 0 200 20", DR.bunting(0, 200, 2, cols, 10, 3)),
+      band: SV("0 0 210 40", DR.confetti(210, 40, 46, cols, 11), "xMidYMax slice"),
+    }
+  });
+})();
+// --- Vjenčanje
+(() => {
+  const c = { paper: "#FDFBF6", bg: "#F1EBE0", soft: "#F4EEE4", title: "#6B5B3E", ink: "#5C5240", text: "#3E3A33", accent: "#B89B5E", a2: "#9CAF94", a3: "#E8DCC8", dark: "#3E3A33", ondark: "#F1EBE0" };
+  BT.vjencanje = T("vjencanje", "Naše vjenčanje", "vjencanje", c, { ...F.disp("'Great Vibes',cursive", 400), b: "'Cormorant Garamond',serif", bi: "italic", s: "'Great Vibes',cursive" }, { title: "Ana & Marko", sub: "zauvijek zajedno" }, {
+    cover: SV("0 0 210 297", `<rect width="210" height="297" fill="${c.bg}"/><rect x="10" y="10" width="190" height="277" fill="none" stroke="${c.accent}" stroke-width=".6"/>${DR.branch(26, 290, 150, 18, "#7E9277", c.a2)}${DR.branch(14, 270, 100, 40, "#7E9277", "#B6C4AE")}${DR.branch(184, 290, 150, -18, "#7E9277", c.a2)}${DR.branch(196, 270, 100, -40, "#7E9277", "#B6C4AE")}${DR.rings(105, 236, 11, c.accent, 1.3)}`, "xMidYMid slice"),
+    deco: {
+      corner: SV("0 0 100 100", DR.branch(4, 4, 92, 140, "#7E9277", c.a2) + DR.branch(4, 4, 64, 110, "#7E9277", "#B6C4AE") + DR.branch(4, 4, 64, 168, "#7E9277", "#B6C4AE"), "xMinYMin meet"),
+      sticker: SV("0 0 100 100", DR.rings(50, 58, 20, c.accent, 2.4)),
+      sticker2: SV("0 0 100 100", DR.branch(30, 90, 60, -30, "#7E9277", c.a2) + DR.branch(70, 90, 60, 30, "#7E9277", c.a2) + DR.flower(50, 44, 18, c.a3, c.accent)),
+      divider: SV("0 0 200 20", `<line x1="10" y1="10" x2="88" y2="10" stroke="${c.accent}" stroke-width=".8"/><line x1="112" y1="10" x2="190" y2="10" stroke="${c.accent}" stroke-width=".8"/><polygon points="100,3 106,10 100,17 94,10" fill="${c.accent}"/>`),
+      band: SV("0 0 210 40", DR.branch(0, 34, 110, 78, "#7E9277", c.a2) + DR.branch(210, 34, 110, -78, "#7E9277", c.a2), "xMidYMax slice"),
+    }
+  });
+})();
+// --- Porodica
+(() => {
+  const c = { paper: "#FBF6EF", bg: "#F2DCC6", soft: "#F5E9DB", title: "#B4562C", ink: "#5A3A2A", text: "#3F3129", accent: "#D9894F", a2: "#8AA27C", a3: "#E7B75F", dark: "#5A3A2A", ondark: "#F6EADC" };
+  BT.porodica = T("porodica", "Naša porodica", "porodica", c, { ...F.disp("'Fraunces',serif", 700), b: "'Lora',serif", bi: "italic", s: "'Caveat',cursive" }, { title: "Naša godina", sub: "trenuci koje čuvamo" }, {
+    cover: SV("0 0 210 297", `<rect width="210" height="297" fill="${c.bg}"/><circle cx="104" cy="226" r="62" fill="${c.a3}"/><ellipse cx="40" cy="296" rx="150" ry="62" fill="${c.a2}"/><ellipse cx="190" cy="304" rx="140" ry="70" fill="#6F8A62"/><rect x="146" y="226" width="22" height="16" fill="${c.paper}"/><polygon points="142,228 157,214 172,228" fill="${c.title}"/><rect x="154" y="232" width="6" height="10" fill="${c.ink}"/><rect x="48" y="236" width="2.4" height="16" fill="${c.ink}"/><circle cx="49" cy="232" r="9" fill="#6F8A62"/>${DR.heart(84, 160, 8, c.title)}${DR.birds(130, 150, 6, c.ink)}`, "xMidYMid slice"),
+    deco: {
+      corner: SV("0 0 100 100", DR.leaf(30, 30, 64, 135, c.a2) + DR.leaf(52, 14, 42, 110, c.accent) + DR.leaf(14, 52, 42, 160, "#6F8A62"), "xMinYMin meet"),
+      sticker: SV("0 0 100 100", DR.sun(50, 50, 22, c.a3, true)),
+      sticker2: SV("0 0 100 100", DR.heart(50, 26, 56, c.title)),
+      divider: SV("0 0 200 20", DR.dots(200, 10, 1.4, c.accent, 10)),
+      band: SV("0 0 210 40", `<ellipse cx="40" cy="48" rx="110" ry="26" fill="${c.a2}"/><ellipse cx="180" cy="52" rx="110" ry="30" fill="#6F8A62"/>`, "xMidYMax slice"),
+    }
+  });
+})();
+
+/* globalni ukrasi (ne zavise od teme) */
+const GDECO = {
+  plane: c => SV("0 0 24 24", DR.plane(12, 12, 22, c.accent, 90)),
+};
+
+/* ---------------- kolaži ---------------- */
+const ph = (x, y, w, h, o = {}) => ({ t: "photo", x, y, w, h, ...o });
+const tx = (k, s, x, y, w, h, o = {}) => ({ t: "text", k, s, x, y, w, h, ...o });
+const dc = (d, x, y, w, h, o = {}) => ({ t: "deco", d, x, y, w, h, ...o });
+const rc = (x, y, w, h, o = {}) => ({ t: "rect", x, y, w, h, ...o });
+const BL = {};
+function L(id, name, cats, kind, items, o = {}) { BL[id] = { id, name, cats, kind, items, ...o }; }
+const U = ["*"];
+const STORY = "Ovdje napiši priču ili uspomenu.";
+
+// --- 1 slika
+L("f1", "Preko cijele strane", U, "photo", [ph(0, 0, 210, 297, { r: 0 }), tx("c0", "cap", 16, 278, 178, 8, { col: "#ffffff", sh: 1, ph: "opis (nije obavezno)" })], { nofolio: 1, help: "Jedna slika do ivica" });
+L("v1", "Velika slika i priča", U, "photo", [ph(14, 14, 182, 196), tx("h", "title", 14, 220, 146, 14, { one: 1, fs: 22, ph: "Naslov" }), tx("txt", "body", 14, 238, 146, 40, { ph: STORY }), dc("sticker", 162, 224, 34, 34)], { mirror: 1, help: "Slika + tekst ispod" });
+L("pol1", "Polaroid", U, "photo", [dc("corner", 0, 0, 78, 78), ph(30, 34, 150, 170, { fr: "polaroid", rot: -3, pcap: "c0" }), tx("h", "script", 20, 222, 170, 20, { al: "center", fs: 30, ph: "naslov" }), tx("txt", "body", 36, 248, 138, 28, { al: "center", ph: "kratka misao" }), dc("sticker2", 162, 12, 36, 36)], { help: "Nakrivljena polaroid slika" });
+L("kr1", "Krug u sredini", U, "photo", [dc("corner", 0, 0, 70, 70), dc("corner", 140, 227, 70, 70, { fx: 1, fy: 1 }), ph(40, 36, 130, 130, { fr: "circle" }), tx("h", "title", 14, 180, 182, 16, { al: "center", one: 1, fs: 24, ph: "Naslov" }), tx("txt", "body", 30, 202, 150, 44, { al: "center", ph: STORY }), dc("divider", 75, 252, 60, 8)], { help: "Okrugla slika i tekst" });
+L("luk1", "Luk", U, "photo", [ph(36, 20, 138, 190, { fr: "arch" }), tx("h", "script", 14, 220, 182, 22, { al: "center", fs: 32, ph: "naslov" }), tx("txt", "body", 30, 248, 150, 30, { al: "center", ph: STORY }), dc("sticker", 150, 176, 40, 40)], { help: "Slika u obliku luka" });
+// --- 2 slike
+L("d2", "Dvije položene", U, "photo", [ph(14, 14, 182, 124), tx("c0", "cap", 14, 140, 182, 6, { al: "right", fs: 8, ph: "dodaj opis" }), ph(14, 150, 182, 124), tx("c1", "cap", 14, 276, 182, 6, { al: "right", fs: 8, ph: "dodaj opis" })], { help: "Jedna ispod druge" });
+L("u2", "Dvije uspravne", U, "photo", [ph(14, 14, 89, 182), ph(107, 14, 89, 182), tx("h", "title", 14, 208, 140, 14, { one: 1, fs: 22, ph: "Naslov" }), tx("txt", "body", 14, 226, 140, 50, { ph: STORY }), dc("sticker", 160, 226, 36, 36)], { mirror: 1, help: "Dvije uspravne i tekst" });
+L("vm2", "Velika i mala", U, "photo", [ph(14, 14, 182, 172), ph(112, 150, 80, 104, { fr: "border", rot: 4 }), tx("h", "script", 14, 196, 92, 20, { fs: 28, ph: "naslov" }), tx("txt", "body", 14, 220, 90, 56, { ph: STORY })], { mirror: 1, help: "Mala slika preko velike" });
+L("pol2", "Dva polaroida", U, "photo", [dc("corner", 0, 0, 66, 66), ph(18, 26, 110, 124, { fr: "polaroid", rot: -4, pcap: "c0" }), ph(84, 140, 110, 124, { fr: "polaroid", rot: 3, pcap: "c1" }), tx("txt", "script", 14, 182, 62, 70, { fs: 22, ph: "misao ili citat" }), dc("sticker2", 154, 22, 40, 40)], { mirror: 1, help: "Dva nakrivljena polaroida" });
+L("tr2", "Naslov i dvije trake", U, "photo", [tx("h", "display", 14, 18, 182, 26, { al: "center", one: 1, fs: 36, ph: "Naslov" }), ph(14, 54, 182, 106), ph(14, 166, 182, 106), tx("c0", "cap", 14, 274, 182, 6, { al: "right", fs: 8, ph: "dodaj opis" })], { help: "Naslov gore, dvije široke slike" });
+// --- 3 slike
+L("t3", "Jedna velika, dvije male", U, "photo", [ph(14, 14, 182, 140), ph(14, 158, 89, 118), ph(107, 158, 89, 118)], { help: "Velika gore, dvije dolje" });
+L("m3", "Mozaik", U, "photo", [ph(14, 14, 89, 262), ph(107, 14, 89, 129), ph(107, 147, 89, 129)], { mirror: 1, help: "Uspravna + dvije" });
+L("s3", "Tri trake", U, "photo", [ph(14, 14, 182, 85), ph(14, 103, 182, 85), ph(14, 192, 182, 85)], { help: "Tri široke slike" });
+L("n3", "Naslov i tri uspravne", U, "photo", [tx("lab", "label", 14, 20, 182, 6, { al: "center", fs: 7.5, ph: "natpis" }), tx("h", "display", 14, 30, 182, 30, { al: "center", one: 1, fs: 38, ph: "Naslov" }), ph(14, 70, 58, 152), ph(76, 70, 58, 152), ph(138, 70, 58, 152), tx("txt", "body", 30, 230, 150, 36, { al: "center", ph: STORY }), dc("divider", 80, 268, 50, 8)], { help: "Naslov + tri u redu" });
+L("pol3", "Tri polaroida", U, "photo", [ph(18, 18, 96, 108, { fr: "polaroid", rot: -5, pcap: "c0" }), ph(98, 84, 96, 108, { fr: "polaroid", rot: 4, pcap: "c1" }), ph(24, 160, 96, 108, { fr: "polaroid", rot: -2, pcap: "c2" }), tx("txt", "script", 130, 212, 66, 56, { fs: 22, ph: "misao" }), dc("sticker", 152, 16, 40, 40)], { mirror: 1, help: "Tri razbacana polaroida" });
+// --- 4 slike
+L("g4", "Mreža 2 × 2", U, "photo", [ph(14, 14, 89, 129), ph(107, 14, 89, 129), ph(14, 147, 89, 129), ph(107, 147, 89, 129)], { help: "Četiri jednake" });
+L("b4", "Velika i tri ispod", U, "photo", [ph(14, 14, 182, 168), ph(14, 186, 58, 90), ph(76, 186, 58, 90), ph(138, 186, 58, 90)], { help: "Velika + traka od tri" });
+L("r4", "Velika i tri sa strane", U, "photo", [ph(14, 14, 120, 263), ph(138, 14, 58, 85), ph(138, 103, 58, 85), ph(138, 192, 58, 85)], { mirror: 1, help: "Uspravna + kolona od tri" });
+L("n4", "Naslov i četiri", U, "photo", [tx("lab", "label", 14, 18, 140, 6, { fs: 7.5, ph: "natpis" }), tx("h", "title", 14, 26, 182, 18, { one: 1, fs: 26, ph: "Naslov" }), ph(14, 52, 89, 110), ph(107, 52, 89, 110), ph(14, 166, 89, 110), ph(107, 166, 89, 110)], { help: "Naslov + mreža" });
+L("pol4", "Četiri polaroida", U, "photo", [ph(14, 20, 92, 104, { fr: "polaroid", rot: -4, pcap: "c0" }), ph(104, 14, 92, 104, { fr: "polaroid", rot: 3, pcap: "c1" }), ph(18, 150, 92, 104, { fr: "polaroid", rot: 2, pcap: "c2" }), ph(100, 144, 92, 104, { fr: "polaroid", rot: -3, pcap: "c3" }), dc("sticker2", 88, 120, 34, 34)], { help: "Razbacani polaroidi" });
+// --- 5 i više
+L("m5", "Mozaik 5", U, "photo", [ph(14, 14, 120, 150), ph(138, 14, 58, 73), ph(138, 91, 58, 73), ph(14, 168, 89, 109), ph(107, 168, 89, 109)], { mirror: 1, help: "Pet slika, jedna veća" });
+L("k5", "Pet sa krugom", U, "photo", [ph(14, 14, 89, 129), ph(107, 14, 89, 129), ph(14, 147, 89, 129), ph(107, 147, 89, 129), ph(57, 97, 96, 96, { fr: "circleb" })], { help: "Četiri + krug u sredini" });
+L("g6", "Mreža 3 × 2", U, "photo", [ph(14, 14, 89, 85), ph(107, 14, 89, 85), ph(14, 103, 89, 85), ph(107, 103, 89, 85), ph(14, 192, 89, 85), ph(107, 192, 89, 85)], { help: "Šest jednakih" });
+L("n6", "Naslov i šest", U, "photo", [tx("h", "title", 14, 18, 182, 18, { one: 1, al: "center", fs: 26, ph: "Naslov" }), tx("lab", "label", 14, 40, 182, 6, { al: "center", fs: 7.5, ph: "natpis" }), ph(14, 54, 58, 102), ph(76, 54, 58, 102), ph(138, 54, 58, 102), ph(14, 160, 58, 102), ph(76, 160, 58, 102), ph(138, 160, 58, 102), tx("c0", "cap", 14, 268, 182, 7, { al: "center", fs: 8.5, ph: "dodaj opis" })], { help: "Naslov + 3 × 2" });
+L("g8", "Osam slika", U, "photo", [0, 1, 2, 3].flatMap(r => [ph(14, 14 + r * 67, 89, 63), ph(107, 14 + r * 67, 89, 63)]), { help: "2 × 4" });
+L("g9", "Devet slika", U, "photo", [0, 1, 2].flatMap(r => [0, 1, 2].map(k => ph(14 + k * 62, 14 + r * 89, 58, 85))), { help: "3 × 3" });
+
+// --- korice i opšte strane
+L("cover", "Korice sa ilustracijom", U, "cover", [{ t: "art", x: 0, y: 0, w: 210, h: 297 }, tx("title", "display", 16, 30, 178, 42, { al: "center", one: 1, fs: 54, def: "{title}", ph: "NASLOV" }), tx("sub", "script", 16, 78, 178, 18, { al: "center", fs: 24, def: "{sub}", ph: "podnaslov" }), tx("date", "label", 16, 100, 178, 7, { al: "center", fs: 9, def: "{date}", ph: "datum" })], { nofolio: 1, help: "Ilustracija teme" });
+L("coverf", "Korice sa slikom u luku", U, "cover", [dc("band", 0, 262, 210, 35), tx("title", "display", 16, 18, 178, 32, { al: "center", one: 1, fs: 44, def: "{title}", ph: "NASLOV" }), tx("sub", "script", 16, 52, 178, 14, { al: "center", fs: 20, def: "{sub}" }), ph(35, 74, 140, 168, { fr: "arch" }), tx("date", "label", 16, 248, 178, 7, { al: "center", fs: 9, def: "{date}" })], { bg: "bg", nofolio: 1, help: "Slika + naslov" });
+L("coverp", "Korice sa velikom slikom", U, "cover", [ph(0, 0, 210, 206, { r: 0 }), tx("title", "display", 16, 216, 178, 36, { al: "center", one: 1, fs: 48, def: "{title}", ph: "NASLOV" }), tx("sub", "script", 16, 254, 178, 16, { al: "center", fs: 22, def: "{sub}" }), tx("date", "label", 16, 276, 178, 7, { al: "center", fs: 9, def: "{date}" })], { nofolio: 1, help: "Fotografija gore, naslov dolje" });
+L("back", "Zadnja korica", U, "back", [dc("sticker", 85, 116, 40, 40), tx("bt", "script", 16, 166, 178, 16, { al: "center", fs: 20, def: "{title}" }), tx("bd", "label", 16, 186, 178, 7, { al: "center", fs: 8, def: "{date}" }), dc("band", 0, 262, 210, 35)], { bg: "bg", nofolio: 1, help: "Kraj albuma" });
+L("blank", "Prazna strana", U, "text", [], { nofolio: 1, help: "Pauza ili unutrašnja korica" });
+L("uvod", "Uvodna strana", U, "text", [dc("corner", 0, 0, 80, 80), ph(65, 38, 80, 80, { fr: "circle" }), tx("lab", "label", 14, 134, 182, 7, { al: "center", fs: 8, def: "Uvod" }), tx("h", "display", 14, 146, 182, 28, { al: "center", one: 1, fs: 36, def: "{title}" }), tx("txt", "body", 30, 184, 150, 70, { al: "center", fs: 11.5, ph: "Napiši par rečenica o ovom albumu: šta je u njemu i zašto je važan." }), dc("divider", 80, 262, 50, 10)], { help: "Krug, naslov i uvodni tekst" });
+L("pog", "Početak poglavlja", U, "chapter", [tx("no", "label", 14, 18, 120, 7, { fs: 8, def: "Poglavlje {n}" }), tx("title", "display", 14, 28, 182, 30, { one: 1, fs: 44, ph: "Naziv poglavlja" }), tx("sub", "script", 14, 62, 182, 14, { fs: 20, ph: "podnaslov" }), ph(14, 86, 182, 190)], { mirror: 1, help: "Naslov dijela + slika" });
+L("citat", "Citat", U, "text", [dc("corner", 0, 0, 88, 88), dc("corner", 122, 209, 88, 88, { fx: 1, fy: 1 }), dc("sticker", 85, 58, 40, 40), tx("q", "script", 24, 106, 162, 78, { al: "center", fs: 32, ph: "Citat ili misao" }), tx("a", "label", 24, 192, 162, 7, { al: "center", fs: 8, ph: "autor" })], { bg: "bg", help: "Velika misao, pauza između slika" });
+L("prica", "Priča", U, "text", [tx("h", "title", 14, 18, 182, 16, { one: 1, fs: 24, ph: "Naslov priče" }), tx("d", "label", 14, 40, 100, 6, { fs: 7.5, ph: "datum" }), tx("txt", "body", 14, 52, 118, 150, { fs: 11.5, ph: "Ovdje napiši priču, anegdotu ili dnevnički zapis." }), ph(140, 52, 56, 80, { fr: "border", rot: 3 }), dc("sticker", 148, 150, 40, 40), { t: "lines", x: 14, y: 214, w: 182, h: 62, n: 7 }], { mirror: 1, help: "Dnevnik + mala slika" });
+L("biljeske", "Bilješke", U, "text", [tx("h", "script", 14, 20, 182, 22, { fs: 30, def: "Bilješke" }), { t: "lines", x: 14, y: 56, w: 182, h: 218, n: 18 }, dc("corner", 140, 0, 70, 70, { fx: 1 })], { help: "Linije za pisanje rukom" });
+L("poruke", "Poruke", ["vjencanje", "rodjendan", "porodica", "beba"], "text", [tx("h", "display", 14, 18, 182, 26, { al: "center", one: 1, fs: 34, def: "Poruke za nas" }), ...[[14, 56], [107, 56], [14, 168], [107, 168]].flatMap(([x, y]) => [rc(x, y, 89, 106, { fill: "soft", r: 6 }), { t: "lines", x: x + 7, y: y + 14, w: 75, h: 84, n: 7 }])], { help: "4 kartice za poruke gostiju" });
+
+// --- putovanja
+L("mapa", "Mapa svijeta", ["putovanja"], "special", [tx("lab", "label", 16, 18, 120, 6, { fs: 7.5, def: "Gdje smo bili" }), tx("yr", "label", 140, 18, 54, 6, { al: "right", fs: 7.5, def: "{year}" }), { t: "map", x: 8, y: 36, w: 194, h: 104 }, rc(16, 146, 178, 104, { fill: "bg", r: 7 }), tx("dl", "label", 28, 158, 110, 6, { fs: 7, def: "Destinacija" }), tx("big", "display", 28, 168, 154, 32, { one: 1, fs: 50, def: "{dest}" }), tx("k1", "label", 28, 214, 64, 5, { fs: 6.5, def: "Gradovi" }), tx("v1", "body", 28, 221, 70, 22, { fs: 9.5, def: "{cities}", ph: "gradovi" }), tx("k2", "label", 104, 214, 40, 5, { fs: 6.5, def: "Kada" }), tx("v2", "body", 104, 221, 40, 22, { fs: 9.5, def: "{date}" }), tx("k3", "label", 148, 214, 40, 5, { fs: 6.5, def: "Koordinate" }), tx("v3", "body", 148, 221, 40, 22, { fs: 9.5, def: "{coord}" }), dc("sticker", 160, 152, 28, 28), dc("band", 0, 262, 210, 35)], { nofolio: 1, help: "Pin na destinaciji" });
+L("brojke", "U brojkama", ["putovanja"], "special", [tx("lab", "label", 14, 18, 182, 6, { fs: 7.5, def: "Putovanje u brojkama" }), tx("h", "display", 14, 30, 182, 32, { one: 1, fs: 42, def: "{dest}" }), ...[["12", "dana"], ["3", "grada"], ["2.346", "fotografija"], ["148", "km pješke"], ["27", "kafa"], ["1", "nezaboravan dan"]].flatMap(([n, l], i) => { const x = i % 2 ? 107 : 14, y = 74 + Math.floor(i / 2) * 56, dark = i === 1 || i === 4; return [rc(x, y, 89, 52, { fill: dark ? "dark" : i === 2 ? "a3" : "bg", r: 6, op: i === 2 ? .55 : 1 }), tx("n" + i, "num", x + 7, y + 8, 75, 24, { fs: 34, one: 1, def: n, col: dark ? "ondark" : "" }), tx("l" + i, "body", x + 7, y + 36, 75, 10, { fs: 10.5, def: l, col: dark ? "ondark" : "" })]; }), ph(14, 246, 30, 30, { fr: "glue", r: 2 }), tx("qr", "body", 50, 248, 146, 28, { fs: 9, def: "Skeniraj telefonom i pogledaj video sa putovanja. QR kod napraviš besplatno iz linka i ubaciš ga u kvadrat kao sliku." })], { help: "Dani, gradovi, km… + QR" });
+L("zalijepi", "Za lijepljenje", ["putovanja"], "special", [tx("lab", "label", 14, 18, 182, 6, { fs: 7.5, def: "Uspomene" }), tx("h", "display", 14, 28, 182, 28, { one: 1, fs: 38, def: "Sačuvano sa puta" }), ph(14, 64, 182, 100, { fr: "glue" }), ph(14, 170, 89, 106, { fr: "glue" }), ph(107, 170, 89, 106, { fr: "glue" })], { help: "Karte, ulaznice, računi" });
+L("karta", "Karta za avanturu", ["putovanja"], "special", [tx("lab", "label", 14, 18, 182, 6, { fs: 7.5, def: "Karta za avanturu" }), rc(14, 30, 134, 88, { fill: "bg", r: 5 }), rc(148, 30, 48, 88, { fill: "dark", r: 5 }), tx("air", "label", 22, 38, 120, 6, { fs: 8, def: "{dest} airlines", col: "ink" }), tx("fc", "num", 22, 50, 52, 22, { fs: 34, one: 1, def: "BEG" }), tx("fn", "label", 22, 74, 52, 5, { fs: 6.5, def: "polazak" }), dc("@plane", 73, 53, 16, 16), tx("tc", "num", 90, 50, 52, 22, { fs: 34, one: 1, al: "right", def: "{code}" }), tx("tn", "label", 90, 74, 52, 5, { fs: 6.5, al: "right", def: "{dest}" }), ...[["Putnik", 22], ["Datum", 52], ["Sjedište", 82], ["Let", 112]].flatMap(([k, x], i) => [tx("k" + i, "label", x, 90, 28, 5, { fs: 5.8, def: k }), tx("v" + i, "body", x, 97, 28, 14, { fs: 9, ph: "—" })]), tx("gk", "label", 154, 40, 38, 5, { fs: 6, def: "Gate", col: "ondark" }), tx("gv", "num", 154, 47, 38, 14, { fs: 20, one: 1, def: "A1", col: "ondark" }), tx("bk", "label", 154, 70, 38, 5, { fs: 6, def: "Boarding", col: "ondark" }), tx("bv", "num", 154, 77, 38, 14, { fs: 20, one: 1, def: "08:45", col: "ondark" }), ph(14, 128, 182, 70, { fr: "glue" }), ph(14, 204, 89, 72, { fr: "glue" }), ph(107, 204, 89, 72, { fr: "glue" })], { help: "Boarding pass + mjesta za lijepljenje" });
+// --- bebe
+L("bebaInfo", "Dobro došla, bebo", ["beba"], "special", [dc("corner", 0, 0, 80, 80), ph(55, 24, 100, 100, { fr: "circleb" }), tx("lab", "label", 14, 132, 182, 6, { al: "center", fs: 8, def: "Stigla je naša sreća" }), tx("h", "display", 14, 142, 182, 26, { al: "center", one: 1, fs: 36, def: "{name}", ph: "Ime bebe" }), ...[["Datum rođenja", "{date}"], ["Vrijeme", ""], ["Mjesto", ""], ["Težina", ""], ["Dužina", ""], ["Boja očiju", ""]].flatMap(([k, d], i) => { const x = 14 + (i % 3) * 62, y = 180 + Math.floor(i / 3) * 40; return [rc(x, y, 58, 36, { fill: "soft", r: 5 }), tx("k" + i, "label", x + 5, y + 7, 48, 5, { fs: 6, al: "center", def: k }), tx("v" + i, "title", x + 3, y + 16, 52, 14, { fs: 15, al: "center", one: 1, def: d, ph: "—" })]; }), dc("divider", 80, 266, 50, 8)], { help: "Ime, datum, težina, dužina…" });
+L("mjeseci", "Mjesec po mjesec", ["beba"], "special", [tx("h", "script", 14, 12, 182, 18, { al: "center", fs: 28, def: "Mjesec po mjesec" }), ...Array.from({ length: 12 }, (_, i) => { const x = 14 + (i % 3) * 62, y = 38 + Math.floor(i / 3) * 61; return [ph(x, y, 58, 50), tx("m" + i, "cap", x, y + 51, 58, 6, { al: "center", fs: 8, def: `${i + 1}. mjesec` })]; }).flat()], { help: "12 slika, po jedna svakog mjeseca" });
+L("prvi", "Prvi put", ["beba"], "special", [tx("h", "display", 14, 16, 182, 26, { al: "center", one: 1, fs: 36, def: "Prvi put" }), ...[["Prvi osmijeh", 14, 50], ["Prvi zubić", 107, 50], ["Prvi korak", 14, 162], ["Prva riječ", 107, 162]].flatMap(([k, x, y], i) => [ph(x, y, 89, 84), tx("p" + i, "label", x, y + 87, 89, 6, { fs: 7.5, def: k }), tx("d" + i, "body", x, y + 95, 89, 10, { fs: 10, ph: "datum i opis" })])], { help: "Osmijeh, zubić, korak, riječ" });
+L("godina", "12 mjeseci", ["porodica"], "special", [tx("h", "script", 14, 12, 182, 18, { al: "center", fs: 28, def: "Naša godina" }), ...["Januar", "Februar", "Mart", "April", "Maj", "Jun", "Jul", "Avgust", "Septembar", "Oktobar", "Novembar", "Decembar"].map((m, i) => { const x = 14 + (i % 3) * 62, y = 38 + Math.floor(i / 3) * 61; return [ph(x, y, 58, 50), tx("m" + i, "cap", x, y + 51, 58, 6, { al: "center", fs: 8, def: m })]; }).flat()], { help: "Po jedna slika za svaki mjesec" });
+// --- rođendani
+L("torta", "Rođendanska strana", ["rodjendan"], "special", [dc("corner", 0, 0, 90, 90), tx("age", "num", 14, 26, 182, 80, { al: "center", one: 1, fs: 150, def: "1", ph: "godine" }), tx("h", "script", 14, 118, 182, 24, { al: "center", fs: 34, def: "Srećan rođendan!" }), ph(30, 152, 150, 108, { fr: "border", rot: -2 }), dc("sticker", 158, 236, 42, 42)], { help: "Veliki broj godina + slika" });
+L("zelje", "Želje za tebe", ["rodjendan", "beba"], "special", [tx("h", "display", 14, 18, 182, 26, { al: "center", one: 1, fs: 36, def: "Želje za tebe" }), ...Array.from({ length: 6 }, (_, i) => { const x = i % 2 ? 107 : 14, y = 56 + Math.floor(i / 2) * 74; return [rc(x, y, 89, 70, { fill: "soft", r: 6 }), tx("w" + i, "body", x + 7, y + 7, 75, 44, { fs: 10.5, ph: "napiši želju…" }), tx("o" + i, "label", x + 7, y + 56, 75, 6, { fs: 6.5, def: "od:" })]; }).flat()], { help: "6 kartica za želje" });
+// --- vjenčanja
+L("vjInfo", "Naš dan", ["vjencanje"], "special", [dc("corner", 0, 0, 90, 90), dc("corner", 120, 207, 90, 90, { fx: 1, fy: 1 }), ph(52, 28, 106, 142, { fr: "arch" }), tx("names", "display", 14, 178, 182, 34, { al: "center", one: 1, fs: 46, def: "{title}" }), tx("date", "label", 14, 218, 182, 7, { al: "center", fs: 9, def: "{date}" }), tx("place", "body", 14, 228, 182, 12, { al: "center", fs: 13, ph: "mjesto vjenčanja" }), dc("sticker", 92, 244, 26, 26)], { help: "Imena, datum, mjesto" });
+
+/* plan albuma po kategoriji (za automatsko pravljenje) */
+const BPLANS = {
+  putovanja: { pre: ["uvod", "mapa"], post: ["brojke", "zalijepi"], breaker: "pog", every: 6, filler: "biljeske" },
+  beba: { pre: ["uvod", "bebaInfo"], post: [{ l: "mjeseci", min: 40 }, { l: "prvi", min: 16 }, "zelje"], breaker: "citat", every: 8, filler: "biljeske" },
+  rodjendan: { pre: ["torta"], post: ["zelje"], breaker: "pog", every: 7, filler: "poruke" },
+  vjencanje: { pre: ["vjInfo", "uvod"], post: ["poruke"], breaker: "citat", every: 8, filler: "poruke" },
+  porodica: { pre: ["uvod"], post: [{ l: "godina", min: 40 }, "poruke"], breaker: "pog", every: 7, filler: "biljeske" },
+  _: { pre: ["uvod"], post: [], breaker: "pog", every: 7, filler: "biljeske" },
+};
+const BCATS = { putovanja: "Putovanja", beba: "Bebe", rodjendan: "Rođendani", vjencanje: "Vjenčanja", porodica: "Porodica" };
+
+const BUILTIN = { format: "album-kolazi", version: 1, id: "osnovni", name: "Osnovni paket", builtin: true, cats: BCATS, themes: BT, layouts: BL, plans: BPLANS, recipes: {} };
+
+/* ---------------- jednostavni rasporedi (bijele strane, margine po izboru) ---------------- */
+const T3 = 1 / 3;
+const gRows = n => Array.from({ length: n }, (_, i) => [0, i / n, 1, 1 / n]);
+const gCols = n => Array.from({ length: n }, (_, i) => [i / n, 0, 1 / n, 1]);
+const gGrid = (c, r) => { const o = []; for (let y = 0; y < r; y++) for (let x = 0; x < c; x++) o.push([x / c, y / r, 1 / c, 1 / r]); return o; };
+const GRIDS = {
+  ra1: ["Jedna slika", [[0, 0, 1, 1]]],
+  ra2r: ["Dvije, jedna ispod druge", gRows(2)],
+  ra2c: ["Dvije, jedna pored druge", gCols(2)],
+  ra2b: ["Velika gore, manja dolje", [[0, 0, 1, .62], [0, .62, 1, .38]]],
+  ra2t: ["Manja gore, velika dolje", [[0, 0, 1, .38], [0, .38, 1, .62]]],
+  ra3r: ["Tri, jedna ispod druge", gRows(3)],
+  ra3c: ["Tri uspravne", gCols(3)],
+  ra3a: ["Jedna gore, dvije dolje", [[0, 0, 1, .5], [0, .5, .5, .5], [.5, .5, .5, .5]]],
+  ra3b: ["Dvije gore, jedna dolje", [[0, 0, .5, .5], [.5, 0, .5, .5], [0, .5, 1, .5]]],
+  ra3l: ["Velika lijevo, dvije desno", [[0, 0, .6, 1], [.6, 0, .4, .5], [.6, .5, .4, .5]]],
+  ra3d: ["Dvije lijevo, velika desno", [[0, 0, .4, .5], [0, .5, .4, .5], [.4, 0, .6, 1]]],
+  ra4g: ["Mreža 2 × 2", gGrid(2, 2)],
+  ra4b: ["Velika gore, tri dolje", [[0, 0, 1, .62], [0, .62, T3, .38], [T3, .62, T3, .38], [2 * T3, .62, T3, .38]]],
+  ra4t: ["Tri gore, velika dolje", [[0, 0, T3, .38], [T3, 0, T3, .38], [2 * T3, 0, T3, .38], [0, .38, 1, .62]]],
+  ra4l: ["Velika lijevo, tri desno", [[0, 0, .62, 1], [.62, 0, .38, T3], [.62, T3, .38, T3], [.62, 2 * T3, .38, T3]]],
+  ra4r: ["Četiri, jedna ispod druge", gRows(4)],
+  ra5a: ["Dvije gore, tri dolje", [[0, 0, .5, .5], [.5, 0, .5, .5], [0, .5, T3, .5], [T3, .5, T3, .5], [2 * T3, .5, T3, .5]]],
+  ra5b: ["Velika gore, četiri dolje", [[0, 0, 1, .5], [0, .5, .5, .25], [.5, .5, .5, .25], [0, .75, .5, .25], [.5, .75, .5, .25]]],
+  ra5l: ["Velika lijevo, četiri desno", [[0, 0, .5, 1], [.5, 0, .5, .25], [.5, .25, .5, .25], [.5, .5, .5, .25], [.5, .75, .5, .25]]],
+  ra6g: ["Mreža 2 × 3", gGrid(2, 3)],
+  ra6v: ["Velika i pet", [[0, 0, 2 * T3, 2 * T3], [2 * T3, 0, T3, T3], [2 * T3, T3, T3, T3], [0, 2 * T3, T3, T3], [T3, 2 * T3, T3, T3], [2 * T3, 2 * T3, T3, T3]]],
+  ra8g: ["Mreža 2 × 4", gGrid(2, 4)],
+  ra9g: ["Mreža 3 × 3", gGrid(3, 3)],
+  ra12g: ["Mreža 3 × 4", gGrid(3, 4)],
+};
+const VAR = {
+  m: { name: "Sa bijelim marginama", short: "Sa marginama", M: 12, G: 4 },
+  b: { name: "Do ivice (tanka linija)", short: "Do ivice", M: 0, G: 2 },
+  b0: { name: "Do ivice, bez razmaka", short: "Bez razmaka", M: 0, G: 0 },
+};
+function gridItems(cells, v) {
+  const V = VAR[v] || VAR.m, M = V.M, G = V.G, CW = 210 - 2 * M, CH = 297 - 2 * M, e = 1e-6;
+  return cells.map(([x, y, w, h]) => {
+    const l = M + x * CW + (x > e ? G / 2 : 0), r = M + (x + w) * CW - (x + w < 1 - e ? G / 2 : 0);
+    const t = M + y * CH + (y > e ? G / 2 : 0), b = M + (y + h) * CH - (y + h < 1 - e ? G / 2 : 0);
+    return { t: "photo", x: +l.toFixed(2), y: +t.toFixed(2), w: +(r - l).toFixed(2), h: +(b - t).toFixed(2), r: 0 };
+  });
+}
+for (const [id, [name, cells]] of Object.entries(GRIDS)) BL[id] = { id, name, cats: ["*"], kind: "grid", grid: cells, items: gridItems(cells, "m"), help: "" };
+
+/* tema bez ukrasa */
+BT.bijela = T("bijela", "Bez teme (bijelo)", "osnovno",
+  { paper: "#FFFFFF", bg: "#F3F2EF", soft: "#EEF0F2", title: "#1F2328", ink: "#1F2328", text: "#30343A", accent: "#8A8F98", a2: "#C9CDD3", a3: "#E5E7EA", dark: "#1F2328", ondark: "#FFFFFF", dots: "#DADDE1" },
+  { ...F.disp("'Playfair Display',serif", 700), b: "'Lora',serif", bi: "italic", s: "'Caveat',cursive" }, { title: "Naš album", sub: "" },
+  { cover: SV("0 0 210 297", `<rect width="210" height="297" fill="#FFFFFF"/>`, "xMidYMid slice"), deco: {} });
+BCATS.osnovno = "Bez teme";
+BPLANS.osnovno = { pre: [], post: [], filler: "ra1:m", grid: true };
+
+/* gotovi šabloni albuma ("id:varijanta" za jednostavne rasporede) */
+const BRECIPES = {
+  "s-putovanje": { name: "Putovanje · 24 strane (mješovito)", cat: "putovanja", theme: "tropi", pages: ["cover", "uvod", "mapa", "pog", "ra1:b", "m3", "ra4g:m", "pol2", "ra2r:b", "t3", "citat", "ra1:m", "b4", "pol3", "ra3l:b", "r4", "pog", "ra4g:b0", "u2", "ra6v:m", "brojke", "zalijepi", "biljeske", "back"] },
+  "s-beba": { name: "Beba, prva godina · 24 strane", cat: "beba", theme: "bebaz", pages: ["cover", "bebaInfo", "ra1:m", "pol1", "ra2c:m", "ra4g:b", "prvi", "ra3l:m", "luk1", "ra1:b", "citat", "ra6v:m", "mjeseci", "ra2r:b", "pol2", "ra4l:m", "kr1", "ra3a:b0", "ra9g:m", "ra1:m", "zelje", "poruke", "biljeske", "back"] },
+  "s-rodjendan": { name: "Rođendan · 12 strana", cat: "rodjendan", theme: "rodjendan", pages: ["cover", "torta", "ra4g:m", "pol3", "ra1:b", "ra3l:m", "ra6g:b", "n4", "ra2c:b0", "zelje", "poruke", "back"] },
+  "s-vjencanje": { name: "Vjenčanje · 24 strane", cat: "vjencanje", theme: "vjencanje", pages: ["coverp", "vjInfo", "uvod", "ra1:m", "ra2c:m", "luk1", "ra1:b", "ra3a:m", "citat", "ra4l:b", "pol2", "ra1:m", "ra2r:b0", "kr1", "ra6v:m", "ra1:b", "ra3l:m", "ra4g:m", "vm2", "ra9g:m", "ra1:b", "citat", "poruke", "back"] },
+  "s-porodica": { name: "Porodična godina · 28 strana", cat: "porodica", theme: "porodica", pages: ["cover", "uvod", "ra1:b", "m5", "ra2c:m", "pol2", "ra4g:m", "pog", "ra3l:b", "t3", "ra1:m", "b4", "ra6g:m", "citat", "ra2r:b", "pol3", "ra4b:m", "ra1:b0", "k5", "ra3a:m", "pog", "ra9g:m", "u2", "ra1:m", "godina", "poruke", "biljeske", "back"] },
+  "s-bijeli20": { name: "Bez teme · 20 strana (margine i do ivice)", cat: "osnovno", theme: "bijela", pages: ["ra1:b", "ra2r:m", "ra4g:m", "ra1:m", "ra3l:b", "ra2c:m", "ra6g:m", "ra1:b0", "ra3a:m", "ra4l:b", "ra5a:m", "ra1:m", "ra2b:b", "ra9g:m", "ra3c:m", "ra4b:b", "ra1:b", "ra6v:m", "ra2t:m", "ra1:m"] },
+  "s-bijeli12": { name: "Bez teme · 12 strana, sve sa marginama", cat: "osnovno", theme: "bijela", pages: ["ra1:m", "ra2r:m", "ra4g:m", "ra3l:m", "ra1:m", "ra6g:m", "ra2c:m", "ra3a:m", "ra4l:m", "ra1:m", "ra9g:m", "ra1:m"] },
+};
+BUILTIN.recipes = BRECIPES;
+for (const [k, r] of Object.entries(BRECIPES)) { if (r.pages.length % 4) throw new Error("šablon " + k + " ima " + r.pages.length); for (const id of r.pages) if (!BL[id.split(":")[0]]) throw new Error("nema " + id); }
+
+/* ---------------- dodatne korice (prednje i zadnje) ---------------- */
+L("kn1", "Naslov i velika slika", U, "cover", [tx("title", "display", 16, 20, 178, 30, { al: "center", one: 1, fs: 44, def: "{title}", ph: "NASLOV" }), tx("sub", "script", 16, 52, 178, 14, { al: "center", fs: 20, def: "{sub}", ph: "podnaslov" }), ph(14, 76, 182, 207, { r: 0 })], { nofolio: 1, help: "Naslov gore, slika sa marginama" });
+L("kn2", "Slika do ivice, naslov na traci", U, "cover", [ph(0, 0, 210, 297, { r: 0 }), rc(0, 212, 210, 62, { fill: "paper", op: .93 }), tx("title", "display", 16, 222, 178, 30, { al: "center", one: 1, fs: 44, def: "{title}", ph: "NASLOV" }), tx("sub", "script", 16, 254, 178, 14, { al: "center", fs: 20, def: "{sub}" })], { nofolio: 1, help: "Fotografija preko cijele korice" });
+L("kn3", "Slika do ivice, naslov preko", U, "cover", [ph(0, 0, 210, 297, { r: 0 }), tx("title", "display", 16, 30, 178, 36, { al: "center", one: 1, fs: 52, col: "#ffffff", sh: 1, def: "{title}", ph: "NASLOV" }), tx("sub", "script", 16, 70, 178, 16, { al: "center", fs: 24, col: "#ffffff", sh: 1, def: "{sub}" })], { nofolio: 1, help: "Bijeli naslov direktno na slici" });
+L("kn4", "Naslov i četiri slike", U, "cover", [tx("title", "display", 16, 18, 178, 30, { al: "center", one: 1, fs: 44, def: "{title}", ph: "NASLOV" }), tx("sub", "script", 16, 50, 178, 14, { al: "center", fs: 20, def: "{sub}" }), ph(14, 72, 89, 104, { r: 0 }), ph(107, 72, 89, 104, { r: 0 }), ph(14, 180, 89, 103, { r: 0 }), ph(107, 180, 89, 103, { r: 0 })], { nofolio: 1, help: "Naslov + mreža 2 × 2" });
+L("kn5", "Naslov i tri slike", U, "cover", [tx("title", "display", 16, 18, 178, 30, { al: "center", one: 1, fs: 44, def: "{title}", ph: "NASLOV" }), tx("sub", "script", 16, 50, 178, 14, { al: "center", fs: 20, def: "{sub}" }), ph(14, 72, 182, 120, { r: 0 }), ph(14, 196, 89, 87, { r: 0 }), ph(107, 196, 89, 87, { r: 0 })], { nofolio: 1, help: "Velika + dvije male" });
+L("kn6", "Slika u krugu", U, "cover", [dc("corner", 0, 0, 80, 80), dc("corner", 130, 217, 80, 80, { fx: 1, fy: 1 }), ph(40, 56, 130, 130, { fr: "circleb" }), tx("title", "display", 16, 200, 178, 32, { al: "center", one: 1, fs: 46, def: "{title}", ph: "NASLOV" }), tx("sub", "script", 16, 236, 178, 16, { al: "center", fs: 22, def: "{sub}" }), tx("date", "label", 16, 258, 178, 7, { al: "center", fs: 9, def: "{date}" })], { nofolio: 1, help: "Okrugla slika + naslov" });
+L("kn7", "Samo naslov", U, "cover", [dc("corner", 0, 0, 90, 90), tx("title", "display", 16, 120, 178, 40, { al: "center", one: 1, fs: 56, def: "{title}", ph: "NASLOV" }), tx("sub", "script", 16, 164, 178, 18, { al: "center", fs: 24, def: "{sub}" }), tx("date", "label", 16, 188, 178, 7, { al: "center", fs: 9, def: "{date}" }), dc("band", 0, 262, 210, 35)], { bg: "bg", nofolio: 1, help: "Tekst na boji teme" });
+L("bk1", "Prazna", U, "back", [], { nofolio: 1, help: "Bez ičega" });
+L("bk2", "Jedna slika i tekst", U, "back", [ph(40, 50, 130, 160, { r: 0 }), tx("bt", "script", 16, 224, 178, 16, { al: "center", fs: 20, def: "{title}" }), tx("bd", "label", 16, 244, 178, 7, { al: "center", fs: 8, def: "{date}" })], { nofolio: 1, help: "Slika u sredini" });
+L("bk3", "Slika do ivice", U, "back", [ph(0, 0, 210, 297, { r: 0 })], { nofolio: 1, help: "Fotografija preko cijele korice" });
+L("bk4", "Mali tekst dole", U, "back", [tx("bt", "script", 16, 250, 178, 16, { al: "center", fs: 20, def: "{title}" }), tx("bd", "label", 16, 270, 178, 7, { al: "center", fs: 8, def: "{date}" })], { nofolio: 1, help: "Samo natpis na dnu" });
+L("bk5", "Tri slike u redu", U, "back", [ph(14, 96, 58, 80, { r: 0 }), ph(76, 96, 58, 80, { r: 0 }), ph(138, 96, 58, 80, { r: 0 }), tx("bt", "script", 16, 196, 178, 16, { al: "center", fs: 20, def: "{title}" }), tx("bd", "label", 16, 216, 178, 7, { al: "center", fs: 8, def: "{date}" })], { nofolio: 1, help: "Tri male slike + natpis" });
+L("bk6", "Četiri slike", U, "back", [ph(14, 14, 89, 125, { r: 0 }), ph(107, 14, 89, 125, { r: 0 }), ph(14, 143, 89, 125, { r: 0 }), ph(107, 143, 89, 125, { r: 0 }), tx("bt", "label", 16, 276, 178, 7, { al: "center", fs: 8, def: "{title} · {date}" })], { nofolio: 1, help: "Mreža 2 × 2 + natpis" });
+</script><script>
+"use strict";
+/* ======================================================================
+   Album priča · studio – uređivač albuma za štampu (A4)
+   Slike ostaju na računaru (IndexedDB u ovom pregledaču).
+   ====================================================================== */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const uid = () => (crypto.randomUUID ? crypto.randomUUID() : "id" + Date.now().toString(36) + Math.random().toString(36).slice(2));
+const MM = 3.7795;
+const plural = (n, a, b, c) => { const m10 = n % 10, m100 = n % 100; return m10 === 1 && m100 !== 11 ? a : m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14) ? b : c; };
+
+/* ---------------- baza ---------------- */
+const DB = {
+  db: null, ok: false,
+  async open() {
+    try {
+      this.db = await new Promise((res, rej) => {
+        const r = indexedDB.open("album-prica-studio", 1);
+        r.onupgradeneeded = () => { const d = r.result; for (const s of ["projects", "images", "packs"]) if (!d.objectStoreNames.contains(s)) d.createObjectStore(s, { keyPath: "id" }); };
+        r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+      });
+      this.ok = true;
+    } catch (e) { this.ok = false; }
+  },
+  tx(store, mode, fn) {
+    return new Promise((res, rej) => {
+      if (!this.ok) return rej(new Error("nodb"));
+      const t = this.db.transaction(store, mode), s = t.objectStore(store);
+      let out; const r = fn(s); if (r) r.onsuccess = () => { out = r.result; };
+      t.oncomplete = () => res(out); t.onerror = () => rej(t.error); t.onabort = () => rej(t.error);
+    });
+  },
+  put(s, v) { return this.tx(s, "readwrite", o => o.put(v)); },
+  get(s, k) { return this.tx(s, "readonly", o => o.get(k)); },
+  del(s, k) { return this.tx(s, "readwrite", o => o.delete(k)); },
+  all(s) { return this.tx(s, "readonly", o => o.getAll()); },
+};
+const MEM = { projects: new Map(), images: new Map(), packs: new Map() };
+async function save(st, v) { if (DB.ok) { try { await DB.put(st, v); return; } catch (e) {} } MEM[st].set(v.id, v); }
+async function load(st, k) { if (DB.ok) { try { const v = await DB.get(st, k); if (v) return v; } catch (e) {} } return MEM[st].get(k); }
+async function remove(st, k) { if (DB.ok) { try { await DB.del(st, k); } catch (e) {} } MEM[st].delete(k); }
+async function loadAll(st) { let a = []; if (DB.ok) { try { a = await DB.all(st); } catch (e) {} } return a.concat([...MEM[st].values()].filter(v => !a.find(x => x.id === v.id))); }
+
+/* ======================================================================
+   REGISTAR TEMA I KOLAŽA (osnovni paket + dodati paketi)
+   ====================================================================== */
+const REG = { themes: {}, layouts: {}, plans: {}, cats: {}, recipes: {}, packs: [] };
+const clean = s => String(s ?? "").replace(/<script[\s\S]*?<\/script>/gi, "").replace(/<foreignObject[\s\S]*?<\/foreignObject>/gi, "").replace(/\son\w+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, "").replace(/javascript:/gi, "").replace(/<iframe[\s\S]*?>/gi, "");
+function realSlots(l) { return l.items.filter(i => i.t === "photo" && i.fr !== "glue").length; }
+function installPack(pk) {
+  if (!pk || pk.format !== "album-kolazi") throw new Error("format");
+  const info = { id: pk.id || uid(), name: pk.name || "Paket", builtin: !!pk.builtin, themes: 0, layouts: 0, recipes: 0, version: pk.version || 1 };
+  Object.assign(REG.cats, pk.cats || {});
+  for (const [id, t] of Object.entries(pk.themes || {})) {
+    const deco = {}; for (const [k, v] of Object.entries(t.deco || {})) deco[k] = pk.builtin ? v : clean(v);
+    REG.themes[id] = { ...t, id, cover: pk.builtin ? t.cover : clean(t.cover), deco, pack: info.id }; info.themes++;
+  }
+  for (const [id, l] of Object.entries(pk.layouts || {})) {
+    if (!Array.isArray(l.items)) continue;
+    const items = l.items.map(i => ({ ...i }));
+    REG.layouts[id] = { cats: ["*"], kind: "photo", ...l, id, items, slots: items.filter(i => i.t === "photo").length, pack: info.id }; info.layouts++;
+  }
+  Object.assign(REG.plans, pk.plans || {});
+  for (const [id, r] of Object.entries(pk.recipes || {})) { REG.recipes[id] = { ...r, id, pack: info.id }; info.recipes++; }
+  REG.packs = REG.packs.filter(p => p.id !== info.id).concat(info);
+  return info;
+}
+function rebuildRegistry(packs) {
+  REG.themes = {}; REG.layouts = {}; REG.plans = {}; REG.cats = {}; REG.recipes = {}; REG.packs = [];
+  installPack(BUILTIN);
+  for (const p of packs) { try { installPack(p.data); } catch (e) {} }
+}
+const catName = k => REG.cats[k] || k;
+const okCat = (l, cat) => !l.cats || l.cats.includes("*") || l.cats.includes(cat);
+
+/* ---------------- stanje ---------------- */
+let P = null;
+const IMG = new Map();
+let zoomF = 1, undoStack = [], saveTimer = null, BLEED = 0;
+const TH = () => REG.themes[P.theme] || Object.values(REG.themes)[0];
+const LAY = id => REG.layouts[String(id).split(":")[0]] || REG.layouts.blank;
+const hasLay = id => !!REG.layouts[String(id).split(":")[0]];
+const itemsOf = (L, p) => L.grid ? gridItems(L.grid, (p && p.v) || "m") : L.items;
+const isGridEdge = p => { const L = LAY(p.l); return L.grid && (VAR[p.v] || VAR.m).M === 0; };
+function covIdx(idx) { const n = P.pages.length; if (!P.opts.covers || !n) return ""; if (idx === 0) return "front"; if (idx === n - 1 && n > 1) return "back"; return ""; }
+function insertPos() { const n = P.pages.length; return P.opts.covers && n > 1 ? n - 1 : n; }
+
+function touch(structural) {
+  P.updated = Date.now();
+  clearTimeout(saveTimer); saveTimer = setTimeout(() => save("projects", P), 500);
+  if (structural) render();
+  updateCount();
+}
+function snapshot() { undoStack.push(JSON.stringify(P.pages)); if (undoStack.length > 40) undoStack.shift(); }
+function undo() { const s = undoStack.pop(); if (!s) return; P.pages = JSON.parse(s); touch(true); toast("Vraćeno."); }
+
+let toastT;
+function toast(msg, action) {
+  const t = $("#toast"); t.innerHTML = esc(msg); t.classList.remove("hidden");
+  if (action) { const b = document.createElement("button"); b.textContent = action.label; b.onclick = () => { action.fn(); t.classList.add("hidden"); }; t.appendChild(b); }
+  clearTimeout(toastT); toastT = setTimeout(() => t.classList.add("hidden"), action ? 7000 : 3600);
+}
+function busy(msg) { const b = $("#busy"); if (msg) { b.textContent = msg; b.classList.remove("hidden"); } else b.classList.add("hidden"); }
+
+/* ======================================================================
+   MAPA
+   ====================================================================== */
+const LON0 = -170, LON1 = 190, LATT = 83, LATB = -56;
+function inPoly(x, y, p) { let c = false; for (let i = 0, j = p.length - 1; i < p.length; j = i++) { const [xi, yi] = p[i], [xj, yj] = p[j]; if (((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) c = !c; } return c; }
+const landCache = {};
+function landPoints(step) {
+  if (landCache[step]) return landCache[step];
+  const out = []; let row = 0;
+  for (let lat = LATT; lat >= LATB; lat -= step * .866, row++) for (let lon = LON0 + (row % 2 ? step / 2 : 0); lon <= LON1; lon += step) {
+    const ll = lon > 180 ? lon - 360 : lon; let ins = false;
+    for (const p of MAPDATA.land) if (inPoly(ll, lat, p)) { ins = true; break; }
+    if (ins) for (const h of MAPDATA.holes) if (inPoly(ll, lat, h)) { ins = false; break; }
+    if (ins) out.push([lon, lat]);
+  }
+  return (landCache[step] = out);
+}
+function pinPath(x, y, s, col, hole) { x = +x; y = +y; const h = s * 3.2; return `<path d="M${x},${y} C${x - s * .35},${y - h * .45} ${x - s * 1.15},${y - h * .55} ${x - s * 1.15},${y - h * .78} A${s * 1.15},${s * 1.15} 0 1 1 ${x + s * 1.15},${y - h * .78} C${x + s * 1.15},${y - h * .55} ${x + s * .35},${y - h * .45} ${x},${y} Z" fill="${col}"/><circle cx="${x}" cy="${y - h * .78}" r="${s * .45}" fill="${hole}"/>`; }
+function worldSVG({ pin, dots, accent, ink, hole }) {
+  const W = 1000, sx = W / (LON1 - LON0), H = (LATT - LATB) * sx, step = 1.75, r = sx * step * .3;
+  const X = lon => ((lon < LON0 ? lon + 360 : lon) - LON0) * sx, Y = lat => (LATT - lat) * sx;
+  const px = pin ? X(pin.lon) : -999, py = pin ? Y(pin.lat) : -999;
+  let o = `<svg viewBox="0 0 ${W} ${H.toFixed(1)}" xmlns="http://www.w3.org/2000/svg">`, near = "";
+  for (const [lon, lat] of landPoints(step)) {
+    const x = (lon - LON0) * sx, y = Y(lat), d = Math.hypot(x - px, y - py);
+    if (d < sx * 7) { near += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(r * 1.05).toFixed(2)}" fill="${accent}" opacity="${(.35 + .55 * (1 - d / (sx * 7))).toFixed(2)}"/>`; continue; }
+    o += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(2)}" fill="${dots}"/>`;
+  }
+  o += near;
+  if (pin) {
+    const s = W * .012, x = X(pin.lon), y = Y(pin.lat), h = s * 3.2, right = x < W * .75;
+    o += `<circle cx="${x}" cy="${y}" r="${s * 2.6}" fill="none" stroke="${accent}" stroke-width="1.2" opacity=".55"/><circle cx="${x}" cy="${y}" r="${s * 4.4}" fill="none" stroke="${accent}" stroke-width=".8" opacity=".3"/>`;
+    o += pinPath(x.toFixed(1), y.toFixed(1), s, accent, hole);
+    if (pin.label) {
+      const lx = right ? x + W * .07 : x - W * .07, ly = y - h - W * .035;
+      o += `<path d="M${x + (right ? s * 1.3 : -s * 1.3)},${y - h * .78} L${lx},${ly}" stroke="${ink}" stroke-width=".9" fill="none"/><text x="${lx + (right ? 6 : -6)}" y="${ly + 6}" text-anchor="${right ? "start" : "end"}" font-family="Inter,sans-serif" font-weight="900" font-size="17" letter-spacing="4" fill="${ink}">${esc(pin.label.toUpperCase())}</text>`;
+    }
+  }
+  return o + "</svg>";
+}
+
+/* ======================================================================
+   CRTANJE STRANA
+   ====================================================================== */
+function newPage(l, extra = {}) { const v = String(l).split(":")[1], L = LAY(l); const pg = { id: uid(), l: L.id, t: {}, s: Array.from({ length: L.slots }, () => null) }; if (L.grid) pg.v = VAR[v] ? v : "m"; return Object.assign(pg, extra); }
+function chapterNo(idx) { let n = 0; for (let i = 0; i <= idx && i < P.pages.length; i++) if (LAY(P.pages[i].l).kind === "chapter") n++; return Math.max(1, n); }
+function tok(s, idx) {
+  const m = P.meta || {};
+  return String(s ?? "").replace(/\{(\w+)\}/g, (a, k) => {
+    switch (k) {
+      case "title": return m.title || ""; case "sub": return m.sub || ""; case "date": return m.date || ""; case "year": return m.year || "";
+      case "name": return m.name || ""; case "dest": return m.place || m.title || ""; case "cities": return m.cities || "";
+      case "code": return (m.place || m.title || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").slice(0, 3).toUpperCase();
+      case "coord": { const L = m.loc; return L ? `${Math.abs(L.lat).toFixed(1)}° ${L.lat >= 0 ? "N" : "S"} · ${Math.abs(L.lon).toFixed(1)}° ${L.lon >= 0 ? "E" : "W"}` : ""; }
+      case "n": return String(chapterNo(idx)).padStart(2, "0");
+      default: return a;
+    }
+  });
+}
+function colOf(key, c) { if (!key) return ""; return c[key] || key; }
+function paint(svg, c) { return String(svg).replace(/\{(\w+)\}/g, (a, k) => c[k] || a); }
+const CAM = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="6" width="18" height="14" rx="2.5"/><circle cx="12" cy="13" r="3.6"/><path d="M8.5 6l1.5-2.2h4L15.5 6"/></svg>`;
+const FRAME_PAD = { polaroid: [3.5, 3.5, 13, 3.5], border: [2.5, 2.5, 2.5, 2.5], circleb: [2.5, 2.5, 2.5, 2.5] };
+const DEF_FS = { display: 40, title: 24, script: 26, label: 7.5, body: 11, cap: 8, num: 40 };
+
+function slotDims(L, p) { return itemsOf(L, p).filter(i => i.t === "photo").map(i => { const p = FRAME_PAD[i.fr] || [0, 0, 0, 0]; return { w: i.w - p[1] - p[3], h: i.h - p[0] - p[2], glue: i.fr === "glue" }; }); }
+function dpiOf(sl, wmm, hmm) { const im = IMG.get(sl.img); if (!im) return 999; const s = Math.max(wmm / im.w, hmm / im.h) * (sl.z || 1); return 25.4 / s; }
+
+function S(p, i, style, cls, wmm, hmm) {
+  const sl = p.s[i], im = sl && IMG.get(sl.img), glue = cls.includes("glue");
+  let inner;
+  if (im) {
+    const dpi = dpiOf(sl, wmm, hmm);
+    inner = `<img src="${im.prev}" data-id="${sl.img}" alt="" draggable="false" style="object-position:${sl.x}% ${sl.y}%;transform:scale(${sl.z});transform-origin:${sl.x}% ${sl.y}%">
+      <div class="st"><button data-a="zo" title="Umanji">−</button><button data-a="zi" title="Uvećaj">+</button><button data-a="rm" title="Izbaci sliku">×</button></div>${dpi < 150 ? `<div class="lr ${dpi < 100 ? "bad" : ""}" title="Slika je premala za ovaj okvir (${Math.round(dpi)} dpi). Za oštru štampu treba bar 150, idealno 300 dpi.">${Math.round(dpi)} dpi</div>` : ""}`;
+  } else inner = glue ? `<div class="hint">${CAM}<span>Za lijepljenje</span><small>ili prevuci sliku</small></div>` : `<div class="hint">${CAM}<span>Prevuci sliku</span><small>ili klikni</small></div>`;
+  return `<div class="slot ${cls} ${im ? "has" : ""} ${Math.min(wmm, hmm) < 40 ? "sm" : ""}" data-i="${i}" data-w="${wmm}" data-h="${hmm}" style="${style}">${inner}</div>`;
+}
+function textVal(p, it, idx) { return p.t[it.k] !== undefined ? p.t[it.k] : tok(it.def || "", idx); }
+
+function renderItem(it, p, idx, mir, c, si) {
+  let x = mir ? 210 - it.x - it.w : it.x, y = it.y, w = it.w, h = it.h;
+  if (BLEED && ["photo", "rect", "deco", "art", "map"].includes(it.t)) {
+    if (x <= .5) { x -= BLEED; w += BLEED; } if (x + w >= 209.5) w += BLEED;
+    if (y <= .5) { y -= BLEED; h += BLEED; } if (y + h >= 296.5) h += BLEED;
+  }
+  const rot = (it.rot || 0) * (mir ? -1 : 1);
+  const pos = `left:${x}mm;top:${y}mm;width:${w}mm;height:${h}mm;`;
+  const rt = rot ? `transform:rotate(${rot}deg);` : "";
+  switch (it.t) {
+    case "photo": {
+      const fr = it.fr || "", pad = FRAME_PAD[fr] || [0, 0, 0, 0];
+      const iw = +(w - pad[1] - pad[3]).toFixed(1), ih = +(h - pad[0] - pad[2]).toFixed(1);
+      let rad = `${it.r ?? 2.5}mm`;
+      if (fr === "circle" || fr === "circleb") rad = "50%";
+      else if (fr === "arch") rad = `${iw / 2}mm ${iw / 2}mm ${it.r ?? 2.5}mm ${it.r ?? 2.5}mm / ${iw / 2}mm ${iw / 2}mm ${it.r ?? 2.5}mm ${it.r ?? 2.5}mm`;
+      else if (fr === "glue") rad = `${it.r ?? 4}mm`;
+      if (BLEED && (it.x <= .5 || it.y <= .5 || it.x + it.w >= 209.5 || it.y + it.h >= 296.5)) rad = "0";
+      const slot = S(p, si, `left:${pad[3]}mm;top:${pad[0]}mm;right:${pad[1]}mm;bottom:${pad[2]}mm;border-radius:${rad}`, fr === "glue" ? "glue" : "", iw, ih);
+      const pc = it.pcap ? `<div class="tx s-pcap" data-k="${it.pcap}" data-ph="opis" data-fs="13" contenteditable="plaintext-only" spellcheck="false" style="left:${pad[3]}mm;right:${pad[1]}mm;bottom:2.5mm;height:8mm;font-size:13pt">${esc(textVal(p, { k: it.pcap }, idx))}</div>` : "";
+      return `<div class="fr fr-${fr || "none"}" style="${pos}${rt}${fr === "circleb" ? "" : ""}">${slot}${pc}</div>`;
+    }
+    case "text": {
+      const fs = it.fs || DEF_FS[it.s] || 11;
+      const col = it.col ? `color:${colOf(it.col, c)};` : "";
+      return `<div class="tx s-${it.s || "body"} ${it.one ? "one" : ""} ${it.sh ? "shadow" : ""}" data-k="${it.k}" data-ph="${esc(it.ph || "")}" data-fs="${fs}" contenteditable="plaintext-only" spellcheck="false" style="${pos}${rt}font-size:${fs}pt;text-align:${it.al || "left"};${col}">${esc(textVal(p, it, idx))}</div>`;
+    }
+    case "deco": {
+      if (p.nd) return "";
+      let svg = it.d.startsWith("@") ? (GDECO[it.d.slice(1)] ? GDECO[it.d.slice(1)](c) : "") : (TH().deco || {})[it.d];
+      if (!svg) return "";
+      const sx = (it.fx ? -1 : 1) * (mir ? -1 : 1), sy = it.fy ? -1 : 1;
+      const tf = (rot ? `rotate(${rot}deg) ` : "") + (sx !== 1 || sy !== 1 ? `scale(${sx},${sy})` : "");
+      return `<div class="deco" style="${pos}${tf ? `transform:${tf};` : ""}">${paint(svg, c)}</div>`;
+    }
+    case "art": return p.nd ? "" : `<div class="art" style="${pos}">${paint(TH().cover || "", c)}</div>`;
+    case "rect": {
+      const fill = it.fill === "none" ? "transparent" : colOf(it.fill || "soft", c);
+      const bd = it.stroke ? `border:${it.sw || .4}mm solid ${colOf(it.stroke, c)};` : "";
+      return `<div class="rc" style="${pos}${rt}background:${fill};border-radius:${it.r || 0}mm;opacity:${it.op ?? 1};${bd}"></div>`;
+    }
+    case "lines": return `<div class="lines" style="${pos}--n:${it.n || 8};--lc:${colOf(it.c || "ink", c)}"></div>`;
+    case "map": {
+      const m = P.meta || {}, Lc = m.loc;
+      return `<div class="mapw" style="${pos}">${worldSVG({ pin: Lc ? { lat: Lc.lat, lon: Lc.lon, label: Lc.label || m.place || "" } : null, dots: c.dots || c.soft, accent: c.accent, ink: c.ink, hole: c.paper })}</div>`;
+    }
+  }
+  return "";
+}
+function renderPage(p, idx) {
+  const L = LAY(p.l), c = TH().c, side = idx % 2 === 0 ? "R" : "L", mir = !!L.mirror && side === "L";
+  const bgk = p.bg || L.bg || "paper";
+  let h = "", si = 0;
+  for (const it of itemsOf(L, p)) { h += renderItem(it, p, idx, mir, c, si); if (it.t === "photo") si++; }
+  const last = P.pages.length - 1;
+  if (!L.nofolio && !isGridEdge(p) && P.opts.folio !== false && !covIdx(idx)) h += `<div class="folio">${String(idx + 1).padStart(2, "0")}</div>`;
+  return `<div class="page ${side} ${bgk === "dark" ? "ondark" : ""} ${idx === last ? "lastp" : ""}" data-id="${p.id}" style="width:${210 + 2 * BLEED}mm;height:${297 + 2 * BLEED}mm;background:${c[bgk] || c.paper}"><div class="trim" style="left:${BLEED}mm;top:${BLEED}mm">${h}</div></div>`;
+}
+function themeVars(t = TH()) {
+  const c = t.c, f = t.f || {};
+  const v = { "--t-paper": c.paper, "--t-bg": c.bg, "--t-soft": c.soft, "--t-title": c.title, "--t-ink": c.ink, "--t-text": c.text, "--t-accent": c.accent, "--t-dark": c.dark, "--t-ondark": c.ondark,
+    "--fd": f.d || "Inter,sans-serif", "--fdw": f.dw || 700, "--fdc": f.dc || "none", "--fdl": f.dl || "0", "--fdi": f.di || "normal", "--fb": f.b || "Lora,serif", "--fbi": f.bi || "italic", "--fs": f.s || "Caveat,cursive" };
+  return Object.entries(v).map(([k, x]) => `${k}:${x}`).join(";");
+}
+function computeZoom() {
+  const narrow = innerWidth <= 760, cw = $("#canvas").clientWidth - (narrow ? 16 : 128), ch = $("#canvas").clientHeight - 110;
+  const fit = narrow ? Math.min(1, cw / (210 * MM)) : Math.min(1, cw / (2 * 210 * MM + 2), ch / (297 * MM));
+  return Math.max(.16, fit * zoomF);
+}
+function render() {
+  if (!P) return;
+  const sp = $("#spreads");
+  sp.setAttribute("style", themeVars() + `;--z:${BLEED ? 1 : computeZoom()}`);
+  const pages = P.pages, rows = pages.length ? [[null, 0]] : [];
+  for (let i = 1; i < pages.length; i += 2) rows.push([i, i + 1 < pages.length ? i + 1 : null]);
+  let html = pages.length ? "" : `<div class="empty-tray" style="max-width:420px;margin:40px auto">Album još nema strana. Klikni „+ Nova strana”, izaberi raspored i ubaci slike.</div>`;
+  const lab = i => covIdx(i) === "front" ? "Prednja korica" : covIdx(i) === "back" ? "Zadnja korica" : "Strana " + (i + 1);
+  rows.forEach((r, ri) => {
+    html += `<div class="spread"><div class="lbl">${ri === 0 ? `<span></span><span>${lab(0)}</span>` : `<span>${r[0] !== null ? lab(r[0]) : ""}</span><span>${r[1] !== null ? lab(r[1]) : ""}</span>`}</div>`;
+    r.forEach((idx, k) => {
+      const side = k === 0 ? "left" : "right";
+      if (idx === null) { html += `<div class="holder empty ${side}"><div class="pgz"><div class="page" style="width:210mm;height:297mm;box-shadow:none;background:transparent"></div></div></div>`; return; }
+      html += `<div class="holder ${side}" data-idx="${idx}">${BLEED ? "" : tools(pages[idx], idx)}<div class="pgz">${renderPage(pages[idx], idx)}</div>${!BLEED && covIdx(idx) !== "back" ? `<button class="addbtw" data-add="${idx}" title="Dodaj stranu poslije ove">+</button>` : ""}</div>`;
+    });
+    html += `</div>`;
+  });
+  if (!BLEED) html += `<div class="addrow"><button class="b dark" id="addEnd">+ Nova strana</button></div>`;
+  sp.innerHTML = html;
+  const ae = $("#addEnd"); if (ae) ae.onclick = () => openPicker(insertPos());
+  requestAnimationFrame(fitAll);
+  renderTray(); updateCount();
+}
+function layoutOptions(p) {
+  const L = LAY(p.l), all = Object.values(REG.layouts);
+  if (L.kind === "cover" || L.kind === "back") return [[L.kind === "cover" ? "Korice" : "Zadnja korica", all.filter(x => x.kind === L.kind)]];
+  const av = all.filter(x => x.kind !== "cover" && x.kind !== "back" && (okCat(x, P.cat) || x.id === p.l));
+  const groups = [];
+  const counts = [...new Set(av.filter(x => x.kind === "photo").map(x => x.slots))].sort((a, b) => a - b);
+  for (const n of counts) groups.push([`${n} ${plural(n, "slika", "slike", "slika")}`, av.filter(x => x.kind === "photo" && x.slots === n)]);
+  groups.push(["Posebne strane", av.filter(x => x.kind !== "photo")]);
+  return groups;
+}
+function tools(p, idx) {
+  const L = LAY(p.l), fixed = !!covIdx(idx);
+  const lb = covIdx(idx) === "front" ? "Prednja korica" : covIdx(idx) === "back" ? "Zadnja korica" : "Strana " + (idx + 1);
+  let o = `<div class="page-tools"><span class="tname" title="${esc(L.name)}">${lb}</span>`;
+  o += `<button class="b dark" data-act="pick">${fixed ? "Dizajn korice" : "Dizajn strane"}</button>`;
+  if (L.grid) o += `<select class="b" data-act="var" aria-label="Margine">${Object.entries(VAR).map(([k, v]) => `<option value="${k}" ${k === p.v ? "selected" : ""}>${v.short}</option>`).join("")}</select>`;
+  if (L.slots) o += `<button class="b" data-act="fill">Ubaci slike</button>`;
+  const bgk = p.bg || "";
+  if (!L.grid) o += `<select class="b" data-act="bg" aria-label="Pozadina" title="Pozadina strane"><option value="" ${!bgk ? "selected" : ""}>Pozadina</option>${[["paper", "Papir"], ["bg", "Boja teme"], ["soft", "Svijetla"], ["dark", "Tamna"]].map(([k, v]) => `<option value="${k}" ${bgk === k ? "selected" : ""}>${v}</option>`).join("")}</select>`;
+  if (!L.grid && L.items.some(i => i.t === "deco" || i.t === "art")) o += `<button class="b ${p.nd ? "" : "on"}" data-act="deco" title="Uključi ili isključi ukrase teme">Ukrasi</button>`;
+  if (L.items.some(i => i.t === "map")) o += `<button class="b" data-act="meta">Lokacija</button>`;
+  if (!fixed) {
+    if (idx > 0 && !covIdx(idx - 1)) o += `<button class="b" data-act="up" title="Pomjeri unazad">←</button>`;
+    if (idx < P.pages.length - 1 && !covIdx(idx + 1)) o += `<button class="b" data-act="down" title="Pomjeri unaprijed">→</button>`;
+    o += `<button class="b" data-act="dup">Kopiraj</button><button class="b del" data-act="del">Obriši</button>`;
+  }
+  return o + `</div>`;
+}
+function fitText(el) {
+  const base = +el.dataset.fs || 11; let fs = base, n = 0;
+  el.style.fontSize = fs + "pt";
+  while (n < 16 && (el.scrollHeight > el.clientHeight + 1 || el.scrollWidth > el.clientWidth + 1) && fs > base * .3) { fs *= .92; el.style.fontSize = fs.toFixed(2) + "pt"; n++; }
+}
+function fitAll() { $$("#spreads .tx").forEach(fitText); }
+function updateCount() {
+  if (!P) return;
+  const n = P.pages.length, ok = n % 4 === 0, el = $("#count");
+  el.className = "count" + (ok ? "" : " bad");
+  el.innerHTML = `<b>${n}</b> ${plural(n, "strana", "strane", "strana")}${ok ? "" : ` · dodaj još ${4 - n % 4}`}`;
+  el.title = ok ? "Broj strana je djeljiv sa 4, idealno za štampu i povez." : "Štamparije najčešće traže broj strana djeljiv sa 4. Klikni da dopuniš.";
+}
+
+/* ======================================================================
+   SLIKE
+   ====================================================================== */
+async function readExifDate(file) {
+  try {
+    if (!/jpe?g/i.test(file.type) && !/\.jpe?g$/i.test(file.name)) return null;
+    const buf = await file.slice(0, 256 * 1024).arrayBuffer(), v = new DataView(buf);
+    if (v.getUint16(0) !== 0xFFD8) return null;
+    let o = 2;
+    while (o < v.byteLength - 4) {
+      const m = v.getUint16(o), len = v.getUint16(o + 2);
+      if (m === 0xFFE1 && v.getUint32(o + 4) === 0x45786966) {
+        const t = o + 10, le = v.getUint16(t) === 0x4949, g16 = a => v.getUint16(a, le), g32 = a => v.getUint32(a, le);
+        const rs = (a, n) => { let s = ""; for (let i = 0; i < n - 1; i++) s += String.fromCharCode(v.getUint8(a + i)); return s; };
+        const scan = (ifd, w) => { const n = g16(ifd); for (let i = 0; i < n; i++) { const e = ifd + 2 + i * 12; if (g16(e) === w) return e; } return null; };
+        const ifd0 = t + g32(t + 4), ex = scan(ifd0, 0x8769); let dt = null;
+        if (ex) { const e = scan(t + g32(ex + 8), 0x9003); if (e) dt = rs(t + g32(e + 8), 20); }
+        if (!dt) { const e = scan(ifd0, 0x0132); if (e) dt = rs(t + g32(e + 8), 20); }
+        if (dt && /^\d{4}:\d\d:\d\d \d\d:\d\d/.test(dt)) { const [d, tm] = dt.split(" "); return new Date(d.replace(/:/g, "-") + "T" + tm).getTime(); }
+        return null;
+      }
+      if ((m & 0xFF00) !== 0xFF00) break;
+      o += 2 + len;
+    }
+  } catch (e) {}
+  return null;
+}
+async function scaled(bmp, max, q = .86) {
+  const s = Math.min(1, max / Math.max(bmp.width, bmp.height)), w = Math.round(bmp.width * s), h = Math.round(bmp.height * s);
+  const cv = document.createElement("canvas"); cv.width = w; cv.height = h; cv.getContext("2d").drawImage(bmp, 0, 0, w, h);
+  return await new Promise(r => cv.toBlob(r, "image/jpeg", q));
+}
+async function importFiles(files) {
+  const list = [...files].filter(f => f.type.startsWith("image/") || /\.(jpe?g|png|webp|heic|heif)$/i.test(f.name));
+  if (!list.length) return [];
+  const ids = []; let bad = 0;
+  for (let i = 0; i < list.length; i++) {
+    busy(`Ubacujem slike… ${i + 1} / ${list.length}`);
+    const f = list[i];
+    try {
+      const bmp = await createImageBitmap(f);
+      const prev = await scaled(bmp, 1800), thumb = await scaled(bmp, 380, .8);
+      const date = (await readExifDate(f)) || f.lastModified || Date.now();
+      const rec = { id: uid(), orig: f, prev, thumb, w: bmp.width, h: bmp.height, date, name: f.name, added: Date.now() + i };
+      bmp.close && bmp.close();
+      await save("images", rec);
+      IMG.set(rec.id, { prev: URL.createObjectURL(prev), thumb: URL.createObjectURL(thumb), w: rec.w, h: rec.h, date, name: f.name, added: rec.added });
+      P.images.push(rec.id); ids.push(rec.id);
+    } catch (e) { bad++; }
+  }
+  busy(false); touch(false); renderTray();
+  if (bad) toast(`${bad} ${plural(bad, "slika nije mogla", "slike nisu mogle", "slika nije moglo")} da se otvori. HEIC sa iPhone-a pretvori u JPG (Kamera → Formati → Najkompatibilnije).`);
+  else toast(`Dodato slika: ${ids.length}`);
+  return ids;
+}
+async function loadProjectImages() {
+  for (const u of IMG.values()) { URL.revokeObjectURL(u.prev); URL.revokeObjectURL(u.thumb); }
+  IMG.clear();
+  for (const id of P.images) { const r = await load("images", id); if (!r) continue; IMG.set(id, { prev: URL.createObjectURL(r.prev), thumb: URL.createObjectURL(r.thumb), w: r.w, h: r.h, date: r.date, name: r.name, added: r.added || 0 }); }
+  P.images = P.images.filter(id => IMG.has(id));
+}
+function usage() { const u = {}; for (const p of P.pages) for (const s of p.s || []) if (s && s.img) u[s.img] = (u[s.img] || 0) + 1; return u; }
+function sortedImages() {
+  const how = $("#sortSel").value, a = P.images.map(id => [id, IMG.get(id)]).filter(x => x[1]);
+  if (how === "date") a.sort((x, y) => x[1].date - y[1].date);
+  else if (how === "name") a.sort((x, y) => x[1].name.localeCompare(y[1].name, undefined, { numeric: true }));
+  else a.sort((x, y) => x[1].added - y[1].added);
+  return a;
+}
+function renderTray() {
+  const u = usage(), only = $("#unusedOnly").checked, items = sortedImages().filter(([id]) => !only || !u[id]);
+  $("#imgCount").textContent = P.images.length ? `${P.images.length} · ${Object.keys(u).length} u albumu` : "";
+  if (!P.images.length) { $("#thumbs").innerHTML = `<div class="empty-tray"><b style="color:var(--ink)">Ovdje prevuci slike</b><br>sa računara, ili klikni „+ Dodaj slike”.<br><br>Zatim ih prevuci u okvire ili klikni „Složi automatski”.</div>`; return; }
+  $("#thumbs").innerHTML = items.map(([id, im]) => `<div class="th-i ${u[id] ? "used" : ""}" draggable="true" data-id="${id}" title="${esc(im.name)} · ${im.w}×${im.h}"><img src="${im.thumb}" alt="">${u[id] ? `<span class="u">${u[id]}×</span>` : ""}<button class="x" data-rm="${id}" title="Ukloni iz albuma">×</button></div>`).join("") || `<div class="empty-tray">Sve slike su već u albumu.</div>`;
+}
+async function removeImage(id) {
+  for (const p of P.pages) (p.s || []).forEach((s, i) => { if (s && s.img === id) p.s[i] = null; });
+  P.images = P.images.filter(x => x !== id);
+  const u = IMG.get(id); if (u) { URL.revokeObjectURL(u.prev); URL.revokeObjectURL(u.thumb); }
+  IMG.delete(id);
+  const others = (await loadAll("projects")).filter(q => q.id !== P.id && q.images.includes(id));
+  if (!others.length) await remove("images", id);
+  touch(true);
+}
+function placeImage(pageId, i, imgId) { const p = P.pages.find(q => q.id === pageId); if (!p) return; snapshot(); p.s[i] = { img: imgId, x: 50, y: 50, z: 1 }; touch(true); }
+
+/* ======================================================================
+   AUTOMATSKO PRAVLJENJE ALBUMA
+   ====================================================================== */
+const DENS = { malo: [1, 2, 2, 1, 2, 3, 2, 1], srednje: [3, 4, 2, 3, 4, 1, 3, 2], puno: [4, 6, 5, 4, 3, 6, 5, 4] };
+const DENS_NAMES = { malo: "Malo slika po strani (veće slike)", srednje: "Srednje (2–4 po strani)", puno: "Puno slika po strani (4–6)" };
+function photoLayouts(cat) { const g = (REG.plans[cat] || {}).grid; return Object.values(REG.layouts).filter(l => (g ? l.kind === "grid" : l.kind === "photo") && okCat(l, cat)); }
+function pickLayout(k, cat, rot, prev) {
+  const all = photoLayouts(cat); let cands = [];
+  for (let kk = k; kk >= 1 && !cands.length; kk--) cands = all.filter(l => realSlots(l) === kk);
+  if (!cands.length) cands = all;
+  rot[k] = (rot[k] ?? (k * 3)) + 1;
+  let l = cands[rot[k] % cands.length];
+  if (prev && l.id === prev && cands.length > 1) { rot[k]++; l = cands[rot[k] % cands.length]; }
+  return l;
+}
+function planMiddle(n, cat, dens, pl, rot = {}) {
+  const pat = DENS[dens] || DENS.srednje, out = []; let rem = n, i = 0, since = 0, prev = null;
+  const br = pl && pl.breaker && REG.layouts[pl.breaker];
+  while (rem > 0) {
+    if (br && pl.every && since >= pl.every && rem > 3) { out.push(br.id); rem -= realSlots(br); since = 0; continue; }
+    const k = Math.min(pat[i % pat.length], rem), l = pickLayout(k, cat, rot, prev);
+    out.push(l.grid ? `${l.id}:${["m", "m", "b"][i % 3]}` : l.id); rem -= realSlots(l); prev = l.id; i++; since++;
+  }
+  return out;
+}
+function planAlbum(cat, n, dens, coverId) {
+  const pl = REG.plans[cat] || REG.plans._ || { pre: [], post: [] };
+  const pick = arr => (arr || []).filter(x => typeof x === "string" || !x.min || n >= x.min).map(x => typeof x === "string" ? x : x.l).filter(hasLay);
+  const pre = pick(pl.pre), post = pick(pl.post);
+  const used = [...pre, ...post].reduce((a, id) => a + realSlots(LAY(id)), 0);
+  const rot = {};
+  let mid = n > 0 ? planMiddle(Math.max(0, n - used), cat, dens, pl, rot) : (pl.grid ? ["ra1:b", "ra2r:m", "ra4g:m", "ra3l:m", "ra1:m", "ra6g:m", "ra2c:b", "ra4l:m"] : ["t3", "g4", "m3", "d2", "v1", "b4", "u2", "m5"]).filter(hasLay);
+  const total = () => (pl.grid ? 0 : 2) + pre.length + mid.length + post.length;
+  let guard = 0;
+  while (total() % 4 && guard++ < 10) {
+    let j = -1;
+    for (let q = mid.length - 1; q >= 0; q--) if (["photo", "grid"].includes(LAY(mid[q]).kind) && realSlots(LAY(mid[q])) >= 4) { j = q; break; }
+    if (j >= 0) { const k = realSlots(LAY(mid[j])), a = Math.floor(k / 2), v = String(mid[j]).split(":")[1], suf = v ? ":" + v : ""; mid.splice(j, 1, pickLayout(a, cat, rot).id + suf, pickLayout(k - a, cat, rot).id + suf); }
+    else post.push(pl.filler && hasLay(pl.filler) ? pl.filler : "biljeske");
+  }
+  if (pl.grid) return [...pre, ...mid, ...post];
+  return [coverId || "cover", ...pre, ...mid, ...post, "back"];
+}
+function bestFor(q, wantL) { let k = q.findIndex((x, i) => i < 4 && x.L === wantL); if (k < 0) k = 0; return q.splice(k, 1)[0]; }
+function autoArrange(silent) {
+  const u = usage();
+  const q = sortedImages().filter(([id]) => !u[id]).map(([id, im]) => ({ id, L: im.w >= im.h }));
+  if (!q.length) { if (!silent) toast("Nema neiskorišćenih slika. Dodaj slike pa probaj ponovo."); return; }
+  snapshot();
+  let filled = 0;
+  for (const p of P.pages) {
+    const dims = slotDims(LAY(p.l), p);
+    for (let i = 0; i < p.s.length; i++) if (!p.s[i] && q.length && !(dims[i] && dims[i].glue)) { const im = bestFor(q, dims[i] ? dims[i].w >= dims[i].h : true); p.s[i] = { img: im.id, x: 50, y: 50, z: 1 }; filled++; }
+  }
+  const out = [];
+  if (q.length) {
+    const ids = planMiddle(q.length, P.cat, P.opts.dens || "srednje", REG.plans[P.cat] || REG.plans._);
+    for (const id of ids) { const pg = newPage(id), dims = slotDims(LAY(id), pg); for (let i = 0; i < pg.s.length && q.length; i++) if (!dims[i].glue) { const im = bestFor(q, dims[i].w >= dims[i].h); pg.s[i] = { img: im.id, x: 50, y: 50, z: 1 }; } out.push(pg); }
+    let at = insertPos();
+    for (let i = insertPos() - 1; i >= (P.opts.covers ? 1 : 0); i--) if (["photo", "grid", "chapter"].includes(LAY(P.pages[i].l).kind)) { at = i + 1; break; }
+    P.pages.splice(at, 0, ...out);
+  }
+  touch(true);
+  const msg = `Ubačeno u okvire: ${filled}${out.length ? `, novih strana: ${out.length}` : ""}.`;
+  if (P.pages.length % 4) toast(msg + ` Broj strana nije djeljiv sa 4.`, { label: "Dopuni", fn: padTo4 });
+  else toast(msg, { label: "Poništi", fn: undo });
+}
+function padTo4() {
+  if (!P || P.pages.length % 4 === 0) return;
+  snapshot();
+  const pl = REG.plans[P.cat] || REG.plans._, fill = pl.filler && hasLay(pl.filler) ? pl.filler : "biljeske";
+  const opts = pl.grid ? ["ra1:m", "ra2r:m", "ra4g:m"] : [fill, "citat", "prica", "biljeske"].filter(hasLay);
+  let k = 0; while (P.pages.length % 4) P.pages.splice(insertPos(), 0, newPage(opts[k++ % opts.length]));
+  touch(true); toast("Dodate su strane na kraj albuma. Možeš im promijeniti raspored.", { label: "Poništi", fn: undo });
+}
+
+/* ======================================================================
+   INTERAKCIJA NA STRANAMA
+   ====================================================================== */
+let pendingSlot = null;
+function pageOf(el) { const pg = el.closest(".page"); return pg && P.pages.find(p => p.id === pg.dataset.id); }
+document.addEventListener("input", e => {
+  const el = e.target.closest && e.target.closest(".page [data-k]"); if (!el || !P) return;
+  const p = pageOf(el); if (!p) return;
+  p.t[el.dataset.k] = el.innerText.replace(/\n$/, "");
+  fitText(el); touch(false);
+});
+document.addEventListener("keydown", e => {
+  if ((e.metaKey || e.ctrlKey) && e.key === "p" && P) { e.preventDefault(); openExport(); }
+  if ((e.metaKey || e.ctrlKey) && e.key === "z" && P && !e.target.closest("[contenteditable],input,textarea")) { e.preventDefault(); undo(); }
+  if (e.key === "Escape") { closePop(); $("#dlgRoot").innerHTML = ""; }
+});
+document.addEventListener("paste", e => { const el = e.target.closest && e.target.closest("[contenteditable]"); if (!el) return; e.preventDefault(); document.execCommand("insertText", false, (e.clipboardData || window.clipboardData).getData("text/plain")); });
+
+$("#spreads").addEventListener("click", e => {
+  const add = e.target.closest("[data-add]"); if (add) { openPicker(+add.dataset.add + 1); return; }
+  const act = e.target.closest("[data-act]"); if (act && act.tagName === "BUTTON") { pageAction(act, +act.closest(".holder").dataset.idx); return; }
+  const st = e.target.closest(".st button");
+  if (st) {
+    const slot = st.closest(".slot"), p = pageOf(slot), i = +slot.dataset.i, s = p.s[i];
+    if (st.dataset.a === "rm") { snapshot(); p.s[i] = null; touch(true); return; }
+    s.z = Math.max(1, Math.min(3, +(s.z + (st.dataset.a === "zi" ? .1 : -.1)).toFixed(2)));
+    touch(true); return;
+  }
+  const hint = e.target.closest(".slot .hint");
+  if (hint) { const slot = hint.closest(".slot"), p = pageOf(slot), dims = slotDims(LAY(p.l), p), empty = p.s.filter((x, i) => !x && dims[i] && !dims[i].glue).length; pickFiles(empty > 1 ? { page: p.id, from: +slot.dataset.i } : { page: p.id, slot: +slot.dataset.i }); }
+});
+$("#spreads").addEventListener("change", e => {
+  const act = e.target.closest("[data-act]"); if (!act) return;
+  const idx = +act.closest(".holder").dataset.idx, p = P.pages[idx];
+  snapshot();
+  if (act.dataset.act === "layout") {
+    const L = LAY(act.value), old = p.s.filter(Boolean);
+    p.l = L.id; p.s = Array.from({ length: L.slots }, (_, i) => old[i] || null);
+    if (old.length > L.slots) toast(`${old.length - L.slots} ${plural(old.length - L.slots, "slika je vraćena", "slike su vraćene", "slika je vraćeno")} u kolonu „Moje slike”.`, { label: "Poništi", fn: undo });
+  }
+  if (act.dataset.act === "bg") { if (act.value) p.bg = act.value; else delete p.bg; }
+  if (act.dataset.act === "var") { p.v = act.value; lastVar = act.value; }
+  touch(true);
+});
+function pageAction(btn, idx) {
+  const a = btn.dataset.act, p = P.pages[idx];
+  if (a === "del") {
+    if (!btn.classList.contains("armed")) { btn.classList.add("armed"); btn.textContent = "Sigurno?"; setTimeout(() => { btn.classList.remove("armed"); btn.textContent = "Obriši"; }, 3000); return; }
+    snapshot(); P.pages.splice(idx, 1); touch(true); toast("Strana obrisana.", { label: "Vrati", fn: undo }); return;
+  }
+  if (a === "up" || a === "down") { snapshot(); const j = a === "up" ? idx - 1 : idx + 1; [P.pages[idx], P.pages[j]] = [P.pages[j], P.pages[idx]]; touch(true); return; }
+  if (a === "dup") { snapshot(); const c = JSON.parse(JSON.stringify(p)); c.id = uid(); P.pages.splice(idx + 1, 0, c); touch(true); return; }
+  if (a === "deco") { snapshot(); p.nd = !p.nd; touch(true); return; }
+  if (a === "meta") { openMetaPop(btn); return; }
+  if (a === "pick") { openPicker(idx, p); return; }
+  if (a === "fill") { pickFiles({ page: p.id }); return; }
+}
+
+/* prevlačenje */
+$("#thumbs").addEventListener("dragstart", e => { const t = e.target.closest(".th-i"); if (!t) return; e.dataTransfer.setData("text/plain", "album:" + t.dataset.id); e.dataTransfer.effectAllowed = "copy"; });
+$("#thumbs").addEventListener("click", e => { const b = e.target.closest("[data-rm]"); if (b) removeImage(b.dataset.rm); });
+$("#spreads").addEventListener("dragstart", e => { const img = e.target.closest(".slot img"); if (img) e.preventDefault(); });
+$("#spreads").addEventListener("dragover", e => { const s = e.target.closest(".slot"); if (s) { e.preventDefault(); $$(".slot.over").forEach(x => x !== s && x.classList.remove("over")); s.classList.add("over"); } });
+$("#spreads").addEventListener("dragleave", e => { const s = e.target.closest(".slot"); if (s && !s.contains(e.relatedTarget)) s.classList.remove("over"); });
+$("#spreads").addEventListener("drop", async e => {
+  const s = e.target.closest(".slot"); if (!s) return; e.preventDefault(); s.classList.remove("over");
+  const p = pageOf(s), i = +s.dataset.i, txt = e.dataTransfer.getData("text/plain");
+  if (txt && txt.startsWith("album:")) { placeImage(p.id, i, txt.slice(6)); return; }
+  if (e.dataTransfer.files && e.dataTransfer.files.length) { const ids = await importFiles(e.dataTransfer.files); if (ids[0]) placeImage(p.id, i, ids[0]); }
+});
+const tray = $("#tray");
+tray.addEventListener("dragover", e => { if (e.dataTransfer.types.includes("Files")) { e.preventDefault(); $("#thumbs").classList.add("drag"); } });
+tray.addEventListener("dragleave", e => { if (!tray.contains(e.relatedTarget)) $("#thumbs").classList.remove("drag"); });
+tray.addEventListener("drop", e => { e.preventDefault(); $("#thumbs").classList.remove("drag"); if (e.dataTransfer.files.length) importFiles(e.dataTransfer.files); });
+window.addEventListener("dragover", e => { if (e.dataTransfer && e.dataTransfer.types.includes("Files")) e.preventDefault(); });
+window.addEventListener("drop", e => { if (!e.target.closest(".slot") && !e.target.closest("#tray")) { e.preventDefault(); if (e.dataTransfer.files.length && P && $("#home").classList.contains("hidden") && !$(".ov")) importFiles(e.dataTransfer.files); } });
+
+/* pomjeranje slike u okviru */
+let pan = null;
+$("#spreads").addEventListener("pointerdown", e => {
+  const img = e.target.closest(".slot img"); if (!img || e.button !== 0) return;
+  const slot = img.closest(".slot"), p = pageOf(slot), s = p.s[+slot.dataset.i], im = IMG.get(s.img), r = slot.getBoundingClientRect();
+  const sc = Math.max(r.width / im.w, r.height / im.h) * s.z;
+  pan = { img, s, x0: e.clientX, y0: e.clientY, sx: s.x, sy: s.y, ox: Math.max(1, im.w * sc - r.width), oy: Math.max(1, im.h * sc - r.height), moved: false };
+  img.setPointerCapture(e.pointerId); e.preventDefault();
+});
+$("#spreads").addEventListener("pointermove", e => {
+  if (!pan) return; const { s, img } = pan; pan.moved = true;
+  s.x = Math.max(0, Math.min(100, pan.sx - (e.clientX - pan.x0) / pan.ox * 100));
+  s.y = Math.max(0, Math.min(100, pan.sy - (e.clientY - pan.y0) / pan.oy * 100));
+  img.style.objectPosition = `${s.x}% ${s.y}%`; img.style.transformOrigin = `${s.x}% ${s.y}%`;
+});
+$("#spreads").addEventListener("pointerup", () => { if (pan) { pan.s.x = +pan.s.x.toFixed(1); pan.s.y = +pan.s.y.toFixed(1); const m = pan.moved; pan = null; if (m) touch(false); } });
+$("#spreads").addEventListener("wheel", e => {
+  const img = e.target.closest(".slot img"); if (!img || !(e.ctrlKey || e.altKey)) return;
+  e.preventDefault(); const slot = img.closest(".slot"), s = pageOf(slot).s[+slot.dataset.i];
+  s.z = Math.max(1, Math.min(3, +(s.z - e.deltaY * .002).toFixed(3))); img.style.transform = `scale(${s.z})`; touch(false);
+}, { passive: false });
+
+$("#fileOne").addEventListener("change", async e => { const f = e.target.files; if (!f.length || !pendingSlot) return; const ids = await importFiles(f); if (ids[0]) placeImage(pendingSlot.page, pendingSlot.i, ids[0]); pendingSlot = null; e.target.value = ""; });
+$("#fileImgs").addEventListener("change", async e => { await importFiles(e.target.files); e.target.value = ""; });
+$("#trayBtn").onclick = () => $("#tray").classList.toggle("open");
+$("#addImgBtn").onclick = () => $("#fileImgs").click();
+$("#sortSel").onchange = renderTray; $("#unusedOnly").onchange = renderTray;
+$("#autoBtn").onclick = () => autoArrange(false);
+$("#count").onclick = () => { if (P && P.pages.length % 4) padTo4(); };
+
+/* ======================================================================
+   POPOVER: PODACI ALBUMA
+   ====================================================================== */
+function closePop() { $("#popRoot").innerHTML = ""; }
+function placePop(btn, html) {
+  const r = btn.getBoundingClientRect();
+  $("#popRoot").innerHTML = `<div class="pop" style="left:${Math.max(8, Math.min(innerWidth - 320, r.right - 310))}px;top:${Math.min(r.bottom + 6, innerHeight - 200)}px">${html}</div>`;
+  setTimeout(() => document.addEventListener("pointerdown", function h(ev) { if (!ev.target.closest(".pop")) { closePop(); document.removeEventListener("pointerdown", h); } }), 0);
+  return $(".pop");
+}
+const placeOptions = () => Object.keys(MAPDATA.places).map(k => `<option value="${esc(k)}">`).join("");
+function openMetaPop(btn) {
+  const m = P.meta, L = m.loc || {};
+  const pop = placePop(btn, `<b>Podaci albuma</b><small style="color:var(--muted)">Upisuju se automatski u tekstove koje još nisi mijenjala.</small>
+    <label>Naslov<input id="mTitle" value="${esc(m.title)}"></label>
+    <label>Podnaslov<input id="mSub" value="${esc(m.sub)}"></label>
+    <div class="r"><label>Datum (tekst)<input id="mDate" value="${esc(m.date)}" placeholder="npr. jul 2026"></label><label>Godina<input id="mYear" value="${esc(m.year)}"></label></div>
+    <label>Ime / imena<input id="mName" value="${esc(m.name)}" placeholder="npr. Luka, ili Ana & Marko"></label>
+    ${P.cat === "putovanja" ? `<label>Destinacija<input id="mPlace" list="placesDL" value="${esc(m.place)}"></label><datalist id="placesDL">${placeOptions()}</datalist>
+    <label>Gradovi<input id="mCities" value="${esc(m.cities)}" placeholder="Atina · Santorini"></label>
+    <div class="r"><label>Geo. širina<input id="mLat" type="number" step="0.1" value="${L.lat ?? ""}"></label><label>Geo. dužina<input id="mLon" type="number" step="0.1" value="${L.lon ?? ""}"></label></div>` : ""}
+    <label class="ck"><input type="checkbox" id="mFolio" ${P.opts.folio !== false ? "checked" : ""}> Brojevi strana</label>
+    <button class="b dark" id="mOk">Sačuvaj</button>`);
+  const pl = $("#mPlace", pop);
+  if (pl) pl.addEventListener("input", e => { const v = MAPDATA.places[e.target.value]; if (v) { $("#mLat", pop).value = v[0]; $("#mLon", pop).value = v[1]; } });
+  $("#mOk", pop).onclick = () => {
+    Object.assign(m, { title: $("#mTitle", pop).value.trim(), sub: $("#mSub", pop).value.trim(), date: $("#mDate", pop).value.trim(), year: $("#mYear", pop).value.trim(), name: $("#mName", pop).value.trim() });
+    if (pl) {
+      m.place = pl.value.trim(); m.cities = $("#mCities", pop).value.split(/[,·]/).map(s => s.trim()).filter(Boolean).join(" · ");
+      const lat = parseFloat($("#mLat", pop).value), lon = parseFloat($("#mLon", pop).value);
+      if (!isNaN(lat) && !isNaN(lon) && Math.abs(lat) <= 90 && Math.abs(lon) <= 180) m.loc = { lat, lon, label: m.place }; else if (m.place) toast("Za pin na mapi izaberi mjesto sa spiska ili upiši koordinate (Google mape: desni klik na mjesto).");
+    }
+    P.opts.folio = $("#mFolio", pop).checked;
+    closePop(); touch(true);
+  };
+}
+$("#metaBtn").onclick = e => openMetaPop(e.currentTarget);
+
+/* ======================================================================
+   DODAVANJE STRANA (biblioteka kolaža)
+   ====================================================================== */
+function mini(L, v) {
+  const cls = L.bg === "dark" ? "dk" : L.bg === "bg" ? "cl" : "";
+  return `<div class="mini ${cls}">${itemsOf(L, { v }).map(it => {
+    const k = it.t === "photo" ? (it.fr === "glue" ? "g" : "") : it.t === "text" ? "t" : it.t === "deco" ? "d" : it.t === "art" ? "a" : it.t === "map" ? "m" : "r";
+    let h = it.h; if (it.t === "text") h = Math.min(it.h, it.s === "body" ? it.h : 5);
+    const rad = it.fr === "circle" || it.fr === "circleb" ? "50%" : it.fr === "arch" ? "50% 50% 2px 2px / 35% 35% 2px 2px" : "";
+    const bd = it.fr === "polaroid" || it.fr === "border" ? "box-shadow:0 0 0 1.5px #fff,0 1px 3px rgba(0,0,0,.25);" : "";
+    return `<i class="${k}" style="left:${it.x / 2.1}%;top:${it.y / 2.97}%;width:${it.w / 2.1}%;height:${h / 2.97}%;${it.rot ? `transform:rotate(${it.rot}deg);` : ""}${rad ? `border-radius:${rad};` : ""}${bd}${it.t === "text" && it.s === "body" ? "background:repeating-linear-gradient(#B9B2A6 0 2px,transparent 2px 5px);" : ""}"></i>`;
+  }).join("")}</div>`;
+}
+function libraryGroups(cat, all) {
+  const av = Object.values(REG.layouts).filter(l => l.kind !== "cover" && l.kind !== "back" && l.kind !== "grid" && (all || okCat(l, cat)));
+  const g = [];
+  const counts = [...new Set(av.filter(l => l.kind === "photo").map(l => l.slots))].sort((a, b) => a - b);
+  for (const n of counts) g.push([`${n} ${plural(n, "slika", "slike", "slika")}`, av.filter(l => l.kind === "photo" && l.slots === n)]);
+  const sp = av.filter(l => l.kind === "special"); if (sp.length) g.push(["Posebne strane", sp]);
+  g.push(["Tekst i pauze", av.filter(l => l.kind === "text" || l.kind === "chapter")]);
+  return g.filter(x => x[1].length);
+}
+function pickCard(l, btn = true, v) {
+  const cats = (l.cats || ["*"]).includes("*") ? "" : (l.cats || []).map(catName).join(", ");
+  return `<${btn ? `button class="pick" data-t="${l.id}"` : `div class="pick"`}>${mini(l, v)}<span>${esc(l.name)}</span><small>${esc(l.help || "")}${cats ? `<br><i>${esc(cats)}</i>` : ""}</small></${btn ? "button" : "div"}>`;
+}
+let lastVar = "m", pickTab = null;
+function openPicker(at, page) {
+  if (at === undefined) at = insertPos();
+  let all = false, v = page && page.v ? page.v : lastVar;
+  const cv = page ? covIdx(P.pages.indexOf(page)) : "";
+  let tab = cv ? "kor" : (pickTab && pickTab !== "kor" ? pickTab : (P.cat === "osnovno" || (page && LAY(page.l).grid) ? "ras" : "kol"));
+  const grids = Object.values(REG.layouts).filter(l => l.kind === "grid");
+  const draw = () => {
+    const byN = {}; for (const l of grids) (byN[l.slots] = byN[l.slots] || []).push(l);
+    const cur = id => page && page.l === id ? "cur" : "";
+    $("#dlgRoot").innerHTML = `<div class="ov" id="pickOv"><div class="dlg" role="dialog" aria-label="Izaberi raspored">
+      <h2>${cv === "front" ? "Dizajn prednje korice" : cv === "back" ? "Dizajn zadnje korice" : page ? "Dizajn strane" : "Nova strana"}</h2><p class="s">${page ? "Slike koje su već na strani ostaju." : `Strana se dodaje na poziciju ${at + 1}. Kad izabereš raspored, odmah biraš slike sa računara.`}</p>
+      <div class="chips">${cv ? `<button class="chipb ${tab === "kor" ? "on" : ""}" data-tab="kor">${cv === "front" ? "Prednje korice" : "Zadnje korice"}</button>` : ""}<button class="chipb ${tab === "ras" ? "on" : ""}" data-tab="ras">Jednostavni rasporedi</button><button class="chipb ${tab === "kol" ? "on" : ""}" data-tab="kol">Kolaži sa ukrasima teme</button></div>
+      ${tab === "kor" ? `<div class="picker" style="margin-top:14px">${Object.values(REG.layouts).filter(l => l.kind === (cv === "front" ? "cover" : "back")).map(l => pickCard(l)).join("")}</div><p class="s" style="margin-top:12px">Za korice možeš izabrati i bilo koji jednostavni raspored ili kolaž (kartice gore).</p>` : tab === "ras" ? `<div class="chips" style="margin-top:10px">${Object.entries(VAR).map(([k, x]) => `<button class="chipb ${k === v ? "on" : ""}" data-v="${k}" style="font-weight:500">${x.name}</button>`).join("")}</div>
+        ${Object.keys(byN).sort((a, b) => a - b).map(n => `<h4>${n} ${plural(+n, "slika", "slike", "slika")}</h4><div class="picker">${byN[n].map(l => `<button class="pick ${cur(l.id)}" data-t="${l.id}">${mini(l, v)}<small>${esc(l.name)}</small></button>`).join("")}</div>`).join("")}`
+      : `<label style="font-size:13px;display:flex;gap:6px;align-items:center;margin-top:10px"><input type="checkbox" id="pkAll" ${all ? "checked" : ""}> Prikaži kolaže iz svih kategorija</label>
+        ${libraryGroups(P.cat, all || P.cat === "osnovno").map(([t, list]) => `<h4>${esc(t)}</h4><div class="picker">${list.map(l => pickCard(l)).join("")}</div>`).join("")}`}
+      <div class="acts"><button class="b" id="pickX">Zatvori</button></div></div></div>`;
+    const pa = $("#pkAll"); if (pa) pa.onchange = e => { all = e.target.checked; draw(); };
+  };
+  draw();
+  $("#dlgRoot").onclick = e => {
+    if (!$("#pickOv")) return;
+    if (e.target.id === "pickOv" || e.target.id === "pickX") { $("#dlgRoot").innerHTML = ""; return; }
+    const tb = e.target.closest("[data-tab]"); if (tb) { tab = tb.dataset.tab; if (tab !== "kor") pickTab = tab; draw(); return; }
+    const vb = e.target.closest("[data-v]"); if (vb) { v = vb.dataset.v; draw(); return; }
+    const b = e.target.closest("[data-t]"); if (!b) return;
+    const L = LAY(b.dataset.t); if (L.grid) lastVar = v;
+    snapshot();
+    let pg = page;
+    if (pg) {
+      const old = pg.s.filter(Boolean); pg.l = L.id; if (L.grid) pg.v = v; else delete pg.v;
+      pg.s = Array.from({ length: L.slots }, (_, i) => old[i] || null);
+      if (old.length > L.slots) toast(`${old.length - L.slots} ${plural(old.length - L.slots, "slika je skinuta", "slike su skinute", "slika je skinuto")} sa strane (vraćene su u „Moje slike”).`, { label: "Poništi", fn: undo });
+    } else { pg = newPage(L.id + (L.grid ? ":" + v : "")); P.pages.splice(at, 0, pg); }
+    $("#dlgRoot").innerHTML = ""; touch(true);
+    setTimeout(() => { const el = $(`.page[data-id="${pg.id}"]`); el && el.scrollIntoView({ behavior: "smooth", block: "center" }); }, 60);
+    const dims = slotDims(L, pg);
+    if (pg.s.some((x, i) => !x && dims[i] && !dims[i].glue)) pickFiles({ page: pg.id });
+  };
+}
+/* izbor slika za stranu: popuni prazne okvire, višak ide na nove strane istog rasporeda */
+let pendingPick = null;
+function pickFiles(t) { pendingPick = t; const inp = $("#fileMany"); inp.multiple = t.slot === undefined; inp.value = ""; inp.click(); }
+$("#fileMany").addEventListener("change", async e => {
+  const t = pendingPick; pendingPick = null; if (!t || !e.target.files.length) return;
+  const ids = await importFiles(e.target.files); if (!ids.length) return;
+  snapshot(); placeIds(t, ids);
+});
+function placeIds(t, ids) {
+  const pi = P.pages.findIndex(p => p.id === t.page); if (pi < 0) return;
+  const p = P.pages[pi], q = ids.map(id => ({ id, L: IMG.get(id).w >= IMG.get(id).h }));
+  if (t.slot !== undefined) { p.s[t.slot] = { img: q[0].id, x: 50, y: 50, z: 1 }; touch(true); return; }
+  const fill = pg => { const dims = slotDims(LAY(pg.l), pg); let empt = pg.s.map((x, i) => !x && dims[i] && !dims[i].glue ? i : -1).filter(i => i >= 0); if (pg === p && t.from !== undefined) empt = [t.from, ...empt.filter(i => i !== t.from)]; for (const i of empt) { if (!q.length) break; const im = bestFor(q, dims[i].w >= dims[i].h); pg.s[i] = { img: im.id, x: 50, y: 50, z: 1 }; } };
+  fill(p);
+  let at = pi + 1, added = 0;
+  while (q.length && added < 200) { const np = newPage(p.l + (p.v ? ":" + p.v : "")); fill(np); P.pages.splice(at++, 0, np); added++; }
+  touch(true);
+  if (added) toast(`Slika je bilo više od okvira, pa ${plural(added, "je dodata još", "su dodate još", "je dodato još")} ${added} ${plural(added, "strana", "strane", "strana")} sa istim rasporedom.`, { label: "Poništi", fn: undo });
+}
+$("#addPageBtn").onclick = () => openPicker(insertPos());
+
+/* ======================================================================
+   PROJEKTI
+   ====================================================================== */
+function coverCard(theme, title, cls = "") {
+  const t = REG.themes[theme] || Object.values(REG.themes)[0], f = t.f || {};
+  return `<div class="cv ${cls}">${t.cover}<div class="tt" style="color:${t.c.title};font-family:${f.d};font-weight:${f.dw};text-transform:${f.dc};letter-spacing:${f.dl}">${esc(title)}</div></div>`;
+}
+async function openProject(id) {
+  const p = await load("projects", id); if (!p) return;
+  P = p; P.opts = P.opts || {}; P.meta = P.meta || {}; undoStack = [];
+  if (P.opts.covers === undefined) P.opts.covers = !!(P.pages.length && LAY(P.pages[0].l).kind === "cover");
+  busy("Otvaram album…"); await loadProjectImages(); busy(false);
+  $("#projName").value = P.name;
+  fillThemeSel();
+  $("#home").classList.add("hidden");
+  render(); $("#canvas").scrollTop = 0;
+}
+function fillThemeSel() {
+  const byCat = {};
+  for (const t of Object.values(REG.themes)) (byCat[t.cat] = byCat[t.cat] || []).push(t);
+  $("#themeSel").innerHTML = Object.entries(byCat).map(([c, list]) => `<optgroup label="${esc(catName(c))}">${list.map(t => `<option value="${t.id}">Tema: ${esc(t.name)}</option>`).join("")}</optgroup>`).join("");
+  if (P) $("#themeSel").value = REG.themes[P.theme] ? P.theme : Object.keys(REG.themes)[0];
+}
+$("#projName").addEventListener("input", e => { P.name = e.target.value; touch(false); });
+$("#themeSel").onchange = e => { P.theme = e.target.value; touch(true); };
+$("#zoomIn").onclick = () => { zoomF = Math.min(2.4, zoomF * 1.2); render(); };
+$("#zoomOut").onclick = () => { zoomF = Math.max(.4, zoomF / 1.2); render(); };
+let rT; window.addEventListener("resize", () => { clearTimeout(rT); rT = setTimeout(() => { if (P && !BLEED) $("#spreads").style.setProperty("--z", computeZoom()); fitAll(); }, 120); });
+
+async function showHome() {
+  if (P) { clearTimeout(saveTimer); await save("projects", P); }
+  const list = (await loadAll("projects")).sort((a, b) => b.updated - a.updated);
+  const card = q => {
+    const cov = q.pages.find(x => LAY(x.l).kind === "cover");
+    const title = (cov && cov.t.title) ?? (q.meta && q.meta.title) ?? "";
+    return `<div class="acard"><div data-open="${q.id}">${coverCard(q.theme, title)}</div>
+      <div class="meta"><div style="min-width:0"><b>${esc(q.name)}</b><small>${q.pages.length} strana · ${q.images.length} slika</small></div><button class="b sm" data-delp="${q.id}">Obriši</button></div></div>`;
+  };
+  $("#albums").innerHTML = `<button class="newcard" id="newAlb"><b>+</b>Novi album</button>` + list.map(card).join("");
+  $("#home").classList.remove("hidden");
+  $("#newAlb").onclick = openNewDlg;
+}
+$("#albums").addEventListener("click", async e => {
+  const o = e.target.closest("[data-open]"); if (o) { openProject(o.dataset.open); return; }
+  const d = e.target.closest("[data-delp]");
+  if (d) {
+    if (!d.classList.contains("armed")) { d.classList.add("armed"); d.textContent = "Obriši zauvijek?"; d.style.background = "#B4562C"; d.style.color = "#fff"; setTimeout(() => { d.classList.remove("armed"); d.textContent = "Obriši"; d.style.cssText = ""; }, 3500); return; }
+    const q = await load("projects", d.dataset.delp); await remove("projects", d.dataset.delp);
+    if (q) { const rest = await loadAll("projects"); for (const id of q.images) if (!rest.some(r => r.images.includes(id))) await remove("images", id); }
+    if (P && P.id === d.dataset.delp) P = null;
+    showHome();
+  }
+});
+$("#homeBtn").onclick = showHome;
+
+/* ---------------- novi album ---------------- */
+function openNewDlg() {
+  const cats = Object.keys(REG.cats).filter(c => Object.values(REG.themes).some(t => t.cat === c));
+  let mode = "empty", cat = cats.includes("putovanja") ? "putovanja" : cats[0], theme = null, files = null, recipe = "";
+  const themesOf = c => Object.values(REG.themes).filter(t => t.cat === c);
+  $("#dlgRoot").innerHTML = `<div class="ov" id="nOv"><div class="dlg" style="max-width:780px" role="dialog" aria-label="Novi album">
+    <h2>Novi album</h2>
+    <div class="chips" style="margin:10px 0 16px"><button class="chipb on" data-mode="empty">Sama dizajniram stranu po stranu</button><button class="chipb" data-mode="rec">Gotov šablon</button><button class="chipb" data-mode="auto">Program složi album</button></div>
+    <p class="s" id="nLead"></p>
+    <div class="form">
+      <div id="nCatW"><label>Vrsta albuma</label><div class="chips" id="nCats">${cats.map(c => `<button class="chipb ${c === cat ? "on" : ""}" data-cat="${c}">${esc(catName(c))}</button>`).join("")}</div></div>
+      <div id="nRecW"><label>Šablon</label><div class="plist" id="nRecs"></div></div>
+      <div id="nThW"><label>Stil (tema)</label><div class="themes" id="nThemes"></div></div>
+      <div class="r"><label>Naziv / naslov na koricama<input id="nTitle" autocomplete="off"></label><label class="xx">Podnaslov<input id="nSub" autocomplete="off"></label></div>
+      <div class="r xx"><label>Datum (tekst)<input id="nDate" placeholder="npr. jul 2026"></label><label>Godina<input id="nYear" value="${new Date().getFullYear()}"></label></div>
+      <div id="nTravel" class="r xx"><label>Destinacija (za mapu)<input id="nPlace" list="placesDL3" placeholder="npr. Grčka" autocomplete="off"></label><label>Gradovi<input id="nCities" placeholder="Atina · Santorini · Krit"></label></div>
+      <datalist id="placesDL3">${placeOptions()}</datalist>
+      <label id="nNameL" class="xx">Ime / imena<input id="nName"></label>
+      <label id="nCovW" style="flex-direction:row;align-items:center;gap:8px;color:var(--ink);font-weight:400;font-size:14px"><input type="checkbox" id="nCov" checked> Sa koricama (prednja i zadnja, dizajniraš ih kao i ostale strane)</label>
+      <div id="nAutoW"><label>Broj slika<input id="nCount" type="number" min="0" step="1" value="40"></label><label style="display:none">Koliko slika po strani<select id="nDens">${Object.entries(DENS_NAMES).map(([k, v]) => `<option value="${k}" ${k === "srednje" ? "selected" : ""}>${v}</option>`).join("")}</select></label></div>
+      <label id="nCoverW" style="display:none">Korice<select id="nCover">${Object.values(REG.layouts).filter(l => l.kind === "cover").map(l => `<option value="${l.id}">${esc(l.name)}</option>`).join("")}</select></label>
+      <div id="nFilesW" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button class="b" id="nFiles">Izaberi slike odmah (nije obavezno)</button><span id="nFilesInfo" style="color:var(--muted);font-size:13px"></span></div>
+      <div class="note ok plan" id="nPlan"></div>
+    </div>
+    <div class="acts"><button class="b" id="nX">Odustani</button><button class="b dark" id="nOk">Napravi album</button></div></div></div>
+    <input type="file" id="nFileIn" accept="image/*" multiple hidden>`;
+  const ov = $("#nOv"), show = (id, on) => { const el = typeof id === "string" ? $(id) : id; if (el) el.style.display = on ? "" : "none"; };
+  const recCap = r => r.pages.reduce((a, id) => a + (hasLay(id) ? realSlots(LAY(id)) : 0), 0);
+  const draw = () => {
+    $("#nLead").textContent = mode === "auto" ? "Izaberi vrstu, stil i koliko slika imaš. Program složi strane (kolaži teme i jednostavni rasporedi), a sve kasnije mijenjaš." : mode === "rec" ? "Gotov album sa unaprijed izabranim stranama. Kasnije mijenjaš bilo koju stranu." : "Svaku stranu dizajniraš sama: klikneš „+ Nova strana”, izabereš raspored (1, 2, 3, 4… slike, sa marginama ili do ivice) i ubaciš slike. Korice dizajniraš isto tako.";
+    show("#nCatW", mode === "auto"); show("#nRecW", mode === "rec"); show("#nAutoW", mode === "auto"); show("#nCovW", mode === "empty");
+    show("#nFilesW", mode !== "empty");
+    const list = mode === "auto" ? themesOf(cat) : Object.values(REG.themes);
+    if (mode === "empty" && !theme) theme = "bijela";
+    if (mode === "rec" && !theme && REG.recipes[recipe]) theme = REG.recipes[recipe].theme;
+    if (!theme || !list.find(t => t.id === theme)) theme = list[0] && list[0].id;
+    $("#nThemes").innerHTML = (mode !== "auto" ? list.slice().sort((a, b) => { const pf = mode === "empty" ? "bijela" : (REG.recipes[recipe] || {}).theme; return (b.id === pf) - (a.id === pf); }) : list).map(t => `<button class="tpick ${t.id === theme ? "on" : ""}" data-th="${t.id}">${coverCard(t.id, t.ph && t.ph.title || t.name)}${esc(t.name)}</button>`).join("");
+    if (mode === "rec") $("#nRecs").innerHTML = Object.values(REG.recipes).map(r => `<button class="prow" data-rec="${r.id}" style="text-align:left;${r.id === recipe ? "border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)" : ""}"><b>${esc(r.name)}</b><small>${esc(catName(r.cat))} · ${recCap(r)} slika</small></button>`).join("");
+    const ccat = mode === "rec" && REG.recipes[recipe] ? REG.recipes[recipe].cat : mode === "empty" ? (REG.themes[theme] || {}).cat : cat;
+    const t = REG.themes[theme];
+    $("#nTitle").placeholder = t && t.ph ? t.ph.title : "";
+    $$(".xx", ov).forEach(el => show(el, ccat !== "osnovno"));
+    show("#nTravel", ccat === "putovanja"); show("#nNameL", ccat !== "putovanja" && ccat !== "osnovno");
+    $("#nName").placeholder = ccat === "beba" ? "Ime bebe" : ccat === "vjencanje" ? "Ana & Marko" : ccat === "rodjendan" ? "Ime slavljenika" : "Prezime porodice";
+    updatePlan();
+  };
+  const updatePlan = () => {
+    const pl = $("#nPlan");
+    if (mode === "empty") { pl.textContent = $("#nCov").checked ? "Album počinje sa prednjom i zadnjom koricom. Strane dodaješ između njih." : "Album počinje prazan."; return; }
+    if (mode === "rec") { const r = REG.recipes[recipe]; pl.textContent = r ? `${r.pages.length} ${plural(r.pages.length, "strana", "strane", "strana")}, mjesta za ${recCap(r)} slika.` : "Izaberi šablon."; return; }
+    const n = Math.max(0, parseInt($("#nCount").value) || 0), plan = planAlbum(cat, n, $("#nDens").value, $("#nCover").value), cap = plan.reduce((a, id) => a + realSlots(LAY(id)), 0);
+    pl.textContent = n ? `Album će imati ${plan.length} ${plural(plan.length, "stranu", "strane", "strana")} (djeljivo sa 4) i ${cap} ${plural(cap, "mjesto", "mjesta", "mjesta")} za slike.` : `Napraviće se osnovni album od ${plan.length} strana. Slike dodaješ kasnije.`;
+  };
+  recipe = Object.keys(REG.recipes)[0] || "";
+  draw();
+  ov.addEventListener("click", e => {
+    const m = e.target.closest("[data-mode]"); if (m) { mode = m.dataset.mode; $$("[data-mode]", ov).forEach(b => b.classList.toggle("on", b === m)); theme = null; draw(); return; }
+    const c = e.target.closest("[data-cat]"); if (c) { cat = c.dataset.cat; $$("#nCats .chipb").forEach(b => b.classList.toggle("on", b === c)); draw(); return; }
+    const r = e.target.closest("[data-rec]"); if (r) { recipe = r.dataset.rec; theme = null; draw(); return; }
+    const t = e.target.closest("[data-th]"); if (t) { theme = t.dataset.th; draw(); return; }
+    if (e.target.id === "nOv" || e.target.id === "nX") $("#dlgRoot").innerHTML = "";
+  });
+  ["nCount", "nDens", "nCover", "nCov"].forEach(id => $("#" + id).addEventListener("input", updatePlan));
+  $("#nFiles").onclick = () => $("#nFileIn").click();
+  $("#nFileIn").onchange = e => { files = [...e.target.files]; $("#nFilesInfo").textContent = files.length ? `Izabrano slika: ${files.length}` : ""; if (files.length) $("#nCount").value = files.length; updatePlan(); };
+  $("#nOk").onclick = async () => {
+    if (mode === "rec" && !REG.recipes[recipe]) { toast("Izaberi šablon."); return; }
+    const t = REG.themes[theme], n = Math.max(0, parseInt($("#nCount").value) || 0), dens = $("#nDens").value;
+    const ccat = mode === "rec" ? REG.recipes[recipe].cat : mode === "empty" ? t.cat : cat;
+    const title = $("#nTitle").value.trim() || (t.ph && t.ph.title) || t.name;
+    const placeName = $("#nPlace").value.trim(), v = MAPDATA.places[placeName];
+    const meta = { title, sub: $("#nSub").value.trim() || (ccat !== "osnovno" && t.ph && t.ph.sub) || "", date: $("#nDate").value.trim(), year: ccat === "osnovno" ? "" : $("#nYear").value.trim(), name: $("#nName").value.trim(),
+      place: ccat === "putovanja" ? (placeName || title) : "", cities: $("#nCities").value.split(/[,·]/).map(s => s.trim()).filter(Boolean).join(" · "), loc: v ? { lat: v[0], lon: v[1], label: placeName } : null };
+    const ids = mode === "empty" ? ($("#nCov").checked ? ["kn1", "bk4"] : []) : mode === "rec" ? REG.recipes[recipe].pages.filter(hasLay) : planAlbum(cat, n, dens, $("#nCover").value);
+    const pr = { id: uid(), name: `${title}${meta.year ? " " + meta.year : ""}`, theme, cat: ccat, meta, opts: { folio: ccat !== "osnovno", dens, covers: !!(ids.length > 1 && LAY(ids[0]).kind === "cover") }, images: [], pages: ids.map(id => newPage(id)), created: Date.now(), updated: Date.now(), v: 2 };
+    await save("projects", pr); $("#dlgRoot").innerHTML = "";
+    await openProject(pr.id);
+    if (mode === "empty") { openPicker(insertPos()); return; }
+    if (files && files.length) { await importFiles(files); autoArrange(true); }
+    if (ccat === "putovanja" && placeName && !v) toast("Mjesto nije na spisku za mapu. Pin postavi preko „Podaci albuma” (koordinate).");
+  };
+  setTimeout(() => $("#nTitle", ov).focus(), 30);
+}
+
+/* ======================================================================
+   KOLAŽI I TEME (paketi)
+   ====================================================================== */
+async function openLibrary() {
+  let tab = "kolazi", fcat = "*";
+  const draw = () => {
+    const cats = Object.keys(REG.cats);
+    const lay = Object.values(REG.layouts).filter(l => fcat === "*" || okCat(l, fcat));
+    const th = Object.values(REG.themes).filter(t => fcat === "*" || t.cat === fcat);
+    $("#dlgRoot").innerHTML = `<div class="ov" id="libOv"><div class="dlg" role="dialog" aria-label="Kolaži i teme">
+      <h2>Kolaži i teme</h2><p class="s">Sve što je ugrađeno u program. Za novi stil ili novi kolaž javi se Claude-u: opiši stil i koliko slika treba na strani, dobićeš mali fajl <b>.kolaz</b> koji ovdje dodaš. Albumi koje već imaš ostaju netaknuti.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <button class="chipb ${tab === "kolazi" ? "on" : ""}" data-tab="kolazi">Kolaži (${Object.keys(REG.layouts).length})</button>
+        <button class="chipb ${tab === "teme" ? "on" : ""}" data-tab="teme">Teme (${Object.keys(REG.themes).length})</button>
+        <button class="chipb ${tab === "paketi" ? "on" : ""}" data-tab="paketi">Paketi (${REG.packs.length})</button>
+        <div class="grow"></div><button class="b dark" id="libAdd">+ Dodaj paket (.kolaz)</button>
+      </div>
+      ${tab !== "paketi" ? `<div class="chips" style="margin-top:12px"><button class="chipb ${fcat === "*" ? "on" : ""}" data-fc="*">Sve</button>${cats.map(c => `<button class="chipb ${fcat === c ? "on" : ""}" data-fc="${c}">${esc(catName(c))}</button>`).join("")}</div>` : ""}
+      ${tab === "kolazi" ? [["Jednostavni rasporedi (sa marginama ili do ivice)", lay.filter(l => l.kind === "grid")], ["Korice", lay.filter(l => l.kind === "cover" || l.kind === "back")], ...libraryGroups(fcat === "*" ? "_" : fcat, fcat === "*")].map(([t, list]) => list.length ? `<h4>${esc(t)}</h4><div class="picker">${list.map(l => pickCard(l, false)).join("")}</div>` : "").join("") : ""}
+      ${tab === "teme" ? `<div class="themes" style="margin-top:14px">${th.map(t => `<div class="tpick">${coverCard(t.id, t.ph && t.ph.title || t.name)}${esc(t.name)}<small style="color:var(--muted);font-weight:400">${esc(catName(t.cat))}</small></div>`).join("")}</div>` : ""}
+      ${tab === "paketi" ? `<div class="plist" style="margin-top:14px">${REG.packs.map(p => `<div class="prow"><b>${esc(p.name)}</b><small>${p.themes} tema · ${p.layouts} kolaža${p.recipes ? ` · ${p.recipes} šablona` : ""}</small>${p.builtin ? `<small>ugrađen</small>` : `<button class="b sm" data-delpk="${esc(p.id)}">Ukloni</button>`}</div>`).join("")}</div>` : ""}
+      <div class="acts"><button class="b" id="libX">Zatvori</button></div></div></div>`;
+  };
+  draw();
+  $("#dlgRoot").onclick = async e => {
+    if (!$("#libOv")) return;
+    if (e.target.id === "libOv" || e.target.id === "libX") { $("#dlgRoot").innerHTML = ""; $("#dlgRoot").onclick = null; return; }
+    const tb = e.target.closest("[data-tab]"); if (tb) { tab = tb.dataset.tab; draw(); return; }
+    const fc = e.target.closest("[data-fc]"); if (fc) { fcat = fc.dataset.fc; draw(); return; }
+    if (e.target.id === "libAdd") { $("#filePack").click(); return; }
+    const dp = e.target.closest("[data-delpk]");
+    if (dp) {
+      const used = (await loadAll("projects")).filter(q => REG.themes[q.theme] && REG.themes[q.theme].pack === dp.dataset.delpk).length;
+      if (!dp.classList.contains("armed")) { dp.classList.add("armed"); dp.textContent = used ? `Koristi ga ${used} alb. Ukloni?` : "Sigurno?"; return; }
+      await remove("packs", dp.dataset.delpk); rebuildRegistry(await loadAll("packs")); draw(); toast("Paket uklonjen.");
+    }
+  };
+  window.__libRedraw = draw;
+}
+$("#libBtn").onclick = openLibrary;
+$("#filePack").addEventListener("change", async e => {
+  const fs = [...e.target.files]; e.target.value = ""; let ok = 0, msg = [];
+  for (const f of fs) {
+    try {
+      const data = JSON.parse(await f.text());
+      if (data.format !== "album-kolazi") throw new Error("format");
+      data.id = data.id || f.name.replace(/\.\w+$/, "");
+      delete data.builtin;
+      const info = installPack(data);
+      await save("packs", { id: info.id, data, added: Date.now() });
+      ok++; msg.push(`${info.name}: ${info.themes} tema, ${info.layouts} kolaža`);
+    } catch (err) { msg.push(`${f.name} nije ispravan paket`); }
+  }
+  rebuildRegistry(await loadAll("packs"));
+  if (P) { fillThemeSel(); render(); }
+  if (window.__libRedraw && $("#libOv")) window.__libRedraw();
+  toast((ok ? "Dodato. " : "") + msg.join(" · "));
+});
+
+/* ======================================================================
+   PDF ZA ŠTAMPU
+   ====================================================================== */
+function preflight() {
+  const empty = [], low = [], bad = [];
+  P.pages.forEach((p, idx) => {
+    const dims = slotDims(LAY(p.l), p);
+    p.s.forEach((s, i) => {
+      if (!dims[i]) return;
+      if (!s) { if (!dims[i].glue) empty.push(idx + 1); return; }
+      const d = dpiOf(s, dims[i].w, dims[i].h);
+      if (d < 100) bad.push(idx + 1); else if (d < 150) low.push(idx + 1);
+    });
+  });
+  const u = a => [...new Set(a)];
+  return { empty: u(empty), low: u(low), bad: u(bad), n: P.pages.length };
+}
+function openExport() {
+  if (!P) return;
+  const f = preflight();
+  const li = (cls, txt) => `<div class="note ${cls}" style="margin-top:8px">${txt}</div>`;
+  const pg = a => a.slice(0, 12).join(", ") + (a.length > 12 ? "…" : "");
+  $("#dlgRoot").innerHTML = `<div class="ov" id="exOv"><div class="dlg" style="max-width:620px" role="dialog" aria-label="PDF za štampu">
+    <h2>PDF za štampu</h2><p class="s">A4 (210 × 297 mm), slike u punom kvalitetu.</p>
+    ${f.n % 4 ? li("warn", `Album ima ${f.n} strana. Štamparije najčešće traže broj djeljiv sa 4. <button class="b sm" id="exPad">Dopuni do ${f.n + 4 - f.n % 4}</button>`) : li("ok", `${f.n} strana, djeljivo sa 4.`)}
+    ${f.empty.length ? li("warn", `Prazni okviri na stranama: ${pg(f.empty)}. Biće bez slike u PDF-u.`) : ""}
+    ${f.bad.length ? li("warn", `<b>Premale slike</b> (ispod 100 dpi, biće mutne) na stranama: ${pg(f.bad)}. Zamijeni ih ili stavi u manji okvir.`) : ""}
+    ${f.low.length ? li("", `Slike niže rezolucije (100–150 dpi) na stranama: ${pg(f.low)}. Biće prihvatljive, ali ne savršeno oštre.`) : ""}
+    <h4>Format fajla</h4>
+    <div class="form">
+      <label class="ck" style="flex-direction:row;align-items:center;gap:8px;color:var(--ink);font-weight:400;font-size:14px"><input type="radio" name="bl" value="0" ${!P.opts.bleed ? "checked" : ""}> Tačno A4, 210 × 297 mm</label>
+      <label class="ck" style="flex-direction:row;align-items:center;gap:8px;color:var(--ink);font-weight:400;font-size:14px"><input type="radio" name="bl" value="3" ${P.opts.bleed ? "checked" : ""}> A4 + 3 mm bleed (216 × 303 mm), ako štamparija traži „bleed” ili „napust”</label>
+      <label style="flex-direction:row;align-items:center;gap:8px;color:var(--ink);font-weight:400;font-size:14px">Kvalitet <select id="exDpi" style="padding:6px 8px"><option value="300" selected>300 dpi – za štampu (preporučeno)</option><option value="200">200 dpi – manji fajl</option></select></label>
+    </div>
+    <div class="note" style="margin-top:14px"><b>Preuzmi PDF</b> radi na telefonu i na laptopu: PDF se napravi ovdje i onda ga preuzmeš ili odmah pošalješ štampariji.</div>
+    <div class="acts" style="flex-wrap:wrap"><button class="b" id="exX">Odustani</button><button class="b" id="exGo" title="Stari način, preko prozora za štampu (samo laptop, Chrome)">Preko štampe (laptop)</button><button class="b dark" id="exDirect">Preuzmi PDF</button></div></div></div>`;
+  $("#exOv").onclick = e => { if (e.target.id === "exOv" || e.target.id === "exX") $("#dlgRoot").innerHTML = ""; };
+  const pad = $("#exPad"); if (pad) pad.onclick = () => { padTo4(); openExport(); };
+  $("#exGo").onclick = () => { const bl = +$('input[name="bl"]:checked').value; P.opts.bleed = bl; touch(false); $("#dlgRoot").innerHTML = ""; doPrint(bl, true); };
+  $("#exDirect").onclick = async () => {
+    const bl = +$('input[name="bl"]:checked').value, dpi = +$("#exDpi").value; P.opts.bleed = bl; touch(false); $("#dlgRoot").innerHTML = "";
+    try { const blob = await makeDirectPDF(bl, dpi); offerPDF(blob); } catch (e) { busy(false); toast("PDF nije mogao da se napravi (" + (e && e.message || e) + "). Probaj sa kvalitetom 200 dpi."); }
+  };
+}
+let printURLs = [];
+async function doPrint(bleed, optimize) {
+  busy("Pripremam strane za štampu…");
+  BLEED = bleed;
+  $("#pageSize").textContent = `@page{size:${210 + 2 * bleed}mm ${297 + 2 * bleed}mm;margin:0}`;
+  render();
+  await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+  fitAll();
+  try {
+    const imgs = $$("#spreads .slot img"), need = {};
+    for (const img of imgs) {
+      const slot = img.closest(".slot"), id = img.dataset.id, im = IMG.get(id), p = pageOf(slot), s = p.s[+slot.dataset.i];
+      const w = +slot.dataset.w, h = +slot.dataset.h, mmpp = Math.max(w / im.w, h / im.h) * (s.z || 1);
+      const f = Math.min(1, (300 / 25.4) * mmpp * 1.1);
+      need[id] = Math.max(need[id] || 0, f);
+    }
+    const map = {}, ids = Object.keys(need); let k = 0;
+    for (const id of ids) {
+      busy(`Pripremam slike u punoj rezoluciji… ${++k} / ${ids.length}`);
+      const r = await load("images", id); if (!r || !r.orig) continue;
+      let blob = r.orig;
+      if (optimize && need[id] < .85) { try { const bmp = await createImageBitmap(r.orig); blob = await scaled(bmp, Math.round(Math.max(bmp.width, bmp.height) * need[id]), .93); bmp.close && bmp.close(); } catch (e) { blob = r.orig; } }
+      const u = URL.createObjectURL(blob); map[id] = u; printURLs.push(u);
+    }
+    await Promise.all(imgs.map(img => { if (map[img.dataset.id]) { img.src = map[img.dataset.id]; return img.decode().catch(() => {}); } }));
+    await document.fonts.ready;
+  } catch (e) {}
+  busy(false);
+  setTimeout(() => window.print(), 60);
+}
+window.addEventListener("afterprint", () => {
+  if (!P) return;
+  BLEED = 0; $("#pageSize").textContent = "@page{size:210mm 297mm;margin:0}";
+  printURLs.forEach(u => URL.revokeObjectURL(u)); printURLs = [];
+  render();
+  toast("Ako PDF nije sačuvan: izaberi „Sačuvaj kao PDF”, margine „Nijedne” i uključi „Grafika u pozadini”.");
+});
+$("#printBtn").onclick = openExport;
+
+/* ======================================================================
+   KOPIJA (.album)
+   ====================================================================== */
+const b64 = blob => new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result); fr.readAsDataURL(blob); });
+async function backup() {
+  if (!P) return;
+  clearTimeout(saveTimer); await save("projects", P);
+  const packs = (await loadAll("packs")).map(p => p.data);
+  const parts = [`{"format":"album-prica","version":2,"project":${JSON.stringify(P)},"packs":${JSON.stringify(packs)},"images":{`];
+  for (let i = 0; i < P.images.length; i++) {
+    busy(`Pakujem kopiju… ${i + 1} / ${P.images.length}`);
+    const r = await load("images", P.images[i]); if (!r) continue;
+    parts.push((i ? "," : "") + JSON.stringify(r.id) + ":" + JSON.stringify({ name: r.name, date: r.date, w: r.w, h: r.h, added: r.added, data: await b64(r.orig) }));
+  }
+  parts.push("}}"); busy(false);
+  const blob = new Blob(parts, { type: "application/json" }), a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = (P.name || "album").replace(/[^\p{L}\p{N} _-]/gu, "").trim() + ".album";
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 30000);
+  toast("Kopija je sačuvana u Preuzimanja (Downloads). Sa njom album otvaraš na drugom računaru.");
+}
+$("#backupBtn").onclick = backup;
+$("#restoreBtn").onclick = () => $("#fileBackup").click();
+$("#fileBackup").addEventListener("change", async e => {
+  const f = e.target.files[0]; e.target.value = ""; if (!f) return;
+  busy("Otvaram kopiju…");
+  try {
+    const d = JSON.parse(await f.text());
+    if (d.format !== "album-prica") throw new Error("format");
+    for (const pk of d.packs || []) { if (!(await load("packs", pk.id))) await save("packs", { id: pk.id, data: pk, added: Date.now() }); }
+    rebuildRegistry(await loadAll("packs"));
+    const ids = Object.keys(d.images); let k = 0;
+    for (const id of ids) {
+      busy(`Vraćam slike… ${++k} / ${ids.length}`);
+      const im = d.images[id], orig = await (await fetch(im.data)).blob(), bmp = await createImageBitmap(orig);
+      await save("images", { id, orig, prev: await scaled(bmp, 1800), thumb: await scaled(bmp, 380, .8), w: im.w, h: im.h, date: im.date, name: im.name, added: im.added || 0 });
+    }
+    const pr = d.project;
+    if (await load("projects", pr.id)) { pr.id = uid(); pr.name += " (kopija)"; }
+    await save("projects", pr); busy(false); openProject(pr.id);
+  } catch (err) { busy(false); toast("Ovaj fajl nije kopija albuma. Izaberi fajl koji se završava na .album."); }
+});
+
+/* ======================================================================
+   POKRETANJE
+   ====================================================================== */
+(async function start() {
+  await DB.open();
+  if (!DB.ok) {
+    const w = document.createElement("div"); w.className = "warnbar";
+    w.textContent = "Ovaj pregledač ne dozvoljava automatsko čuvanje. Otvori fajl u Google Chrome-u, ili prije zatvaranja klikni „Sačuvaj kopiju”.";
+    document.body.insertBefore(w, $("#main")); $("#main").style.top = "92px";
+  }
+  try { await navigator.storage?.persist?.(); } catch (e) {}
+  rebuildRegistry(await loadAll("packs"));
+  const list = await loadAll("projects");
+  if (!list.length) {
+    const meta = { title: "Zanzibar", sub: "ljeto za pamćenje", date: "avgust 2026", year: "2026", name: "", place: "Zanzibar", cities: "Stone Town · Nungwi · Paje", loc: { lat: -6.1, lon: 39.3, label: "Zanzibar" } };
+    const pr = { id: uid(), name: "Zanzibar 2026 (primjer)", theme: "tropi", cat: "putovanja", meta, opts: { folio: true, dens: "srednje" }, images: [], pages: planAlbum("putovanja", 36, "srednje", "cover").map(id => newPage(id)), created: Date.now(), updated: Date.now(), v: 2 };
+    await save("projects", pr);
+    await openProject(pr.id);
+    toast("Ovo je primjer albuma. Dodaj slike lijevo i klikni „Složi automatski”, ili otvori „Svi albumi” → „Novi album”.");
+  } else showHome();
+  document.fonts && document.fonts.ready.then(() => P && fitAll());
+  if (document.fonts) document.fonts.onloadingdone = () => P && fitAll();
+})();
+/* ======================================================================
+   DIREKTNI PDF (radi i na telefonu, bez prozora za štampu)
+   Svaka strana se nacrta u punoj rezoluciji i spakuje u A4 PDF.
+   ====================================================================== */
+const mmv = v => { if (v == null || v === "" || v === "auto") return null; const n = parseFloat(v); return isNaN(n) ? null : (String(v).endsWith("pt") ? n * 25.4 / 72 : String(v).endsWith("px") ? n / MM : n); };
+function boxOf(el, pw, ph) {
+  const s = el.style;
+  let l = mmv(s.left), t = mmv(s.top), w = mmv(s.width), h = mmv(s.height), r = mmv(s.right), b = mmv(s.bottom);
+  if (w == null) w = pw - (l || 0) - (r || 0);
+  if (h == null) h = ph - (t || 0) - (b || 0);
+  if (l == null) l = r != null ? pw - r - w : 0;
+  if (t == null) t = b != null ? ph - b - h : 0;
+  return { x: l, y: t, w, h };
+}
+function trOf(el) {
+  const t = el.style.transform || ""; const rm = t.match(/rotate\(([-\d.]+)deg\)/), sm = t.match(/scale\(([-\d.]+),\s*([-\d.]+)\)/);
+  return { rot: rm ? +rm[1] : 0, sx: sm ? +sm[1] : 1, sy: sm ? +sm[2] : 1 };
+}
+function withTr(ctx, k, bx, tr, fn) {
+  ctx.save();
+  if (tr.rot || tr.sx !== 1 || tr.sy !== 1) { const cx = (bx.x + bx.w / 2) * k, cy = (bx.y + bx.h / 2) * k; ctx.translate(cx, cy); ctx.rotate(tr.rot * Math.PI / 180); ctx.scale(tr.sx, tr.sy); ctx.translate(-cx, -cy); }
+  fn(); ctx.restore();
+}
+function rrPath(ctx, x, y, w, h, rad) {
+  ctx.beginPath();
+  if (rad === "ellipse") { ctx.ellipse(x + w / 2, y + h / 2, w / 2, h / 2, 0, 0, Math.PI * 2); return; }
+  let [tl, tr, br, bl] = rad.map(r => Math.max(0, Math.min(r, w / 2, h / 2)));
+  ctx.moveTo(x + tl, y); ctx.lineTo(x + w - tr, y); ctx.arcTo(x + w, y, x + w, y + tr, tr); ctx.lineTo(x + w, y + h - br); ctx.arcTo(x + w, y + h, x + w - br, y + h, br);
+  ctx.lineTo(x + bl, y + h); ctx.arcTo(x, y + h, x, y + h - bl, bl); ctx.lineTo(x, y + tl); ctx.arcTo(x, y, x + tl, y, tl); ctx.closePath();
+}
+function radOf(el, k, w) {
+  const r = (el.style.borderRadius || "0").trim();
+  if (r === "50%") return "ellipse";
+  if (r.includes("/")) { const v = r.split("/")[0].trim().split(/\s+/).map(x => (mmv(x) || 0) * k); return [v[0], v[1], v[2], v[3]]; }
+  const v = (mmv(r) || 0) * k; return [v, v, v, v];
+}
+function svgImage(svgEl, wpx, hpx) {
+  const c = svgEl.cloneNode(true); c.setAttribute("width", Math.max(1, Math.round(wpx))); c.setAttribute("height", Math.max(1, Math.round(hpx)));
+  if (!c.getAttribute("xmlns")) c.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+  const url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(new XMLSerializer().serializeToString(c));
+  return new Promise(res => { const im = new Image(); im.onload = () => res(im); im.onerror = () => res(null); im.src = url; });
+}
+const bmpCache = new Map();
+async function photoBitmap(id, needPx) {
+  const key = id + "@" + needPx; if (bmpCache.has(key)) return bmpCache.get(key);
+  let bmp = null;
+  try {
+    const r = await load("images", id);
+    let src = null;
+    try { src = await createImageBitmap(r.orig); } catch (e) { src = await createImageBitmap(r.prev); }
+    const s = Math.min(1, needPx / Math.max(src.width, src.height));
+    if (s < .98) { const cv = document.createElement("canvas"); cv.width = Math.round(src.width * s); cv.height = Math.round(src.height * s); cv.getContext("2d").drawImage(src, 0, 0, cv.width, cv.height); src.close && src.close(); bmp = cv; }
+    else bmp = src;
+  } catch (e) { bmp = null; }
+  bmpCache.set(key, bmp); return bmp;
+}
+function wrapLines(ctx, text, maxW, one) {
+  const out = [];
+  for (const para of String(text).split("\n")) {
+    if (one) { out.push(para); continue; }
+    const words = para.split(/(\s+)/); let line = "";
+    for (const w of words) {
+      const test = line + w;
+      if (ctx.measureText(test).width > maxW && line.trim()) { out.push(line.trimEnd()); line = w.trimStart(); }
+      else line = test;
+    }
+    out.push(line);
+  }
+  return out;
+}
+function drawText(ctx, el, bx, k) {
+  let txt = el.innerText.replace(/\n$/, ""); if (!txt.trim()) return;
+  const cs = getComputedStyle(el), fsMM = mmv(el.style.fontSize) || (parseFloat(cs.fontSize) / MM), fpx = fsMM * k;
+  const cfs = parseFloat(cs.fontSize) || 1;
+  if (cs.textTransform === "uppercase") txt = txt.toUpperCase();
+  ctx.save();
+  ctx.font = `${cs.fontStyle} ${cs.fontWeight} ${fpx}px ${cs.fontFamily}`;
+  if ("letterSpacing" in ctx) ctx.letterSpacing = (cs.letterSpacing === "normal" ? 0 : parseFloat(cs.letterSpacing) / cfs * fpx) + "px";
+  ctx.fillStyle = cs.color; ctx.globalAlpha = parseFloat(cs.opacity) || 1;
+  if (cs.textShadow && cs.textShadow !== "none") { ctx.shadowColor = "rgba(0,0,0,.45)"; ctx.shadowBlur = 4 * k; }
+  const lh = (cs.lineHeight === "normal" ? 1.2 : parseFloat(cs.lineHeight) / cfs) * fpx;
+  const al = cs.textAlign === "center" ? "center" : (cs.textAlign === "right" || cs.textAlign === "end") ? "right" : "left";
+  ctx.textAlign = al; ctx.textBaseline = "alphabetic";
+  const x0 = bx.x * k, w = bx.w * k, lines = wrapLines(ctx, txt, w + 1, el.classList.contains("one") || el.classList.contains("s-pcap"));
+  const m = ctx.measureText("Hg"), asc = m.fontBoundingBoxAscent || fpx * .8, dsc = m.fontBoundingBoxDescent || fpx * .2;
+  const tx = al === "center" ? x0 + w / 2 : al === "right" ? x0 + w : x0;
+  let y0 = bx.y * k;
+  if (el.classList.contains("s-pcap")) y0 = bx.y * k + Math.max(0, (bx.h * k - lh) / 2);
+  lines.forEach((ln, i) => ctx.fillText(ln, tx, y0 + i * lh + (lh - (asc + dsc)) / 2 + asc));
+  ctx.restore();
+}
+async function drawSlot(ctx, slot, bx, k, pageObj) {
+  const img = slot.querySelector("img"); if (!img) return;
+  const s = pageObj.s[+slot.dataset.i]; if (!s) return;
+  const im = IMG.get(s.img); if (!im) return;
+  const w = bx.w * k, h = bx.h * k, z = s.z || 1;
+  const sc = Math.max(w / im.w, h / im.h) * z;
+  const bmp = await photoBitmap(s.img, Math.ceil(Math.max(im.w, im.h) * sc * 1.02)); if (!bmp) return;
+  const dw = im.w * Math.max(w / im.w, h / im.h), dh = im.h * Math.max(w / im.w, h / im.h);
+  const px = bx.x * k, py = bx.y * k, ox = (w - dw) * s.x / 100, oy = (h - dh) * s.y / 100, ax = w * s.x / 100, ay = h * s.y / 100;
+  ctx.save(); rrPath(ctx, px, py, w, h, radOf(slot, k, w)); ctx.clip();
+  ctx.drawImage(bmp, px + ax + (ox - ax) * z, py + ay + (oy - ay) * z, dw * z, dh * z);
+  ctx.restore();
+}
+async function drawPageCanvas(pageEl, pageObj, idx, k, B) {
+  const W = (210 + 2 * B) * k, H = (297 + 2 * B) * k;
+  const cv = document.createElement("canvas"); cv.width = Math.round(W); cv.height = Math.round(H);
+  const ctx = cv.getContext("2d");
+  ctx.fillStyle = pageEl.style.background || "#fff"; ctx.fillRect(0, 0, cv.width, cv.height);
+  ctx.translate(B * k, B * k);
+  const trim = pageEl.querySelector(".trim");
+  for (const el of trim.children) {
+    const c = el.classList;
+    if (c.contains("folio")) {
+      const cs = getComputedStyle(el); ctx.save(); ctx.font = `600 ${7 * 25.4 / 72 * k}px ${cs.fontFamily}`; ctx.fillStyle = cs.color; ctx.globalAlpha = parseFloat(cs.opacity) || 1;
+      const right = pageEl.classList.contains("R"); ctx.textAlign = right ? "right" : "left"; ctx.fillText(el.textContent, (right ? 196 : 14) * k, (297 - 8) * k); ctx.restore(); continue;
+    }
+    const bx = boxOf(el, 210, 297), tr = trOf(el);
+    if (c.contains("art") || c.contains("deco") || c.contains("mapw")) {
+      const svg = el.querySelector("svg"); if (!svg) continue;
+      const im = await svgImage(svg, bx.w * k, bx.h * k); if (!im) continue;
+      withTr(ctx, k, bx, tr, () => ctx.drawImage(im, bx.x * k, bx.y * k, bx.w * k, bx.h * k));
+    } else if (c.contains("rc")) {
+      const cs = el.style; withTr(ctx, k, bx, tr, () => {
+        ctx.globalAlpha = parseFloat(cs.opacity || 1);
+        rrPath(ctx, bx.x * k, bx.y * k, bx.w * k, bx.h * k, radOf(el, k, bx.w * k));
+        if (cs.backgroundColor && cs.backgroundColor !== "transparent" && cs.backgroundColor !== "rgba(0, 0, 0, 0)") { ctx.fillStyle = cs.backgroundColor; ctx.fill(); }
+        if (cs.borderWidth) { ctx.lineWidth = (mmv(cs.borderWidth) || .4) * k; ctx.strokeStyle = cs.borderColor; ctx.stroke(); }
+      });
+    } else if (c.contains("lines")) {
+      const n = +el.style.getPropertyValue("--n") || 8, col = el.style.getPropertyValue("--lc") || "#000";
+      ctx.save(); ctx.globalAlpha = .35; ctx.fillStyle = col.trim();
+      for (let i = 1; i <= n; i++) ctx.fillRect(bx.x * k, (bx.y + bx.h * i / n - .3) * k, bx.w * k, .3 * k);
+      ctx.restore();
+    } else if (c.contains("fr")) {
+      const pol = c.contains("fr-polaroid") || c.contains("fr-border"), cb = c.contains("fr-circleb");
+      ctx.save();
+      if (tr.rot) { const cx = (bx.x + bx.w / 2) * k, cy = (bx.y + bx.h / 2) * k; ctx.translate(cx, cy); ctx.rotate(tr.rot * Math.PI / 180); ctx.translate(-cx, -cy); }
+      if (pol) { ctx.save(); ctx.shadowColor = "rgba(0,0,0,.2)"; ctx.shadowBlur = 2.2 * k; ctx.shadowOffsetY = .5 * k; ctx.fillStyle = "#fff"; ctx.fillRect(bx.x * k, bx.y * k, bx.w * k, bx.h * k); ctx.restore(); }
+      if (cb) { ctx.fillStyle = getComputedStyle(el).backgroundColor; ctx.beginPath(); ctx.ellipse((bx.x + bx.w / 2) * k, (bx.y + bx.h / 2) * k, bx.w / 2 * k, bx.h / 2 * k, 0, 0, Math.PI * 2); ctx.fill(); }
+      for (const ch of el.children) {
+        const cb2 = boxOf(ch, bx.w, bx.h); cb2.x += bx.x; cb2.y += bx.y;
+        if (ch.classList.contains("slot")) await drawSlot(ctx, ch, cb2, k, pageObj);
+        else if (ch.classList.contains("tx")) drawText(ctx, ch, cb2, k);
+      }
+      ctx.restore();
+    } else if (c.contains("tx")) {
+      withTr(ctx, k, bx, tr, () => drawText(ctx, el, bx, k));
+    }
+  }
+  return cv;
+}
+const enc = new TextEncoder();
+function buildPDF(pages, wPt, hPt) {
+  const parts = [], offs = []; let pos = 0;
+  const add = x => { const b = typeof x === "string" ? enc.encode(x) : x; parts.push(b); pos += b.length; };
+  const obj = (n, body) => { offs[n] = pos; add(`${n} 0 obj\n`); body(); add(`\nendobj\n`); };
+  add("%PDF-1.4\n%\xE2\xE3\xCF\xD3\n");
+  const n = pages.length, kids = pages.map((_, i) => `${3 + i * 3} 0 R`).join(" ");
+  obj(1, () => add(`<< /Type /Catalog /Pages 2 0 R >>`));
+  obj(2, () => add(`<< /Type /Pages /Kids [${kids}] /Count ${n} >>`));
+  pages.forEach((p, i) => {
+    const po = 3 + i * 3, co = po + 1, io = po + 2, cs = `q ${wPt.toFixed(2)} 0 0 ${hPt.toFixed(2)} 0 0 cm /Im0 Do Q`;
+    obj(po, () => add(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${wPt.toFixed(2)} ${hPt.toFixed(2)}] /Resources << /XObject << /Im0 ${io} 0 R >> >> /Contents ${co} 0 R >>`));
+    obj(co, () => add(`<< /Length ${cs.length} >>\nstream\n${cs}\nendstream`));
+    obj(io, () => { add(`<< /Type /XObject /Subtype /Image /Width ${p.w} /Height ${p.h} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${p.jpg.length} >>\nstream\n`); add(p.jpg); add(`\nendstream`); });
+  });
+  const total = 3 + n * 3, xref = pos;
+  let x = `xref\n0 ${total}\n0000000000 65535 f \n`;
+  for (let i = 1; i < total; i++) x += String(offs[i]).padStart(10, "0") + " 00000 n \n";
+  add(x + `trailer\n<< /Size ${total} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`);
+  return new Blob(parts, { type: "application/pdf" });
+}
+async function makeDirectPDF(bleed, dpi) {
+  const k = dpi / 25.4;
+  busy("Pravim PDF… pripremam strane");
+  BLEED = bleed; render();
+  await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+  fitAll(); try { await document.fonts.ready; } catch (e) {}
+  const out = [];
+  try {
+    for (let i = 0; i < P.pages.length; i++) {
+      busy(`Pravim PDF… strana ${i + 1} od ${P.pages.length}`);
+      const el = $(`.page[data-id="${P.pages[i].id}"]`);
+      const cv = await drawPageCanvas(el, P.pages[i], i, k, bleed);
+      const blob = await new Promise(r => cv.toBlob(r, "image/jpeg", .92));
+      out.push({ jpg: new Uint8Array(await blob.arrayBuffer()), w: cv.width, h: cv.height });
+      cv.width = cv.height = 1;
+      await new Promise(r => setTimeout(r, 0));
+    }
+  } finally { bmpCache.clear(); BLEED = 0; render(); busy(false); }
+  const pt = 72 / 25.4;
+  return buildPDF(out, (210 + 2 * bleed) * pt, (297 + 2 * bleed) * pt);
+}
+function offerPDF(blob) {
+  const name = (P.name || "album").replace(/[^\p{L}\p{N} _-]/gu, "").trim().replace(/\s+/g, "_") + "_A4.pdf";
+  const file = new File([blob], name, { type: "application/pdf" });
+  const url = URL.createObjectURL(blob), mb = (blob.size / 1048576).toFixed(1);
+  const canShare = navigator.canShare && navigator.canShare({ files: [file] });
+  $("#dlgRoot").innerHTML = `<div class="ov" id="pdOv"><div class="dlg" style="max-width:480px" role="dialog" aria-label="PDF je spreman">
+    <h2>PDF je spreman</h2><p class="s">${esc(name)} · ${P.pages.length} ${plural(P.pages.length, "strana", "strane", "strana")} · ${mb} MB</p>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      ${canShare ? `<button class="b dark" id="pdShare" style="padding:12px">Pošalji (Viber, WhatsApp, mejl…)</button>` : ""}
+      <a class="b ${canShare ? "" : "dark"}" id="pdDl" href="${url}" download="${esc(name)}" style="padding:12px;text-align:center;text-decoration:none">Preuzmi PDF</a>
+      <a class="b" href="${url}" target="_blank" rel="noopener" style="padding:12px;text-align:center;text-decoration:none">Otvori i pregledaj</a>
+    </div>
+    <div class="acts"><button class="b" id="pdX">Zatvori</button></div></div></div>`;
+  $("#pdOv").onclick = e => { if (e.target.id === "pdOv" || e.target.id === "pdX") { $("#dlgRoot").innerHTML = ""; setTimeout(() => URL.revokeObjectURL(url), 60000); } };
+  const sh = $("#pdShare"); if (sh) sh.onclick = async () => { try { await navigator.share({ files: [file], title: name }); } catch (e) {} };
+}
+</script></body></html>
