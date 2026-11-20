@@ -2,12 +2,12 @@
 <html lang="sr-Latn-ME">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Album priča · studio</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#F7F5F1">
+<title>Album priča</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Lora:ital,wght@0,400;1,400;1,500&family=Pacifico&family=Bebas+Neue&family=Playfair+Display:wght@700;800&family=Oswald:wght@500;600&family=Fredoka:wght@400;600&family=Baloo+2:wght@500;800&family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Great+Vibes&family=Fraunces:opsz,wght@9..144,700&family=Caveat:wght@500;700&display=swap">
-<style id="pageSize">@page{size:210mm 297mm;margin:0}</style>
 <style>
 :root{
   --desk:#DAD6CF; --bar:#F7F5F1; --line:#CFC9BF; --ink:#22252B; --muted:#6E6A63; --btn:#22252B; --btn-ink:#F7F5F1;
@@ -154,6 +154,7 @@ button.prow{font:inherit;color:inherit;cursor:pointer}
 .prow b{flex:1}
 .prow small{color:var(--muted)}
 
+
 /* =========================================================
    STRANE ALBUMA (mm; boje i fontovi iz teme)
    ========================================================= */
@@ -202,95 +203,126 @@ button.prow{font:inherit;color:inherit;cursor:pointer}
 .slot.glue{background:transparent;border:.6mm dashed color-mix(in srgb,var(--t-ink) 60%,transparent)}
 .slot.glue.has{border:0}
 
+
+/* ---------- novi raspored uređivača ---------- */
+body{overflow:hidden}
+#bar{gap:8px}
+#bar .brand{margin-right:4px}
+#main{position:absolute;top:56px;left:0;right:0;bottom:0;display:flex}
+#side{width:184px;flex:none;background:var(--bar);border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
+#side .sh{display:flex;align-items:center;gap:8px;padding:12px 12px 8px;border-bottom:1px solid var(--line)}
+#side .sh b{font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+#side .sh .cnt{font-size:12px;color:var(--muted);margin-left:auto}
+#sideX{display:none}
+#thumbs{user-select:none;-webkit-user-select:none;flex:1;overflow-y:auto;padding:10px 12px 16px;display:flex;flex-direction:column;gap:10px;position:relative}
+.thb{position:relative;display:flex;gap:6px;align-items:flex-start;border-radius:6px;padding:4px;cursor:grab;user-select:none;-webkit-user-select:none}
+.thb.fixed{cursor:pointer}
+.thb:hover{background:var(--chip)}
+.thb.cur{background:var(--chip);box-shadow:inset 0 0 0 2px var(--ink)}
+.thb .no{font:700 11px var(--ui);color:var(--muted);width:20px;text-align:right;padding-top:2px;flex:none}
+.thb .tz{zoom:.155;pointer-events:none;box-shadow:0 1px 4px rgba(0,0,0,.2);flex:none}
+.thb .tz .page{box-shadow:none}
+.thb .hd{position:absolute;right:4px;top:4px;width:26px;height:26px;border-radius:6px;background:rgba(0,0,0,.55);color:#fff;font:700 13px/26px var(--ui);text-align:center;touch-action:none;display:none}
+.thb:not(.fixed) .hd{display:block}
+@media (hover:hover){.thb .hd{opacity:0}.thb:hover .hd{opacity:1}}
+.thb.dragging{opacity:.35}
+.insline{position:absolute;left:12px;right:12px;height:4px;border-radius:2px;background:var(--focus);pointer-events:none;z-index:5}
+.ghost{position:fixed;z-index:80;pointer-events:none;opacity:.85;transform:translate(-50%,-50%) rotate(-3deg);box-shadow:0 10px 30px rgba(0,0,0,.3);border-radius:4px;overflow:hidden}
+#side .sf{padding:10px 12px;border-top:1px solid var(--line)}
+#side .sf .b{width:100%;padding:10px}
+#canvas{flex:1;overflow:auto;position:relative;min-width:0}
+#spreads{display:flex;flex-direction:column;align-items:center;gap:26px;padding:24px 16px 140px}
+.holder{position:relative;display:flex;flex-direction:column;gap:6px;align-items:stretch}
+.ptb{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.ptb .pn{font:700 12px var(--ui);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-right:auto;white-space:nowrap}
+.ptb .b{padding:5px 10px;font-size:12.5px}
+.ptb select.b{padding:4px 6px}
+.ptb .del.armed{background:var(--warn);color:#fff;border-color:var(--warn)}
+.holder.cur .page{box-shadow:0 0 0 3px var(--focus),0 2px 14px rgba(0,0,0,.18)}
+.addbig{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:4px}
+.addbig .b{padding:12px 22px;font-size:15px}
+.slot img{cursor:pointer}
+.slot .ed{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.6);color:#fff;font:600 9pt var(--ui);padding:1.6mm 3mm;border-radius:10mm;display:none;pointer-events:none;white-space:nowrap}
+@media (hover:hover){.slot.has:hover .ed{display:block}}
+.slot.sm .ed{font-size:7pt;padding:1mm 2mm}
+.slot.over{box-shadow:inset 0 0 0 1.4mm var(--focus)}
+.fab{display:none}
+/* dijalog za izbor rasporeda */
+.picker{grid-template-columns:repeat(auto-fill,minmax(96px,1fr))}
+.pick.cur{border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 6px}
+/* uređivanje slike */
+.pe-ov{position:fixed;inset:0;background:#141416;z-index:60;display:flex;flex-direction:column;color:#fff}
+.pe-top{display:flex;align-items:center;gap:10px;padding:10px 14px}
+.pe-top b{font-size:15px}
+.pe-stage{flex:1;position:relative;overflow:hidden;touch-action:none;cursor:grab}
+.pe-stage:active{cursor:grabbing}
+.pe-stage img{position:absolute;max-width:none;user-select:none;-webkit-user-drag:none;pointer-events:none}
+.pe-frame{position:absolute;box-shadow:0 0 0 4000px rgba(20,20,22,.62);outline:2px solid #fff;pointer-events:none}
+.pe-frame::before,.pe-frame::after{content:"";position:absolute;inset:0;background:linear-gradient(to right,transparent 33.2%,rgba(255,255,255,.35) 33.3%,rgba(255,255,255,.35) 33.5%,transparent 33.6%,transparent 66.5%,rgba(255,255,255,.35) 66.6%,rgba(255,255,255,.35) 66.8%,transparent 66.9%)}
+.pe-frame::after{background:linear-gradient(to bottom,transparent 33.2%,rgba(255,255,255,.35) 33.3%,rgba(255,255,255,.35) 33.5%,transparent 33.6%,transparent 66.5%,rgba(255,255,255,.35) 66.6%,rgba(255,255,255,.35) 66.8%,transparent 66.9%)}
+.pe-bot{padding:12px 14px calc(14px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:10px;background:#1E1F22}
+.pe-zoom{display:flex;align-items:center;gap:10px;font-size:13px}
+.pe-zoom input{flex:1;accent-color:#fff}
+.pe-acts{display:flex;gap:8px;flex-wrap:wrap}
+.pe-acts .b{background:#2A2B2F;color:#fff;border-color:#3A3B40}
+.pe-acts .b.dark{background:#fff;color:#141416;border-color:#fff;margin-left:auto;padding:9px 22px}
+.pe-hint{font-size:12px;color:#A39F98}
+@media (max-width:760px){.pe-hint{display:none}}
+.pe-dpi{font-size:12px;color:#F2B28F}
 @media (max-width:760px){
   html,body{max-width:100vw;overflow-x:hidden}
-  #bar{overflow-x:auto;overflow-y:hidden;gap:6px;padding:0 8px;scrollbar-width:none}
-  #bar .brand,#bar .sep{display:none}
-  #bar input.name{width:120px;flex:none}
-  #bar .b{padding:6px 9px}
+  #bar{overflow-x:auto;padding:0 8px;scrollbar-width:none}
+  #bar .brand,#bar .sep,#undoBtn{display:none}
+  #bar input.name{width:130px;flex:none}
+  #side{position:fixed;left:0;top:56px;bottom:0;z-index:30;width:200px;transform:translateX(-102%);transition:transform .2s;box-shadow:6px 0 24px rgba(0,0,0,.2)}
+  #side.open{transform:none}
+  #sideX{display:inline-block;margin-left:6px}
+  #side .sh .cnt{margin-left:auto}
+  .fab{display:block;position:fixed;left:12px;bottom:calc(14px + env(safe-area-inset-bottom));z-index:25;background:var(--btn);color:var(--btn-ink);border:0;border-radius:24px;padding:12px 18px;font-weight:700;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+  #spreads{padding:16px 8px 120px}
   #home .in{padding:24px 14px 60px}
-  #home h1{font-size:30px}
+  #home h1{font-size:32px}
   .albums{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
   .ov{padding:8px;align-items:flex-start}
   .dlg{padding:16px 14px;max-height:calc(100% - 16px)}
   .themes{grid-template-columns:repeat(3,minmax(0,1fr))}
   .picker{grid-template-columns:repeat(3,minmax(0,1fr))!important}
-  .form .r,.form .r3{grid-template-columns:1fr}
-  .form .r3 label{grid-column:auto!important}
+  .form .r{grid-template-columns:1fr}
   .dlg .acts{position:sticky;bottom:-16px;background:var(--bar);padding:10px 0;margin-bottom:-16px}
-  #spreads{padding:70px 8px 120px;gap:70px}
-  .spread{flex-direction:column;gap:70px}
-  .holder.empty{display:none}
-  .addbtw{display:none}
-  #toast{left:8px;right:8px;transform:none;bottom:10px}
-  #tray{position:absolute;left:0;top:0;bottom:0;z-index:20;transform:translateX(-100%);transition:transform .2s}
-  #tray.open{transform:none}
-  #bar .hide-s{display:none}
+  #toast{left:8px;right:8px;transform:none;bottom:70px}
 }
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
-
-/* štampa */
-@media print{
-  html,body{height:auto;overflow:visible;background:#fff}
-  #bar,#tray,#home,.ov,#toast,#busy,.page-tools,.addbtw,.spread .lbl,.warnbar,#popRoot,.addrow{display:none!important}
-  #main{position:static;display:block}
-  #canvas{overflow:visible}
-  #spreads{display:block;padding:0}
-  .spread{display:contents}
-  .holder.empty{display:none}
-  .pgz{zoom:1!important}
-  .page{box-shadow:none;break-after:page;page-break-after:always;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  .page.lastp{break-after:auto;page-break-after:auto}
-  .slot .hint,.slot .st,.slot .lr{display:none!important}
-  .slot:not(.has){background:transparent}
-  .slot.glue{border-color:transparent}
-  .tx[data-ph]:empty::before{content:none}
-  .tx{box-shadow:none!important}
-}
+@page{size:210mm 297mm;margin:0}
 </style>
 </head>
 <body>
 <div id="bar">
-  <button class="b sm" id="trayBtn">Slike</button>
   <div class="brand">Album <span>priča</span></div>
   <div class="sep"></div>
-  <button class="b" id="homeBtn">Svi albumi</button>
+  <button class="b" id="homeBtn">← Albumi</button>
   <input class="name" id="projName" aria-label="Naziv albuma" spellcheck="false">
-  <select class="b hide-s" id="themeSel" aria-label="Tema albuma"></select>
-  <button class="b hide-s" id="metaBtn">Podaci albuma</button>
+  <select class="b" id="themeSel" aria-label="Stil albuma" title="Stil albuma (boje, slova, ukrasi)"></select>
   <div class="grow"></div>
-  <button class="count" id="count"></button>
-  <button class="b hide-s" id="zoomOut" aria-label="Umanji">−</button>
-  <button class="b hide-s" id="zoomIn" aria-label="Uvećaj">+</button>
-  <button class="b" id="addPageBtn">+ Strana</button>
-  <button class="b hide-s" id="backupBtn">Sačuvaj kopiju</button>
+  <button class="b" id="undoBtn" title="Vrati posljednju izmjenu (Ctrl+Z)">↶ Vrati</button>
   <button class="b dark" id="printBtn">PDF za štampu</button>
 </div>
 <div id="main">
-  <aside id="tray">
-    <div class="th">
-      <div class="row"><h3>Moje slike</h3><div class="grow"></div><span class="hint" id="imgCount"></span></div>
-      <button class="b dark" id="addImgBtn">+ Dodaj slike</button>
-      <div class="row">
-        <select class="b sm" id="sortSel" style="flex:1" aria-label="Redoslijed slika"><option value="date">Po datumu</option><option value="name">Po nazivu</option><option value="added">Kako su dodate</option></select>
-        <label class="hint" style="display:flex;gap:4px;align-items:center;white-space:nowrap"><input type="checkbox" id="unusedOnly"> nove</label>
-      </div>
-      <button class="b" id="autoBtn">Složi automatski</button>
-    </div>
+  <aside id="side">
+    <div class="sh"><b>Strane</b><span class="cnt" id="count"></span><button class="b sm" id="sideX">Zatvori</button></div>
     <div id="thumbs"></div>
+    <div class="sf"><button class="b dark" id="addPageBtn">+ Dodaj stranu</button></div>
   </aside>
   <section id="canvas"><div id="spreads"></div></section>
 </div>
+<button class="fab" id="sideBtn">☰ Strane</button>
 
 <div id="home" class="hidden"><div class="in">
-  <h1>Album <em>priča</em> studio</h1>
-  <p class="lead">Napravi album za putovanje, bebu, rođendan, vjenčanje ili porodicu. Izabereš stil i broj slika, program složi kolaž strane, ti ubaciš slike i izvezeš PDF u A4 formatu spreman za štampariju.</p>
-  <div class="hacts"><button class="b" id="libBtn">Kolaži i teme</button><button class="b" id="restoreBtn">Otvori kopiju (.album)</button></div>
+  <h1>Album <em>priča</em></h1>
+  <p class="lead">Napravi album stranu po stranu: izabereš izgled strane, ubaciš slike i namjestiš ih. Na kraju preuzmeš PDF u A4 formatu i pošalješ štampariji.</p>
   <div class="albums" id="albums"></div>
+  <p class="lead" style="margin-top:30px;font-size:13px"><button class="b sm" id="restoreBtn">Otvori kopiju albuma (.album)</button> <button class="b sm" id="packBtn">Dodaj nove kolaže (.kolaz)</button></p>
 </div></div>
 
-<input type="file" id="fileImgs" accept="image/*" multiple hidden>
-<input type="file" id="fileOne" accept="image/*" hidden>
 <input type="file" id="fileMany" accept="image/*" multiple hidden>
 <input type="file" id="fileBackup" accept=".album,application/json" hidden>
 <input type="file" id="filePack" accept=".kolaz,.json,application/json" multiple hidden>
@@ -745,6 +777,7 @@ L("bk3", "Slika do ivice", U, "back", [ph(0, 0, 210, 297, { r: 0 })], { nofolio:
 L("bk4", "Mali tekst dole", U, "back", [tx("bt", "script", 16, 250, 178, 16, { al: "center", fs: 20, def: "{title}" }), tx("bd", "label", 16, 270, 178, 7, { al: "center", fs: 8, def: "{date}" })], { nofolio: 1, help: "Samo natpis na dnu" });
 L("bk5", "Tri slike u redu", U, "back", [ph(14, 96, 58, 80, { r: 0 }), ph(76, 96, 58, 80, { r: 0 }), ph(138, 96, 58, 80, { r: 0 }), tx("bt", "script", 16, 196, 178, 16, { al: "center", fs: 20, def: "{title}" }), tx("bd", "label", 16, 216, 178, 7, { al: "center", fs: 8, def: "{date}" })], { nofolio: 1, help: "Tri male slike + natpis" });
 L("bk6", "Četiri slike", U, "back", [ph(14, 14, 89, 125, { r: 0 }), ph(107, 14, 89, 125, { r: 0 }), ph(14, 143, 89, 125, { r: 0 }), ph(107, 143, 89, 125, { r: 0 }), tx("bt", "label", 16, 276, 178, 7, { al: "center", fs: 8, def: "{title} · {date}" })], { nofolio: 1, help: "Mreža 2 × 2 + natpis" });
+
 </script><script>
 "use strict";
 /* ======================================================================
@@ -834,12 +867,6 @@ const isGridEdge = p => { const L = LAY(p.l); return L.grid && (VAR[p.v] || VAR.
 function covIdx(idx) { const n = P.pages.length; if (!P.opts.covers || !n) return ""; if (idx === 0) return "front"; if (idx === n - 1 && n > 1) return "back"; return ""; }
 function insertPos() { const n = P.pages.length; return P.opts.covers && n > 1 ? n - 1 : n; }
 
-function touch(structural) {
-  P.updated = Date.now();
-  clearTimeout(saveTimer); saveTimer = setTimeout(() => save("projects", P), 500);
-  if (structural) render();
-  updateCount();
-}
 function snapshot() { undoStack.push(JSON.stringify(P.pages)); if (undoStack.length > 40) undoStack.shift(); }
 function undo() { const s = undoStack.pop(); if (!s) return; P.pages = JSON.parse(s); touch(true); toast("Vraćeno."); }
 
@@ -918,17 +945,6 @@ const DEF_FS = { display: 40, title: 24, script: 26, label: 7.5, body: 11, cap: 
 
 function slotDims(L, p) { return itemsOf(L, p).filter(i => i.t === "photo").map(i => { const p = FRAME_PAD[i.fr] || [0, 0, 0, 0]; return { w: i.w - p[1] - p[3], h: i.h - p[0] - p[2], glue: i.fr === "glue" }; }); }
 function dpiOf(sl, wmm, hmm) { const im = IMG.get(sl.img); if (!im) return 999; const s = Math.max(wmm / im.w, hmm / im.h) * (sl.z || 1); return 25.4 / s; }
-
-function S(p, i, style, cls, wmm, hmm) {
-  const sl = p.s[i], im = sl && IMG.get(sl.img), glue = cls.includes("glue");
-  let inner;
-  if (im) {
-    const dpi = dpiOf(sl, wmm, hmm);
-    inner = `<img src="${im.prev}" data-id="${sl.img}" alt="" draggable="false" style="object-position:${sl.x}% ${sl.y}%;transform:scale(${sl.z});transform-origin:${sl.x}% ${sl.y}%">
-      <div class="st"><button data-a="zo" title="Umanji">−</button><button data-a="zi" title="Uvećaj">+</button><button data-a="rm" title="Izbaci sliku">×</button></div>${dpi < 150 ? `<div class="lr ${dpi < 100 ? "bad" : ""}" title="Slika je premala za ovaj okvir (${Math.round(dpi)} dpi). Za oštru štampu treba bar 150, idealno 300 dpi.">${Math.round(dpi)} dpi</div>` : ""}`;
-  } else inner = glue ? `<div class="hint">${CAM}<span>Za lijepljenje</span><small>ili prevuci sliku</small></div>` : `<div class="hint">${CAM}<span>Prevuci sliku</span><small>ili klikni</small></div>`;
-  return `<div class="slot ${cls} ${im ? "has" : ""} ${Math.min(wmm, hmm) < 40 ? "sm" : ""}" data-i="${i}" data-w="${wmm}" data-h="${hmm}" style="${style}">${inner}</div>`;
-}
 function textVal(p, it, idx) { return p.t[it.k] !== undefined ? p.t[it.k] : tok(it.def || "", idx); }
 
 function renderItem(it, p, idx, mir, c, si) {
@@ -986,7 +1002,7 @@ function renderPage(p, idx) {
   let h = "", si = 0;
   for (const it of itemsOf(L, p)) { h += renderItem(it, p, idx, mir, c, si); if (it.t === "photo") si++; }
   const last = P.pages.length - 1;
-  if (!L.nofolio && !isGridEdge(p) && P.opts.folio !== false && !covIdx(idx)) h += `<div class="folio">${String(idx + 1).padStart(2, "0")}</div>`;
+  if (!L.nofolio && !isGridEdge(p) && P.opts.folio !== false && !covIdx(idx)) h += `<div class="folio">${String(P.opts.covers ? idx : idx + 1).padStart(2, "0")}</div>`;
   return `<div class="page ${side} ${bgk === "dark" ? "ondark" : ""} ${idx === last ? "lastp" : ""}" data-id="${p.id}" style="width:${210 + 2 * BLEED}mm;height:${297 + 2 * BLEED}mm;background:${c[bgk] || c.paper}"><div class="trim" style="left:${BLEED}mm;top:${BLEED}mm">${h}</div></div>`;
 }
 function themeVars(t = TH()) {
@@ -995,79 +1011,11 @@ function themeVars(t = TH()) {
     "--fd": f.d || "Inter,sans-serif", "--fdw": f.dw || 700, "--fdc": f.dc || "none", "--fdl": f.dl || "0", "--fdi": f.di || "normal", "--fb": f.b || "Lora,serif", "--fbi": f.bi || "italic", "--fs": f.s || "Caveat,cursive" };
   return Object.entries(v).map(([k, x]) => `${k}:${x}`).join(";");
 }
-function computeZoom() {
-  const narrow = innerWidth <= 760, cw = $("#canvas").clientWidth - (narrow ? 16 : 128), ch = $("#canvas").clientHeight - 110;
-  const fit = narrow ? Math.min(1, cw / (210 * MM)) : Math.min(1, cw / (2 * 210 * MM + 2), ch / (297 * MM));
-  return Math.max(.16, fit * zoomF);
-}
-function render() {
-  if (!P) return;
-  const sp = $("#spreads");
-  sp.setAttribute("style", themeVars() + `;--z:${BLEED ? 1 : computeZoom()}`);
-  const pages = P.pages, rows = pages.length ? [[null, 0]] : [];
-  for (let i = 1; i < pages.length; i += 2) rows.push([i, i + 1 < pages.length ? i + 1 : null]);
-  let html = pages.length ? "" : `<div class="empty-tray" style="max-width:420px;margin:40px auto">Album još nema strana. Klikni „+ Nova strana”, izaberi raspored i ubaci slike.</div>`;
-  const lab = i => covIdx(i) === "front" ? "Prednja korica" : covIdx(i) === "back" ? "Zadnja korica" : "Strana " + (i + 1);
-  rows.forEach((r, ri) => {
-    html += `<div class="spread"><div class="lbl">${ri === 0 ? `<span></span><span>${lab(0)}</span>` : `<span>${r[0] !== null ? lab(r[0]) : ""}</span><span>${r[1] !== null ? lab(r[1]) : ""}</span>`}</div>`;
-    r.forEach((idx, k) => {
-      const side = k === 0 ? "left" : "right";
-      if (idx === null) { html += `<div class="holder empty ${side}"><div class="pgz"><div class="page" style="width:210mm;height:297mm;box-shadow:none;background:transparent"></div></div></div>`; return; }
-      html += `<div class="holder ${side}" data-idx="${idx}">${BLEED ? "" : tools(pages[idx], idx)}<div class="pgz">${renderPage(pages[idx], idx)}</div>${!BLEED && covIdx(idx) !== "back" ? `<button class="addbtw" data-add="${idx}" title="Dodaj stranu poslije ove">+</button>` : ""}</div>`;
-    });
-    html += `</div>`;
-  });
-  if (!BLEED) html += `<div class="addrow"><button class="b dark" id="addEnd">+ Nova strana</button></div>`;
-  sp.innerHTML = html;
-  const ae = $("#addEnd"); if (ae) ae.onclick = () => openPicker(insertPos());
-  requestAnimationFrame(fitAll);
-  renderTray(); updateCount();
-}
-function layoutOptions(p) {
-  const L = LAY(p.l), all = Object.values(REG.layouts);
-  if (L.kind === "cover" || L.kind === "back") return [[L.kind === "cover" ? "Korice" : "Zadnja korica", all.filter(x => x.kind === L.kind)]];
-  const av = all.filter(x => x.kind !== "cover" && x.kind !== "back" && (okCat(x, P.cat) || x.id === p.l));
-  const groups = [];
-  const counts = [...new Set(av.filter(x => x.kind === "photo").map(x => x.slots))].sort((a, b) => a - b);
-  for (const n of counts) groups.push([`${n} ${plural(n, "slika", "slike", "slika")}`, av.filter(x => x.kind === "photo" && x.slots === n)]);
-  groups.push(["Posebne strane", av.filter(x => x.kind !== "photo")]);
-  return groups;
-}
-function tools(p, idx) {
-  const L = LAY(p.l), fixed = !!covIdx(idx);
-  const lb = covIdx(idx) === "front" ? "Prednja korica" : covIdx(idx) === "back" ? "Zadnja korica" : "Strana " + (idx + 1);
-  let o = `<div class="page-tools"><span class="tname" title="${esc(L.name)}">${lb}</span>`;
-  o += `<button class="b dark" data-act="pick">${fixed ? "Dizajn korice" : "Dizajn strane"}</button>`;
-  if (L.grid) o += `<select class="b" data-act="var" aria-label="Margine">${Object.entries(VAR).map(([k, v]) => `<option value="${k}" ${k === p.v ? "selected" : ""}>${v.short}</option>`).join("")}</select>`;
-  if (L.slots) o += `<button class="b" data-act="fill">Ubaci slike</button>`;
-  const bgk = p.bg || "";
-  if (!L.grid) o += `<select class="b" data-act="bg" aria-label="Pozadina" title="Pozadina strane"><option value="" ${!bgk ? "selected" : ""}>Pozadina</option>${[["paper", "Papir"], ["bg", "Boja teme"], ["soft", "Svijetla"], ["dark", "Tamna"]].map(([k, v]) => `<option value="${k}" ${bgk === k ? "selected" : ""}>${v}</option>`).join("")}</select>`;
-  if (!L.grid && L.items.some(i => i.t === "deco" || i.t === "art")) o += `<button class="b ${p.nd ? "" : "on"}" data-act="deco" title="Uključi ili isključi ukrase teme">Ukrasi</button>`;
-  if (L.items.some(i => i.t === "map")) o += `<button class="b" data-act="meta">Lokacija</button>`;
-  if (!fixed) {
-    if (idx > 0 && !covIdx(idx - 1)) o += `<button class="b" data-act="up" title="Pomjeri unazad">←</button>`;
-    if (idx < P.pages.length - 1 && !covIdx(idx + 1)) o += `<button class="b" data-act="down" title="Pomjeri unaprijed">→</button>`;
-    o += `<button class="b" data-act="dup">Kopiraj</button><button class="b del" data-act="del">Obriši</button>`;
-  }
-  return o + `</div>`;
-}
 function fitText(el) {
   const base = +el.dataset.fs || 11; let fs = base, n = 0;
   el.style.fontSize = fs + "pt";
   while (n < 16 && (el.scrollHeight > el.clientHeight + 1 || el.scrollWidth > el.clientWidth + 1) && fs > base * .3) { fs *= .92; el.style.fontSize = fs.toFixed(2) + "pt"; n++; }
 }
-function fitAll() { $$("#spreads .tx").forEach(fitText); }
-function updateCount() {
-  if (!P) return;
-  const n = P.pages.length, ok = n % 4 === 0, el = $("#count");
-  el.className = "count" + (ok ? "" : " bad");
-  el.innerHTML = `<b>${n}</b> ${plural(n, "strana", "strane", "strana")}${ok ? "" : ` · dodaj još ${4 - n % 4}`}`;
-  el.title = ok ? "Broj strana je djeljiv sa 4, idealno za štampu i povez." : "Štamparije najčešće traže broj strana djeljiv sa 4. Klikni da dopuniš.";
-}
-
-/* ======================================================================
-   SLIKE
-   ====================================================================== */
 async function readExifDate(file) {
   try {
     if (!/jpe?g/i.test(file.type) && !/\.jpe?g$/i.test(file.name)) return null;
@@ -1097,284 +1045,13 @@ async function scaled(bmp, max, q = .86) {
   const cv = document.createElement("canvas"); cv.width = w; cv.height = h; cv.getContext("2d").drawImage(bmp, 0, 0, w, h);
   return await new Promise(r => cv.toBlob(r, "image/jpeg", q));
 }
-async function importFiles(files) {
-  const list = [...files].filter(f => f.type.startsWith("image/") || /\.(jpe?g|png|webp|heic|heif)$/i.test(f.name));
-  if (!list.length) return [];
-  const ids = []; let bad = 0;
-  for (let i = 0; i < list.length; i++) {
-    busy(`Ubacujem slike… ${i + 1} / ${list.length}`);
-    const f = list[i];
-    try {
-      const bmp = await createImageBitmap(f);
-      const prev = await scaled(bmp, 1800), thumb = await scaled(bmp, 380, .8);
-      const date = (await readExifDate(f)) || f.lastModified || Date.now();
-      const rec = { id: uid(), orig: f, prev, thumb, w: bmp.width, h: bmp.height, date, name: f.name, added: Date.now() + i };
-      bmp.close && bmp.close();
-      await save("images", rec);
-      IMG.set(rec.id, { prev: URL.createObjectURL(prev), thumb: URL.createObjectURL(thumb), w: rec.w, h: rec.h, date, name: f.name, added: rec.added });
-      P.images.push(rec.id); ids.push(rec.id);
-    } catch (e) { bad++; }
-  }
-  busy(false); touch(false); renderTray();
-  if (bad) toast(`${bad} ${plural(bad, "slika nije mogla", "slike nisu mogle", "slika nije moglo")} da se otvori. HEIC sa iPhone-a pretvori u JPG (Kamera → Formati → Najkompatibilnije).`);
-  else toast(`Dodato slika: ${ids.length}`);
-  return ids;
-}
 async function loadProjectImages() {
   for (const u of IMG.values()) { URL.revokeObjectURL(u.prev); URL.revokeObjectURL(u.thumb); }
   IMG.clear();
   for (const id of P.images) { const r = await load("images", id); if (!r) continue; IMG.set(id, { prev: URL.createObjectURL(r.prev), thumb: URL.createObjectURL(r.thumb), w: r.w, h: r.h, date: r.date, name: r.name, added: r.added || 0 }); }
   P.images = P.images.filter(id => IMG.has(id));
 }
-function usage() { const u = {}; for (const p of P.pages) for (const s of p.s || []) if (s && s.img) u[s.img] = (u[s.img] || 0) + 1; return u; }
-function sortedImages() {
-  const how = $("#sortSel").value, a = P.images.map(id => [id, IMG.get(id)]).filter(x => x[1]);
-  if (how === "date") a.sort((x, y) => x[1].date - y[1].date);
-  else if (how === "name") a.sort((x, y) => x[1].name.localeCompare(y[1].name, undefined, { numeric: true }));
-  else a.sort((x, y) => x[1].added - y[1].added);
-  return a;
-}
-function renderTray() {
-  const u = usage(), only = $("#unusedOnly").checked, items = sortedImages().filter(([id]) => !only || !u[id]);
-  $("#imgCount").textContent = P.images.length ? `${P.images.length} · ${Object.keys(u).length} u albumu` : "";
-  if (!P.images.length) { $("#thumbs").innerHTML = `<div class="empty-tray"><b style="color:var(--ink)">Ovdje prevuci slike</b><br>sa računara, ili klikni „+ Dodaj slike”.<br><br>Zatim ih prevuci u okvire ili klikni „Složi automatski”.</div>`; return; }
-  $("#thumbs").innerHTML = items.map(([id, im]) => `<div class="th-i ${u[id] ? "used" : ""}" draggable="true" data-id="${id}" title="${esc(im.name)} · ${im.w}×${im.h}"><img src="${im.thumb}" alt="">${u[id] ? `<span class="u">${u[id]}×</span>` : ""}<button class="x" data-rm="${id}" title="Ukloni iz albuma">×</button></div>`).join("") || `<div class="empty-tray">Sve slike su već u albumu.</div>`;
-}
-async function removeImage(id) {
-  for (const p of P.pages) (p.s || []).forEach((s, i) => { if (s && s.img === id) p.s[i] = null; });
-  P.images = P.images.filter(x => x !== id);
-  const u = IMG.get(id); if (u) { URL.revokeObjectURL(u.prev); URL.revokeObjectURL(u.thumb); }
-  IMG.delete(id);
-  const others = (await loadAll("projects")).filter(q => q.id !== P.id && q.images.includes(id));
-  if (!others.length) await remove("images", id);
-  touch(true);
-}
-function placeImage(pageId, i, imgId) { const p = P.pages.find(q => q.id === pageId); if (!p) return; snapshot(); p.s[i] = { img: imgId, x: 50, y: 50, z: 1 }; touch(true); }
-
-/* ======================================================================
-   AUTOMATSKO PRAVLJENJE ALBUMA
-   ====================================================================== */
-const DENS = { malo: [1, 2, 2, 1, 2, 3, 2, 1], srednje: [3, 4, 2, 3, 4, 1, 3, 2], puno: [4, 6, 5, 4, 3, 6, 5, 4] };
-const DENS_NAMES = { malo: "Malo slika po strani (veće slike)", srednje: "Srednje (2–4 po strani)", puno: "Puno slika po strani (4–6)" };
-function photoLayouts(cat) { const g = (REG.plans[cat] || {}).grid; return Object.values(REG.layouts).filter(l => (g ? l.kind === "grid" : l.kind === "photo") && okCat(l, cat)); }
-function pickLayout(k, cat, rot, prev) {
-  const all = photoLayouts(cat); let cands = [];
-  for (let kk = k; kk >= 1 && !cands.length; kk--) cands = all.filter(l => realSlots(l) === kk);
-  if (!cands.length) cands = all;
-  rot[k] = (rot[k] ?? (k * 3)) + 1;
-  let l = cands[rot[k] % cands.length];
-  if (prev && l.id === prev && cands.length > 1) { rot[k]++; l = cands[rot[k] % cands.length]; }
-  return l;
-}
-function planMiddle(n, cat, dens, pl, rot = {}) {
-  const pat = DENS[dens] || DENS.srednje, out = []; let rem = n, i = 0, since = 0, prev = null;
-  const br = pl && pl.breaker && REG.layouts[pl.breaker];
-  while (rem > 0) {
-    if (br && pl.every && since >= pl.every && rem > 3) { out.push(br.id); rem -= realSlots(br); since = 0; continue; }
-    const k = Math.min(pat[i % pat.length], rem), l = pickLayout(k, cat, rot, prev);
-    out.push(l.grid ? `${l.id}:${["m", "m", "b"][i % 3]}` : l.id); rem -= realSlots(l); prev = l.id; i++; since++;
-  }
-  return out;
-}
-function planAlbum(cat, n, dens, coverId) {
-  const pl = REG.plans[cat] || REG.plans._ || { pre: [], post: [] };
-  const pick = arr => (arr || []).filter(x => typeof x === "string" || !x.min || n >= x.min).map(x => typeof x === "string" ? x : x.l).filter(hasLay);
-  const pre = pick(pl.pre), post = pick(pl.post);
-  const used = [...pre, ...post].reduce((a, id) => a + realSlots(LAY(id)), 0);
-  const rot = {};
-  let mid = n > 0 ? planMiddle(Math.max(0, n - used), cat, dens, pl, rot) : (pl.grid ? ["ra1:b", "ra2r:m", "ra4g:m", "ra3l:m", "ra1:m", "ra6g:m", "ra2c:b", "ra4l:m"] : ["t3", "g4", "m3", "d2", "v1", "b4", "u2", "m5"]).filter(hasLay);
-  const total = () => (pl.grid ? 0 : 2) + pre.length + mid.length + post.length;
-  let guard = 0;
-  while (total() % 4 && guard++ < 10) {
-    let j = -1;
-    for (let q = mid.length - 1; q >= 0; q--) if (["photo", "grid"].includes(LAY(mid[q]).kind) && realSlots(LAY(mid[q])) >= 4) { j = q; break; }
-    if (j >= 0) { const k = realSlots(LAY(mid[j])), a = Math.floor(k / 2), v = String(mid[j]).split(":")[1], suf = v ? ":" + v : ""; mid.splice(j, 1, pickLayout(a, cat, rot).id + suf, pickLayout(k - a, cat, rot).id + suf); }
-    else post.push(pl.filler && hasLay(pl.filler) ? pl.filler : "biljeske");
-  }
-  if (pl.grid) return [...pre, ...mid, ...post];
-  return [coverId || "cover", ...pre, ...mid, ...post, "back"];
-}
-function bestFor(q, wantL) { let k = q.findIndex((x, i) => i < 4 && x.L === wantL); if (k < 0) k = 0; return q.splice(k, 1)[0]; }
-function autoArrange(silent) {
-  const u = usage();
-  const q = sortedImages().filter(([id]) => !u[id]).map(([id, im]) => ({ id, L: im.w >= im.h }));
-  if (!q.length) { if (!silent) toast("Nema neiskorišćenih slika. Dodaj slike pa probaj ponovo."); return; }
-  snapshot();
-  let filled = 0;
-  for (const p of P.pages) {
-    const dims = slotDims(LAY(p.l), p);
-    for (let i = 0; i < p.s.length; i++) if (!p.s[i] && q.length && !(dims[i] && dims[i].glue)) { const im = bestFor(q, dims[i] ? dims[i].w >= dims[i].h : true); p.s[i] = { img: im.id, x: 50, y: 50, z: 1 }; filled++; }
-  }
-  const out = [];
-  if (q.length) {
-    const ids = planMiddle(q.length, P.cat, P.opts.dens || "srednje", REG.plans[P.cat] || REG.plans._);
-    for (const id of ids) { const pg = newPage(id), dims = slotDims(LAY(id), pg); for (let i = 0; i < pg.s.length && q.length; i++) if (!dims[i].glue) { const im = bestFor(q, dims[i].w >= dims[i].h); pg.s[i] = { img: im.id, x: 50, y: 50, z: 1 }; } out.push(pg); }
-    let at = insertPos();
-    for (let i = insertPos() - 1; i >= (P.opts.covers ? 1 : 0); i--) if (["photo", "grid", "chapter"].includes(LAY(P.pages[i].l).kind)) { at = i + 1; break; }
-    P.pages.splice(at, 0, ...out);
-  }
-  touch(true);
-  const msg = `Ubačeno u okvire: ${filled}${out.length ? `, novih strana: ${out.length}` : ""}.`;
-  if (P.pages.length % 4) toast(msg + ` Broj strana nije djeljiv sa 4.`, { label: "Dopuni", fn: padTo4 });
-  else toast(msg, { label: "Poništi", fn: undo });
-}
-function padTo4() {
-  if (!P || P.pages.length % 4 === 0) return;
-  snapshot();
-  const pl = REG.plans[P.cat] || REG.plans._, fill = pl.filler && hasLay(pl.filler) ? pl.filler : "biljeske";
-  const opts = pl.grid ? ["ra1:m", "ra2r:m", "ra4g:m"] : [fill, "citat", "prica", "biljeske"].filter(hasLay);
-  let k = 0; while (P.pages.length % 4) P.pages.splice(insertPos(), 0, newPage(opts[k++ % opts.length]));
-  touch(true); toast("Dodate su strane na kraj albuma. Možeš im promijeniti raspored.", { label: "Poništi", fn: undo });
-}
-
-/* ======================================================================
-   INTERAKCIJA NA STRANAMA
-   ====================================================================== */
-let pendingSlot = null;
-function pageOf(el) { const pg = el.closest(".page"); return pg && P.pages.find(p => p.id === pg.dataset.id); }
-document.addEventListener("input", e => {
-  const el = e.target.closest && e.target.closest(".page [data-k]"); if (!el || !P) return;
-  const p = pageOf(el); if (!p) return;
-  p.t[el.dataset.k] = el.innerText.replace(/\n$/, "");
-  fitText(el); touch(false);
-});
-document.addEventListener("keydown", e => {
-  if ((e.metaKey || e.ctrlKey) && e.key === "p" && P) { e.preventDefault(); openExport(); }
-  if ((e.metaKey || e.ctrlKey) && e.key === "z" && P && !e.target.closest("[contenteditable],input,textarea")) { e.preventDefault(); undo(); }
-  if (e.key === "Escape") { closePop(); $("#dlgRoot").innerHTML = ""; }
-});
-document.addEventListener("paste", e => { const el = e.target.closest && e.target.closest("[contenteditable]"); if (!el) return; e.preventDefault(); document.execCommand("insertText", false, (e.clipboardData || window.clipboardData).getData("text/plain")); });
-
-$("#spreads").addEventListener("click", e => {
-  const add = e.target.closest("[data-add]"); if (add) { openPicker(+add.dataset.add + 1); return; }
-  const act = e.target.closest("[data-act]"); if (act && act.tagName === "BUTTON") { pageAction(act, +act.closest(".holder").dataset.idx); return; }
-  const st = e.target.closest(".st button");
-  if (st) {
-    const slot = st.closest(".slot"), p = pageOf(slot), i = +slot.dataset.i, s = p.s[i];
-    if (st.dataset.a === "rm") { snapshot(); p.s[i] = null; touch(true); return; }
-    s.z = Math.max(1, Math.min(3, +(s.z + (st.dataset.a === "zi" ? .1 : -.1)).toFixed(2)));
-    touch(true); return;
-  }
-  const hint = e.target.closest(".slot .hint");
-  if (hint) { const slot = hint.closest(".slot"), p = pageOf(slot), dims = slotDims(LAY(p.l), p), empty = p.s.filter((x, i) => !x && dims[i] && !dims[i].glue).length; pickFiles(empty > 1 ? { page: p.id, from: +slot.dataset.i } : { page: p.id, slot: +slot.dataset.i }); }
-});
-$("#spreads").addEventListener("change", e => {
-  const act = e.target.closest("[data-act]"); if (!act) return;
-  const idx = +act.closest(".holder").dataset.idx, p = P.pages[idx];
-  snapshot();
-  if (act.dataset.act === "layout") {
-    const L = LAY(act.value), old = p.s.filter(Boolean);
-    p.l = L.id; p.s = Array.from({ length: L.slots }, (_, i) => old[i] || null);
-    if (old.length > L.slots) toast(`${old.length - L.slots} ${plural(old.length - L.slots, "slika je vraćena", "slike su vraćene", "slika je vraćeno")} u kolonu „Moje slike”.`, { label: "Poništi", fn: undo });
-  }
-  if (act.dataset.act === "bg") { if (act.value) p.bg = act.value; else delete p.bg; }
-  if (act.dataset.act === "var") { p.v = act.value; lastVar = act.value; }
-  touch(true);
-});
-function pageAction(btn, idx) {
-  const a = btn.dataset.act, p = P.pages[idx];
-  if (a === "del") {
-    if (!btn.classList.contains("armed")) { btn.classList.add("armed"); btn.textContent = "Sigurno?"; setTimeout(() => { btn.classList.remove("armed"); btn.textContent = "Obriši"; }, 3000); return; }
-    snapshot(); P.pages.splice(idx, 1); touch(true); toast("Strana obrisana.", { label: "Vrati", fn: undo }); return;
-  }
-  if (a === "up" || a === "down") { snapshot(); const j = a === "up" ? idx - 1 : idx + 1; [P.pages[idx], P.pages[j]] = [P.pages[j], P.pages[idx]]; touch(true); return; }
-  if (a === "dup") { snapshot(); const c = JSON.parse(JSON.stringify(p)); c.id = uid(); P.pages.splice(idx + 1, 0, c); touch(true); return; }
-  if (a === "deco") { snapshot(); p.nd = !p.nd; touch(true); return; }
-  if (a === "meta") { openMetaPop(btn); return; }
-  if (a === "pick") { openPicker(idx, p); return; }
-  if (a === "fill") { pickFiles({ page: p.id }); return; }
-}
-
-/* prevlačenje */
-$("#thumbs").addEventListener("dragstart", e => { const t = e.target.closest(".th-i"); if (!t) return; e.dataTransfer.setData("text/plain", "album:" + t.dataset.id); e.dataTransfer.effectAllowed = "copy"; });
-$("#thumbs").addEventListener("click", e => { const b = e.target.closest("[data-rm]"); if (b) removeImage(b.dataset.rm); });
-$("#spreads").addEventListener("dragstart", e => { const img = e.target.closest(".slot img"); if (img) e.preventDefault(); });
-$("#spreads").addEventListener("dragover", e => { const s = e.target.closest(".slot"); if (s) { e.preventDefault(); $$(".slot.over").forEach(x => x !== s && x.classList.remove("over")); s.classList.add("over"); } });
-$("#spreads").addEventListener("dragleave", e => { const s = e.target.closest(".slot"); if (s && !s.contains(e.relatedTarget)) s.classList.remove("over"); });
-$("#spreads").addEventListener("drop", async e => {
-  const s = e.target.closest(".slot"); if (!s) return; e.preventDefault(); s.classList.remove("over");
-  const p = pageOf(s), i = +s.dataset.i, txt = e.dataTransfer.getData("text/plain");
-  if (txt && txt.startsWith("album:")) { placeImage(p.id, i, txt.slice(6)); return; }
-  if (e.dataTransfer.files && e.dataTransfer.files.length) { const ids = await importFiles(e.dataTransfer.files); if (ids[0]) placeImage(p.id, i, ids[0]); }
-});
-const tray = $("#tray");
-tray.addEventListener("dragover", e => { if (e.dataTransfer.types.includes("Files")) { e.preventDefault(); $("#thumbs").classList.add("drag"); } });
-tray.addEventListener("dragleave", e => { if (!tray.contains(e.relatedTarget)) $("#thumbs").classList.remove("drag"); });
-tray.addEventListener("drop", e => { e.preventDefault(); $("#thumbs").classList.remove("drag"); if (e.dataTransfer.files.length) importFiles(e.dataTransfer.files); });
-window.addEventListener("dragover", e => { if (e.dataTransfer && e.dataTransfer.types.includes("Files")) e.preventDefault(); });
-window.addEventListener("drop", e => { if (!e.target.closest(".slot") && !e.target.closest("#tray")) { e.preventDefault(); if (e.dataTransfer.files.length && P && $("#home").classList.contains("hidden") && !$(".ov")) importFiles(e.dataTransfer.files); } });
-
-/* pomjeranje slike u okviru */
-let pan = null;
-$("#spreads").addEventListener("pointerdown", e => {
-  const img = e.target.closest(".slot img"); if (!img || e.button !== 0) return;
-  const slot = img.closest(".slot"), p = pageOf(slot), s = p.s[+slot.dataset.i], im = IMG.get(s.img), r = slot.getBoundingClientRect();
-  const sc = Math.max(r.width / im.w, r.height / im.h) * s.z;
-  pan = { img, s, x0: e.clientX, y0: e.clientY, sx: s.x, sy: s.y, ox: Math.max(1, im.w * sc - r.width), oy: Math.max(1, im.h * sc - r.height), moved: false };
-  img.setPointerCapture(e.pointerId); e.preventDefault();
-});
-$("#spreads").addEventListener("pointermove", e => {
-  if (!pan) return; const { s, img } = pan; pan.moved = true;
-  s.x = Math.max(0, Math.min(100, pan.sx - (e.clientX - pan.x0) / pan.ox * 100));
-  s.y = Math.max(0, Math.min(100, pan.sy - (e.clientY - pan.y0) / pan.oy * 100));
-  img.style.objectPosition = `${s.x}% ${s.y}%`; img.style.transformOrigin = `${s.x}% ${s.y}%`;
-});
-$("#spreads").addEventListener("pointerup", () => { if (pan) { pan.s.x = +pan.s.x.toFixed(1); pan.s.y = +pan.s.y.toFixed(1); const m = pan.moved; pan = null; if (m) touch(false); } });
-$("#spreads").addEventListener("wheel", e => {
-  const img = e.target.closest(".slot img"); if (!img || !(e.ctrlKey || e.altKey)) return;
-  e.preventDefault(); const slot = img.closest(".slot"), s = pageOf(slot).s[+slot.dataset.i];
-  s.z = Math.max(1, Math.min(3, +(s.z - e.deltaY * .002).toFixed(3))); img.style.transform = `scale(${s.z})`; touch(false);
-}, { passive: false });
-
-$("#fileOne").addEventListener("change", async e => { const f = e.target.files; if (!f.length || !pendingSlot) return; const ids = await importFiles(f); if (ids[0]) placeImage(pendingSlot.page, pendingSlot.i, ids[0]); pendingSlot = null; e.target.value = ""; });
-$("#fileImgs").addEventListener("change", async e => { await importFiles(e.target.files); e.target.value = ""; });
-$("#trayBtn").onclick = () => $("#tray").classList.toggle("open");
-$("#addImgBtn").onclick = () => $("#fileImgs").click();
-$("#sortSel").onchange = renderTray; $("#unusedOnly").onchange = renderTray;
-$("#autoBtn").onclick = () => autoArrange(false);
-$("#count").onclick = () => { if (P && P.pages.length % 4) padTo4(); };
-
-/* ======================================================================
-   POPOVER: PODACI ALBUMA
-   ====================================================================== */
-function closePop() { $("#popRoot").innerHTML = ""; }
-function placePop(btn, html) {
-  const r = btn.getBoundingClientRect();
-  $("#popRoot").innerHTML = `<div class="pop" style="left:${Math.max(8, Math.min(innerWidth - 320, r.right - 310))}px;top:${Math.min(r.bottom + 6, innerHeight - 200)}px">${html}</div>`;
-  setTimeout(() => document.addEventListener("pointerdown", function h(ev) { if (!ev.target.closest(".pop")) { closePop(); document.removeEventListener("pointerdown", h); } }), 0);
-  return $(".pop");
-}
 const placeOptions = () => Object.keys(MAPDATA.places).map(k => `<option value="${esc(k)}">`).join("");
-function openMetaPop(btn) {
-  const m = P.meta, L = m.loc || {};
-  const pop = placePop(btn, `<b>Podaci albuma</b><small style="color:var(--muted)">Upisuju se automatski u tekstove koje još nisi mijenjala.</small>
-    <label>Naslov<input id="mTitle" value="${esc(m.title)}"></label>
-    <label>Podnaslov<input id="mSub" value="${esc(m.sub)}"></label>
-    <div class="r"><label>Datum (tekst)<input id="mDate" value="${esc(m.date)}" placeholder="npr. jul 2026"></label><label>Godina<input id="mYear" value="${esc(m.year)}"></label></div>
-    <label>Ime / imena<input id="mName" value="${esc(m.name)}" placeholder="npr. Luka, ili Ana & Marko"></label>
-    ${P.cat === "putovanja" ? `<label>Destinacija<input id="mPlace" list="placesDL" value="${esc(m.place)}"></label><datalist id="placesDL">${placeOptions()}</datalist>
-    <label>Gradovi<input id="mCities" value="${esc(m.cities)}" placeholder="Atina · Santorini"></label>
-    <div class="r"><label>Geo. širina<input id="mLat" type="number" step="0.1" value="${L.lat ?? ""}"></label><label>Geo. dužina<input id="mLon" type="number" step="0.1" value="${L.lon ?? ""}"></label></div>` : ""}
-    <label class="ck"><input type="checkbox" id="mFolio" ${P.opts.folio !== false ? "checked" : ""}> Brojevi strana</label>
-    <button class="b dark" id="mOk">Sačuvaj</button>`);
-  const pl = $("#mPlace", pop);
-  if (pl) pl.addEventListener("input", e => { const v = MAPDATA.places[e.target.value]; if (v) { $("#mLat", pop).value = v[0]; $("#mLon", pop).value = v[1]; } });
-  $("#mOk", pop).onclick = () => {
-    Object.assign(m, { title: $("#mTitle", pop).value.trim(), sub: $("#mSub", pop).value.trim(), date: $("#mDate", pop).value.trim(), year: $("#mYear", pop).value.trim(), name: $("#mName", pop).value.trim() });
-    if (pl) {
-      m.place = pl.value.trim(); m.cities = $("#mCities", pop).value.split(/[,·]/).map(s => s.trim()).filter(Boolean).join(" · ");
-      const lat = parseFloat($("#mLat", pop).value), lon = parseFloat($("#mLon", pop).value);
-      if (!isNaN(lat) && !isNaN(lon) && Math.abs(lat) <= 90 && Math.abs(lon) <= 180) m.loc = { lat, lon, label: m.place }; else if (m.place) toast("Za pin na mapi izaberi mjesto sa spiska ili upiši koordinate (Google mape: desni klik na mjesto).");
-    }
-    P.opts.folio = $("#mFolio", pop).checked;
-    closePop(); touch(true);
-  };
-}
-$("#metaBtn").onclick = e => openMetaPop(e.currentTarget);
-
-/* ======================================================================
-   DODAVANJE STRANA (biblioteka kolaža)
-   ====================================================================== */
 function mini(L, v) {
   const cls = L.bg === "dark" ? "dk" : L.bg === "bg" ? "cl" : "";
   return `<div class="mini ${cls}">${itemsOf(L, { v }).map(it => {
@@ -1398,25 +1075,266 @@ function pickCard(l, btn = true, v) {
   const cats = (l.cats || ["*"]).includes("*") ? "" : (l.cats || []).map(catName).join(", ");
   return `<${btn ? `button class="pick" data-t="${l.id}"` : `div class="pick"`}>${mini(l, v)}<span>${esc(l.name)}</span><small>${esc(l.help || "")}${cats ? `<br><i>${esc(cats)}</i>` : ""}</small></${btn ? "button" : "div"}>`;
 }
-let lastVar = "m", pickTab = null;
+function coverCard(theme, title, cls = "") {
+  const t = REG.themes[theme] || Object.values(REG.themes)[0], f = t.f || {};
+  return `<div class="cv ${cls}">${t.cover}<div class="tt" style="color:${t.c.title};font-family:${f.d};font-weight:${f.dw};text-transform:${f.dc};letter-spacing:${f.dl}">${esc(title)}</div></div>`;
+}
+const b64 = blob => new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result); fr.readAsDataURL(blob); });
+/* ======================================================================
+   UREĐIVAČ (jednostavna verzija): strane jedna ispod druge,
+   panel strana sa prevlačenjem, prozor za namještanje slike.
+   ====================================================================== */
+let cur = -1;
+function touch(structural) { P.updated = Date.now(); clearTimeout(saveTimer); saveTimer = setTimeout(() => save("projects", P), 400); if (structural) render(); else updateCount(); }
+const isCovered = () => !!P.opts.covers;
+function pageLabel(idx) { const c = covIdx(idx); return c === "front" ? "Prednja korica" : c === "back" ? "Zadnja korica" : "Strana " + (isCovered() ? idx : idx + 1); }
+
+function S(p, i, style, cls, wmm, hmm) {
+  const sl = p.s[i], im = sl && IMG.get(sl.img), glue = cls.includes("glue");
+  let inner;
+  if (im) {
+    const dpi = dpiOf(sl, wmm, hmm);
+    inner = `<img src="${im.prev}" data-id="${sl.img}" alt="" draggable="false" style="object-position:${sl.x}% ${sl.y}%;transform:scale(${sl.z});transform-origin:${sl.x}% ${sl.y}%"><div class="ed">✎ Namjesti</div>${dpi < 150 ? `<div class="lr ${dpi < 100 ? "bad" : ""}" title="Slika je premala za ovaj okvir. Za oštru štampu treba bar 150, idealno 300 dpi.">${Math.round(dpi)} dpi</div>` : ""}`;
+  } else inner = `<div class="hint">${CAM}<span>${glue ? "Za lijepljenje" : "Dodaj sliku"}</span></div>`;
+  return `<div class="slot ${cls} ${im ? "has" : ""} ${Math.min(wmm, hmm) < 40 ? "sm" : ""}" data-i="${i}" data-w="${wmm}" data-h="${hmm}" style="${style}">${inner}</div>`;
+}
+
+/* ---------------- crtanje ---------------- */
+function computeZoom() { const cw = $("#canvas").clientWidth - 32; return Math.max(.2, Math.min(620, cw) / (210 * MM)); }
+function ptb(p, idx) {
+  const L = LAY(p.l), cv = covIdx(idx);
+  let o = `<div class="ptb"><span class="pn">${pageLabel(idx)}</span><button class="b dark" data-act="pick">${cv ? "Izgled korice" : "Izgled strane"}</button>`;
+  if (L.grid) o += `<select class="b" data-act="var" aria-label="Margine" title="Margine">${Object.entries(VAR).map(([k, v]) => `<option value="${k}" ${k === p.v ? "selected" : ""}>${v.short}</option>`).join("")}</select>`;
+  if (L.items.some(i => i.t === "map")) o += `<button class="b" data-act="loc">Lokacija</button>`;
+  if (cv !== "back") o += `<button class="b" data-act="below" title="Dodaj novu stranu odmah ispod ove">+ Strana ispod</button>`;
+  if (!cv) o += `<button class="b" data-act="dup" title="Napravi kopiju ove strane">Kopiraj</button><button class="b del" data-act="del">Obriši</button>`;
+  return o + `</div>`;
+}
+function render() {
+  if (!P) return;
+  const sp = $("#spreads"), vars = themeVars();
+  sp.setAttribute("style", vars + `;--z:${BLEED ? 1 : computeZoom()}`);
+  let h = "";
+  P.pages.forEach((p, idx) => { h += `<div class="holder ${idx === cur && !BLEED ? "cur" : ""}" data-idx="${idx}">${BLEED ? "" : ptb(p, idx)}<div class="pgz">${renderPage(p, idx)}</div></div>`; });
+  if (!BLEED) h += `<div class="addbig"><button class="b dark" id="addEnd">+ Dodaj stranu</button>${P.pages.length ? "" : `<span style="color:var(--muted)">Album je prazan. Dodaj prvu stranu.</span>`}</div>`;
+  sp.innerHTML = h;
+  const ae = $("#addEnd"); if (ae) ae.onclick = () => openPicker(insertPos());
+  if (!BLEED) renderThumbs(vars);
+  updateCount();
+  requestAnimationFrame(fitAll);
+}
+function renderThumbs(vars = themeVars()) {
+  const t = $("#thumbs"); t.setAttribute("style", vars);
+  t.innerHTML = P.pages.map((p, idx) => { const cv = covIdx(idx); return `<div class="thb ${cv ? "fixed" : ""} ${idx === cur ? "cur" : ""}" data-idx="${idx}"><span class="no">${cv ? (cv === "front" ? "K" : "Z") : (isCovered() ? idx : idx + 1)}</span><div class="tz">${renderPage(p, idx)}</div>${cv ? "" : `<span class="hd" title="Prevuci da premjestiš">⠿</span>`}</div>`; }).join("") || `<div class="empty-tray">Još nema strana.</div>`;
+  t.querySelectorAll("[contenteditable]").forEach(el => el.removeAttribute("contenteditable"));
+}
+function updateCount() { if (!P) return; const n = P.pages.length; $("#count").textContent = `${n} ${plural(n, "strana", "strane", "strana")}`; }
+function setCur(idx, scroll) {
+  cur = idx;
+  $$("#spreads .holder").forEach(h => h.classList.toggle("cur", +h.dataset.idx === idx));
+  $$("#thumbs .thb").forEach(h => h.classList.toggle("cur", +h.dataset.idx === idx));
+  if (scroll) { const el = $(`#spreads .holder[data-idx="${idx}"]`); el && el.scrollIntoView({ behavior: "smooth", block: "start" }); const th = $(`#thumbs .thb[data-idx="${idx}"]`); th && th.scrollIntoView({ block: "nearest" }); }
+}
+function fitAll() { $$("#spreads .tx").forEach(fitText); }
+let rT; window.addEventListener("resize", () => { clearTimeout(rT); rT = setTimeout(() => { if (P && !BLEED) { $("#spreads").style.setProperty("--z", computeZoom()); fitAll(); } }, 120); });
+
+/* ---------------- slike ---------------- */
+async function importFiles(files) {
+  const list = [...files].filter(f => f.type.startsWith("image/") || /\.(jpe?g|png|webp|heic|heif)$/i.test(f.name));
+  const ids = []; let bad = 0;
+  for (let i = 0; i < list.length; i++) {
+    busy(list.length > 1 ? `Ubacujem slike… ${i + 1} / ${list.length}` : "Ubacujem sliku…");
+    const f = list[i];
+    try {
+      const bmp = await createImageBitmap(f);
+      const prev = await scaled(bmp, 1800), thumb = await scaled(bmp, 380, .8);
+      const date = (await readExifDate(f)) || f.lastModified || Date.now();
+      const rec = { id: uid(), orig: f, prev, thumb, w: bmp.width, h: bmp.height, date, name: f.name, added: Date.now() + i };
+      bmp.close && bmp.close();
+      await save("images", rec);
+      IMG.set(rec.id, { prev: URL.createObjectURL(prev), thumb: URL.createObjectURL(thumb), w: rec.w, h: rec.h, date, name: f.name, added: rec.added });
+      P.images.push(rec.id); ids.push(rec.id);
+    } catch (e) { bad++; }
+  }
+  busy(false);
+  if (bad) toast(`${bad} ${plural(bad, "slika nije mogla", "slike nisu mogle", "slika nije moglo")} da se otvori. HEIC sa iPhone-a pretvori u JPG (Kamera → Formati → Najkompatibilnije).`);
+  return ids;
+}
+let pendingPick = null;
+function pickFiles(t) { pendingPick = t; const inp = $("#fileMany"); inp.multiple = t.slot === undefined; inp.value = ""; inp.click(); }
+$("#fileMany").addEventListener("change", async e => {
+  const t = pendingPick; pendingPick = null; if (!t || !e.target.files.length) return;
+  const ids = await importFiles(e.target.files); if (!ids.length) return;
+  snapshot(); placeIds(t, ids);
+});
+function bestFor(q, wantL) { let k = q.findIndex((x, i) => i < 4 && x.L === wantL); if (k < 0) k = 0; return q.splice(k, 1)[0]; }
+function placeIds(t, ids) {
+  const p = P.pages.find(x => x.id === t.page); if (!p) return;
+  const q = ids.map(id => ({ id, L: IMG.get(id).w >= IMG.get(id).h }));
+  if (t.slot !== undefined) { p.s[t.slot] = { img: q[0].id, x: 50, y: 50, z: 1 }; touch(true); return; }
+  const dims = slotDims(LAY(p.l), p);
+  let empt = p.s.map((x, i) => !x && dims[i] && !dims[i].glue ? i : -1).filter(i => i >= 0);
+  if (t.from !== undefined) empt = [t.from, ...empt.filter(i => i !== t.from)];
+  for (const i of empt) { if (!q.length) break; const im = bestFor(q, dims[i].w >= dims[i].h); p.s[i] = { img: im.id, x: 50, y: 50, z: 1 }; }
+  touch(true);
+  if (q.length) toast(`${q.length} ${plural(q.length, "slika nije stala", "slike nisu stale", "slika nije stalo")} na ovu stranu. Dodaj novu stranu za njih.`);
+}
+async function loadProjectImages() {
+  for (const u of IMG.values()) { URL.revokeObjectURL(u.prev); u.thumb && URL.revokeObjectURL(u.thumb); }
+  IMG.clear();
+  for (const id of P.images) { const r = await load("images", id); if (!r) continue; IMG.set(id, { prev: URL.createObjectURL(r.prev), thumb: r.thumb ? URL.createObjectURL(r.thumb) : null, w: r.w, h: r.h, date: r.date, name: r.name, added: r.added || 0 }); }
+  P.images = P.images.filter(id => IMG.has(id));
+  for (const p of P.pages) p.s = (p.s || []).map(s => s && IMG.has(s.img) ? s : null);
+}
+
+/* ---------------- klikovi na stranama ---------------- */
+function pageOf(el) { const pg = el.closest(".page"); return pg && P.pages.find(p => p.id === pg.dataset.id); }
+document.addEventListener("input", e => {
+  const el = e.target.closest && e.target.closest("#spreads .page [data-k]"); if (!el || !P) return;
+  const p = pageOf(el); if (!p) return;
+  p.t[el.dataset.k] = el.innerText.replace(/\n$/, ""); fitText(el); touch(false);
+  clearTimeout(window.__thT); window.__thT = setTimeout(() => renderThumbs(), 600);
+});
+document.addEventListener("paste", e => { const el = e.target.closest && e.target.closest("[contenteditable]"); if (!el) return; e.preventDefault(); document.execCommand("insertText", false, (e.clipboardData || window.clipboardData).getData("text/plain")); });
+let justDragged = false;
+$("#spreads").addEventListener("click", e => {
+  const holder = e.target.closest(".holder"); if (holder && +holder.dataset.idx !== cur) setCur(+holder.dataset.idx, false);
+  const act = e.target.closest("[data-act]");
+  if (act && act.tagName === "BUTTON") {
+    const idx = +act.closest(".holder").dataset.idx, p = P.pages[idx], a = act.dataset.act;
+    if (a === "pick") openPicker(idx, p);
+    else if (a === "below") openPicker(idx + 1);
+    else if (a === "loc") openLocPop(act);
+    else if (a === "dup") { snapshot(); const c = JSON.parse(JSON.stringify(p)); c.id = uid(); P.pages.splice(idx + 1, 0, c); cur = idx + 1; touch(true); toast("Strana je kopirana ispod.", { label: "Poništi", fn: undo }); }
+    else if (a === "del") {
+      if (!act.classList.contains("armed")) { act.classList.add("armed"); act.textContent = "Sigurno?"; setTimeout(() => { act.classList.remove("armed"); act.textContent = "Obriši"; }, 3000); return; }
+      snapshot(); P.pages.splice(idx, 1); cur = -1; touch(true); toast("Strana obrisana.", { label: "Vrati", fn: undo });
+    }
+    return;
+  }
+  if (justDragged) return;
+  const img = e.target.closest(".slot img");
+  if (img) { const slot = img.closest(".slot"); openPhotoEditor(pageOf(slot), +slot.dataset.i); return; }
+  const hint = e.target.closest(".slot .hint");
+  if (hint) { const slot = hint.closest(".slot"), p = pageOf(slot), dims = slotDims(LAY(p.l), p), empty = p.s.filter((x, i) => !x && dims[i] && !dims[i].glue).length; pickFiles(empty > 1 ? { page: p.id, from: +slot.dataset.i } : { page: p.id, slot: +slot.dataset.i }); }
+});
+$("#spreads").addEventListener("change", e => {
+  const act = e.target.closest("[data-act=var]"); if (!act) return;
+  const p = P.pages[+act.closest(".holder").dataset.idx]; snapshot(); p.v = act.value; lastVar = act.value; touch(true);
+});
+/* slika iz jednog okvira u drugi (miš) = zamjena mjesta */
+let sd = null;
+$("#spreads").addEventListener("pointerdown", e => {
+  const img = e.target.closest(".slot img"); if (!img || e.pointerType !== "mouse" || e.button !== 0) return;
+  const slot = img.closest(".slot"); sd = { slot, p: pageOf(slot), i: +slot.dataset.i, x0: e.clientX, y0: e.clientY, moved: false, src: img.src };
+  e.preventDefault();
+});
+window.addEventListener("pointermove", e => {
+  if (!sd) return;
+  if (!sd.moved && Math.hypot(e.clientX - sd.x0, e.clientY - sd.y0) < 8) return;
+  if (!sd.moved) { sd.moved = true; sd.g = document.createElement("div"); sd.g.className = "ghost"; sd.g.innerHTML = `<img src="${sd.src}" style="width:110px;height:80px;object-fit:cover;display:block">`; document.body.appendChild(sd.g); }
+  sd.g.style.left = e.clientX + "px"; sd.g.style.top = e.clientY + "px";
+  $$(".slot.over").forEach(x => x.classList.remove("over"));
+  const t = document.elementsFromPoint(e.clientX, e.clientY).find(el => el.classList && el.classList.contains("slot") && el.closest("#spreads"));
+  if (t && t !== sd.slot) t.classList.add("over");
+});
+window.addEventListener("pointerup", () => {
+  if (!sd) return; const d = sd; sd = null;
+  if (!d.moved) return;
+  d.g && d.g.remove();
+  const t = $("#spreads .slot.over"); $$(".slot.over").forEach(x => x.classList.remove("over"));
+  justDragged = true; setTimeout(() => justDragged = false, 50);
+  if (!t) return;
+  const p2 = pageOf(t), j = +t.dataset.i; snapshot();
+  const a = d.p.s[d.i], b = p2.s[j];
+  d.p.s[d.i] = b ? { img: b.img, x: 50, y: 50, z: 1 } : null; p2.s[j] = { img: a.img, x: 50, y: 50, z: 1 };
+  touch(true);
+});
+/* slike prevučene sa računara pravo u okvir */
+$("#spreads").addEventListener("dragover", e => { const s = e.target.closest(".slot"); if (s && e.dataTransfer.types.includes("Files")) { e.preventDefault(); $$(".slot.over").forEach(x => x !== s && x.classList.remove("over")); s.classList.add("over"); } });
+$("#spreads").addEventListener("dragleave", e => { const s = e.target.closest(".slot"); if (s && !s.contains(e.relatedTarget)) s.classList.remove("over"); });
+$("#spreads").addEventListener("drop", async e => {
+  const s = e.target.closest(".slot"); if (!s) return; e.preventDefault(); s.classList.remove("over");
+  const p = pageOf(s), i = +s.dataset.i, ids = await importFiles(e.dataTransfer.files); if (!ids.length) return;
+  snapshot(); if (ids.length === 1) placeIds({ page: p.id, slot: i }, ids); else { p.s[i] = null; placeIds({ page: p.id, from: i }, ids); }
+});
+window.addEventListener("dragover", e => { if (e.dataTransfer && e.dataTransfer.types.includes("Files")) e.preventDefault(); });
+window.addEventListener("drop", e => { if (!e.target.closest(".slot")) e.preventDefault(); });
+
+/* ---------------- panel strana: klik = idi na stranu, prevlačenje = premjesti ---------------- */
+let td = null;
+$("#thumbs").addEventListener("click", e => {
+  if (td && td.moved) return;
+  const t = e.target.closest(".thb"); if (!t) return;
+  setCur(+t.dataset.idx, true);
+  if (innerWidth <= 760) $("#side").classList.remove("open");
+});
+$("#thumbs").addEventListener("pointerdown", e => {
+  const t = e.target.closest(".thb"); if (!t || t.classList.contains("fixed")) return;
+  if (e.pointerType !== "mouse" && !e.target.closest(".hd")) return;
+  if (e.pointerType === "mouse" && e.button !== 0) return;
+  td = { t, from: +t.dataset.idx, x0: e.clientX, y0: e.clientY, moved: false };
+  try { t.setPointerCapture(e.pointerId); } catch (er) {}
+  e.preventDefault();
+});
+$("#thumbs").addEventListener("pointermove", e => {
+  if (!td) return;
+  if (!td.moved && Math.hypot(e.clientX - td.x0, e.clientY - td.y0) < 6) return;
+  const box = $("#thumbs");
+  if (!td.moved) {
+    td.moved = true; td.t.classList.add("dragging");
+    td.g = document.createElement("div"); td.g.className = "ghost"; td.g.style.background = "#fff"; td.g.style.cssText += themeVars().replace(/;/g, ";");
+    td.g.innerHTML = `<div style="zoom:.2">${renderPage(P.pages[td.from], td.from)}</div>`; document.body.appendChild(td.g);
+    td.line = document.createElement("div"); td.line.className = "insline"; box.appendChild(td.line);
+  }
+  td.g.style.left = e.clientX + "px"; td.g.style.top = e.clientY + "px";
+  const thbs = $$(".thb", box), r = box.getBoundingClientRect();
+  let to = thbs.filter(el => { const b = el.getBoundingClientRect(); return b.top + b.height / 2 < e.clientY; }).length;
+  to = Math.max(isCovered() ? 1 : 0, Math.min(insertPos(), to));
+  td.to = to;
+  const y = to < thbs.length ? thbs[to].offsetTop - 7 : thbs[thbs.length - 1].offsetTop + thbs[thbs.length - 1].offsetHeight + 3;
+  td.line.style.top = y + "px";
+  if (e.clientY < r.top + 40) box.scrollTop -= 12; else if (e.clientY > r.bottom - 40) box.scrollTop += 12;
+});
+function endThumbDrag() {
+  if (!td) return; const d = td;
+  setTimeout(() => { if (td === d) td = null; }, 30);
+  if (!d.moved) { td = null; return; }
+  d.g && d.g.remove(); d.line && d.line.remove(); d.t.classList.remove("dragging");
+  let to = d.to, from = d.from;
+  if (to === undefined || to === from || to === from + 1) return;
+  snapshot();
+  const [pg] = P.pages.splice(from, 1); if (to > from) to--; P.pages.splice(to, 0, pg);
+  cur = to; touch(true); setCur(to, true);
+  toast(`Strana je premještena na mjesto ${pageLabel(to).replace("Strana ", "")}.`, { label: "Poništi", fn: undo });
+}
+$("#thumbs").addEventListener("pointerup", endThumbDrag);
+$("#thumbs").addEventListener("pointercancel", endThumbDrag);
+$("#sideBtn").onclick = () => $("#side").classList.toggle("open");
+$("#sideX").onclick = () => $("#side").classList.remove("open");
+$("#addPageBtn").onclick = () => { const at = cur >= 0 && covIdx(cur) !== "back" ? cur + 1 : insertPos(); if (innerWidth <= 760) $("#side").classList.remove("open"); openPicker(at); };
+
+/* ---------------- izbor izgleda strane ---------------- */
+let lastVar = "m", pickTab = "ras";
 function openPicker(at, page) {
-  if (at === undefined) at = insertPos();
-  let all = false, v = page && page.v ? page.v : lastVar;
-  const cv = page ? covIdx(P.pages.indexOf(page)) : "";
-  let tab = cv ? "kor" : (pickTab && pickTab !== "kor" ? pickTab : (P.cat === "osnovno" || (page && LAY(page.l).grid) ? "ras" : "kol"));
+  const idx = page ? P.pages.indexOf(page) : -1, cv = page ? covIdx(idx) : "";
+  let v = page && page.v ? page.v : lastVar;
+  let tab = cv ? "kor" : pickTab;
   const grids = Object.values(REG.layouts).filter(l => l.kind === "grid");
   const draw = () => {
     const byN = {}; for (const l of grids) (byN[l.slots] = byN[l.slots] || []).push(l);
-    const cur = id => page && page.l === id ? "cur" : "";
-    $("#dlgRoot").innerHTML = `<div class="ov" id="pickOv"><div class="dlg" role="dialog" aria-label="Izaberi raspored">
-      <h2>${cv === "front" ? "Dizajn prednje korice" : cv === "back" ? "Dizajn zadnje korice" : page ? "Dizajn strane" : "Nova strana"}</h2><p class="s">${page ? "Slike koje su već na strani ostaju." : `Strana se dodaje na poziciju ${at + 1}. Kad izabereš raspored, odmah biraš slike sa računara.`}</p>
-      <div class="chips">${cv ? `<button class="chipb ${tab === "kor" ? "on" : ""}" data-tab="kor">${cv === "front" ? "Prednje korice" : "Zadnje korice"}</button>` : ""}<button class="chipb ${tab === "ras" ? "on" : ""}" data-tab="ras">Jednostavni rasporedi</button><button class="chipb ${tab === "kol" ? "on" : ""}" data-tab="kol">Kolaži sa ukrasima teme</button></div>
-      ${tab === "kor" ? `<div class="picker" style="margin-top:14px">${Object.values(REG.layouts).filter(l => l.kind === (cv === "front" ? "cover" : "back")).map(l => pickCard(l)).join("")}</div><p class="s" style="margin-top:12px">Za korice možeš izabrati i bilo koji jednostavni raspored ili kolaž (kartice gore).</p>` : tab === "ras" ? `<div class="chips" style="margin-top:10px">${Object.entries(VAR).map(([k, x]) => `<button class="chipb ${k === v ? "on" : ""}" data-v="${k}" style="font-weight:500">${x.name}</button>`).join("")}</div>
-        ${Object.keys(byN).sort((a, b) => a - b).map(n => `<h4>${n} ${plural(+n, "slika", "slike", "slika")}</h4><div class="picker">${byN[n].map(l => `<button class="pick ${cur(l.id)}" data-t="${l.id}">${mini(l, v)}<small>${esc(l.name)}</small></button>`).join("")}</div>`).join("")}`
-      : `<label style="font-size:13px;display:flex;gap:6px;align-items:center;margin-top:10px"><input type="checkbox" id="pkAll" ${all ? "checked" : ""}> Prikaži kolaže iz svih kategorija</label>
-        ${libraryGroups(P.cat, all || P.cat === "osnovno").map(([t, list]) => `<h4>${esc(t)}</h4><div class="picker">${list.map(l => pickCard(l)).join("")}</div>`).join("")}`}
+    const isCur = id => page && page.l === id ? "cur" : "";
+    let body = "";
+    if (tab === "kor") body = `<div class="picker" style="margin-top:12px">${Object.values(REG.layouts).filter(l => l.kind === (cv === "front" ? "cover" : "back")).map(l => `<button class="pick ${isCur(l.id)}" data-t="${l.id}">${mini(l)}<small>${esc(l.name)}</small></button>`).join("")}</div>`;
+    else if (tab === "ras") body = `<div class="tabs" style="margin-top:10px">${Object.entries(VAR).map(([k, x]) => `<button class="chipb ${k === v ? "on" : ""}" data-v="${k}" style="font-weight:500">${x.name}</button>`).join("")}</div>` +
+      Object.keys(byN).sort((a, b) => a - b).map(n => `<h4>${n} ${plural(+n, "slika", "slike", "slika")}</h4><div class="picker">${byN[n].map(l => `<button class="pick ${isCur(l.id)}" data-t="${l.id}">${mini(l, v)}<small>${esc(l.name)}</small></button>`).join("")}</div>`).join("");
+    else body = `<p class="s" style="margin:10px 0 0">Ovi izgledi koriste boje i ukrase izabranog stila.</p>` + libraryGroups("_", true).map(([t, list]) => `<h4>${esc(t)}</h4><div class="picker">${list.map(l => `<button class="pick ${isCur(l.id)}" data-t="${l.id}">${mini(l)}<small>${esc(l.name)}</small></button>`).join("")}</div>`).join("");
+    $("#dlgRoot").innerHTML = `<div class="ov" id="pickOv"><div class="dlg" role="dialog" aria-label="Izgled strane">
+      <h2>${cv === "front" ? "Izgled prednje korice" : cv === "back" ? "Izgled zadnje korice" : page ? "Izgled strane" : "Nova strana"}</h2>
+      <p class="s" style="margin-bottom:8px">${page ? "Slike koje su već na strani ostaju." : "Izaberi izgled, pa izaberi slike."}</p>
+      <div class="tabs">${cv ? `<button class="chipb ${tab === "kor" ? "on" : ""}" data-tab="kor">Korice</button>` : ""}<button class="chipb ${tab === "ras" ? "on" : ""}" data-tab="ras">Slike (sa marginama ili do ivice)</button><button class="chipb ${tab === "kol" ? "on" : ""}" data-tab="kol">Kolaži sa ukrasima</button></div>
+      ${body}
       <div class="acts"><button class="b" id="pickX">Zatvori</button></div></div></div>`;
-    const pa = $("#pkAll"); if (pa) pa.onchange = e => { all = e.target.checked; draw(); };
   };
   draw();
   $("#dlgRoot").onclick = e => {
@@ -1427,83 +1345,138 @@ function openPicker(at, page) {
     const b = e.target.closest("[data-t]"); if (!b) return;
     const L = LAY(b.dataset.t); if (L.grid) lastVar = v;
     snapshot();
-    let pg = page;
+    let pg = page, hadPhotos = false;
     if (pg) {
-      const old = pg.s.filter(Boolean); pg.l = L.id; if (L.grid) pg.v = v; else delete pg.v;
+      const old = pg.s.filter(Boolean); hadPhotos = old.length > 0;
+      pg.l = L.id; if (L.grid) pg.v = v; else delete pg.v;
       pg.s = Array.from({ length: L.slots }, (_, i) => old[i] || null);
-      if (old.length > L.slots) toast(`${old.length - L.slots} ${plural(old.length - L.slots, "slika je skinuta", "slike su skinute", "slika je skinuto")} sa strane (vraćene su u „Moje slike”).`, { label: "Poništi", fn: undo });
+      if (old.length > L.slots) toast(`${old.length - L.slots} ${plural(old.length - L.slots, "slika je skinuta", "slike su skinute", "slika je skinuto")} sa strane (novi izgled ima manje okvira).`, { label: "Poništi", fn: undo });
     } else { pg = newPage(L.id + (L.grid ? ":" + v : "")); P.pages.splice(at, 0, pg); }
+    cur = P.pages.indexOf(pg);
     $("#dlgRoot").innerHTML = ""; touch(true);
-    setTimeout(() => { const el = $(`.page[data-id="${pg.id}"]`); el && el.scrollIntoView({ behavior: "smooth", block: "center" }); }, 60);
+    setTimeout(() => setCur(cur, true), 60);
     const dims = slotDims(L, pg);
-    if (pg.s.some((x, i) => !x && dims[i] && !dims[i].glue)) pickFiles({ page: pg.id });
+    if (!hadPhotos && pg.s.some((x, i) => !x && dims[i] && !dims[i].glue)) pickFiles({ page: pg.id });
   };
 }
-/* izbor slika za stranu: popuni prazne okvire, višak ide na nove strane istog rasporeda */
-let pendingPick = null;
-function pickFiles(t) { pendingPick = t; const inp = $("#fileMany"); inp.multiple = t.slot === undefined; inp.value = ""; inp.click(); }
-$("#fileMany").addEventListener("change", async e => {
-  const t = pendingPick; pendingPick = null; if (!t || !e.target.files.length) return;
-  const ids = await importFiles(e.target.files); if (!ids.length) return;
-  snapshot(); placeIds(t, ids);
-});
-function placeIds(t, ids) {
-  const pi = P.pages.findIndex(p => p.id === t.page); if (pi < 0) return;
-  const p = P.pages[pi], q = ids.map(id => ({ id, L: IMG.get(id).w >= IMG.get(id).h }));
-  if (t.slot !== undefined) { p.s[t.slot] = { img: q[0].id, x: 50, y: 50, z: 1 }; touch(true); return; }
-  const fill = pg => { const dims = slotDims(LAY(pg.l), pg); let empt = pg.s.map((x, i) => !x && dims[i] && !dims[i].glue ? i : -1).filter(i => i >= 0); if (pg === p && t.from !== undefined) empt = [t.from, ...empt.filter(i => i !== t.from)]; for (const i of empt) { if (!q.length) break; const im = bestFor(q, dims[i].w >= dims[i].h); pg.s[i] = { img: im.id, x: 50, y: 50, z: 1 }; } };
-  fill(p);
-  let at = pi + 1, added = 0;
-  while (q.length && added < 200) { const np = newPage(p.l + (p.v ? ":" + p.v : "")); fill(np); P.pages.splice(at++, 0, np); added++; }
-  touch(true);
-  if (added) toast(`Slika je bilo više od okvira, pa ${plural(added, "je dodata još", "su dodate još", "je dodato još")} ${added} ${plural(added, "strana", "strane", "strana")} sa istim rasporedom.`, { label: "Poništi", fn: undo });
-}
-$("#addPageBtn").onclick = () => openPicker(insertPos());
 
-/* ======================================================================
-   PROJEKTI
-   ====================================================================== */
-function coverCard(theme, title, cls = "") {
-  const t = REG.themes[theme] || Object.values(REG.themes)[0], f = t.f || {};
-  return `<div class="cv ${cls}">${t.cover}<div class="tt" style="color:${t.c.title};font-family:${f.d};font-weight:${f.dw};text-transform:${f.dc};letter-spacing:${f.dl}">${esc(title)}</div></div>`;
+/* ---------------- namještanje slike ---------------- */
+function openPhotoEditor(p, i) {
+  const s = p.s[i]; if (!s) return; const im = IMG.get(s.img); if (!im) return;
+  const d = slotDims(LAY(p.l), p)[i];
+  const ov = document.createElement("div"); ov.className = "pe-ov";
+  ov.innerHTML = `<div class="pe-top"><b>Namjesti sliku</b><span class="pe-hint">Prevuci sliku prstom ili mišem. Zumiraj klizačem ili sa dva prsta.</span><div class="grow"></div><button class="b" data-pe="x" style="background:#2A2B2F;color:#fff;border-color:#3A3B40">Odustani</button></div>
+    <div class="pe-stage"><img src="${im.prev}" alt=""><div class="pe-frame"></div></div>
+    <div class="pe-bot"><div class="pe-zoom"><span>−</span><input type="range" min="100" max="500" step="1"><span>+</span></div><div class="pe-dpi"></div>
+    <div class="pe-acts"><button class="b" data-pe="c">Centriraj</button><button class="b" data-pe="r">Zamijeni sliku</button><button class="b" data-pe="d">Izbaci sliku</button><button class="b dark" data-pe="ok">Gotovo</button></div></div>`;
+  document.body.appendChild(ov);
+  const stage = $(".pe-stage", ov), img = $("img", ov), fr = $(".pe-frame", ov), rng = $("input", ov), dpiEl = $(".pe-dpi", ov);
+  const rad = it => it; let fw, fh, fx, fy, dw, dh, z = s.z || 1, left, top;
+  const it = itemsOf(LAY(p.l), p).filter(x => x.t === "photo")[i] || {};
+  fr.style.borderRadius = (it.fr === "circle" || it.fr === "circleb") ? "50%" : it.fr === "arch" ? "50% 50% 4px 4px / 35% 35% 4px 4px" : "2px";
+  const layout = (keep) => {
+    const sw = stage.clientWidth, sh = stage.clientHeight, ar = d.w / d.h;
+    fw = Math.min(sw * .88, sh * .86 * ar); fh = fw / ar; fx = (sw - fw) / 2; fy = (sh - fh) / 2;
+    const base = Math.max(fw / im.w, fh / im.h); dw = im.w * base; dh = im.h * base;
+    const sx = keep ? keep.x : s.x, sy = keep ? keep.y : s.y;
+    left = sx / 100 * (fw - dw * z); top = sy / 100 * (fh - dh * z); draw();
+  };
+  const clamp = () => { left = Math.min(0, Math.max(fw - dw * z, left)); top = Math.min(0, Math.max(fh - dh * z, top)); };
+  const draw = () => {
+    clamp();
+    Object.assign(img.style, { left: fx + left + "px", top: fy + top + "px", width: dw * z + "px", height: dh * z + "px" });
+    Object.assign(fr.style, { left: fx + "px", top: fy + "px", width: fw + "px", height: fh + "px" });
+    rng.value = Math.round(z * 100);
+    const dpi = 25.4 / (Math.max(d.w / im.w, d.h / im.h) * z);
+    dpiEl.textContent = dpi < 100 ? `Previše zumirano za štampu (${Math.round(dpi)} dpi), slika će biti mutna.` : dpi < 150 ? `Kvalitet štampe: prihvatljiv (${Math.round(dpi)} dpi).` : "";
+  };
+  const zoomAt = (nz, cx = fw / 2, cy = fh / 2) => { nz = Math.max(1, Math.min(5, nz)); const u = (cx - left) / (dw * z), v = (cy - top) / (dh * z); z = nz; left = cx - u * dw * z; top = cy - v * dh * z; draw(); };
+  const pos = () => ({ x: fw - dw * z < -0.5 ? Math.max(0, Math.min(100, left / (fw - dw * z) * 100)) : 50, y: fh - dh * z < -0.5 ? Math.max(0, Math.min(100, top / (fh - dh * z) * 100)) : 50 });
+  layout();
+  const pts = new Map(); let pinch = null;
+  stage.addEventListener("pointerdown", e => { stage.setPointerCapture(e.pointerId); pts.set(e.pointerId, { x: e.clientX, y: e.clientY }); if (pts.size === 2) { const [a, b] = [...pts.values()]; pinch = { d: Math.hypot(a.x - b.x, a.y - b.y), z }; } });
+  stage.addEventListener("pointermove", e => {
+    if (!pts.has(e.pointerId)) return; const pr = pts.get(e.pointerId), nx = e.clientX, ny = e.clientY;
+    if (pts.size === 1) { left += nx - pr.x; top += ny - pr.y; draw(); }
+    pts.set(e.pointerId, { x: nx, y: ny });
+    if (pts.size === 2 && pinch) { const [a, b] = [...pts.values()], r = stage.getBoundingClientRect(); zoomAt(pinch.z * Math.hypot(a.x - b.x, a.y - b.y) / pinch.d, (a.x + b.x) / 2 - r.left - fx, (a.y + b.y) / 2 - r.top - fy); }
+  });
+  const up = e => { pts.delete(e.pointerId); if (pts.size < 2) pinch = null; };
+  stage.addEventListener("pointerup", up); stage.addEventListener("pointercancel", up);
+  stage.addEventListener("wheel", e => { e.preventDefault(); const r = stage.getBoundingClientRect(); zoomAt(z * (1 - e.deltaY * .0015), e.clientX - r.left - fx, e.clientY - r.top - fy); }, { passive: false });
+  rng.addEventListener("input", () => zoomAt(rng.value / 100));
+  const onResize = () => { const k = pos(); layout(k); }; window.addEventListener("resize", onResize);
+  const close = () => { window.removeEventListener("resize", onResize); document.removeEventListener("keydown", onKey); ov.remove(); };
+  const onKey = e => { if (e.key === "Escape") close(); if (e.key === "Enter") ov.querySelector('[data-pe="ok"]').click(); };
+  document.addEventListener("keydown", onKey);
+  ov.addEventListener("click", e => {
+    const b = e.target.closest("[data-pe]"); if (!b) return; const a = b.dataset.pe;
+    if (a === "x") close();
+    else if (a === "c") { z = 1; left = (fw - dw) / 2; top = (fh - dh) / 2; draw(); }
+    else if (a === "ok") { snapshot(); const k = pos(); s.x = +k.x.toFixed(1); s.y = +k.y.toFixed(1); s.z = +z.toFixed(3); close(); touch(true); }
+    else if (a === "d") { snapshot(); p.s[i] = null; close(); touch(true); }
+    else if (a === "r") { close(); pickFiles({ page: p.id, slot: i }); }
+  });
+}
+
+/* ---------------- lokacija za stranu sa mapom ---------------- */
+function closePop() { $("#popRoot").innerHTML = ""; }
+function openLocPop(btn) {
+  const m = P.meta, L = m.loc || {}, r = btn.getBoundingClientRect();
+  $("#popRoot").innerHTML = `<div class="pop" style="left:${Math.max(8, Math.min(innerWidth - 320, r.left))}px;top:${Math.min(r.bottom + 6, innerHeight - 260)}px"><b>Gdje je pin na mapi?</b>
+    <label>Država, regija ili grad<input id="lpName" list="placesDL" value="${esc(m.place || "")}"></label><datalist id="placesDL">${placeOptions()}</datalist>
+    <div class="r"><label>Geo. širina<input id="lpLat" type="number" step="0.1" value="${L.lat ?? ""}"></label><label>Geo. dužina<input id="lpLon" type="number" step="0.1" value="${L.lon ?? ""}"></label></div>
+    <small style="color:var(--muted)">Ako mjesta nema na spisku, upiši koordinate (Google mape: desni klik na mjesto).</small>
+    <button class="b dark" id="lpOk">Sačuvaj</button></div>`;
+  const pop = $(".pop");
+  setTimeout(() => document.addEventListener("pointerdown", function h(ev) { if (!ev.target.closest(".pop")) { closePop(); document.removeEventListener("pointerdown", h); } }), 0);
+  $("#lpName", pop).addEventListener("input", e => { const v = MAPDATA.places[e.target.value]; if (v) { $("#lpLat", pop).value = v[0]; $("#lpLon", pop).value = v[1]; } });
+  $("#lpOk", pop).onclick = () => {
+    const lat = parseFloat($("#lpLat", pop).value), lon = parseFloat($("#lpLon", pop).value), nm = $("#lpName", pop).value.trim();
+    if (isNaN(lat) || isNaN(lon)) { toast("Izaberi mjesto sa spiska ili upiši koordinate."); return; }
+    m.place = nm; m.loc = { lat, lon, label: nm }; closePop(); touch(true);
+  };
+}
+
+/* ---------------- albumi ---------------- */
+function fillThemeSel() {
+  const byCat = {}; for (const t of Object.values(REG.themes)) (byCat[t.cat] = byCat[t.cat] || []).push(t);
+  const order = Object.keys(byCat).sort((a, b) => (b === "osnovno") - (a === "osnovno"));
+  $("#themeSel").innerHTML = order.map(c => `<optgroup label="${esc(catName(c))}">${byCat[c].map(t => `<option value="${t.id}">Stil: ${esc(t.name)}</option>`).join("")}</optgroup>`).join("");
+  if (P) $("#themeSel").value = REG.themes[P.theme] ? P.theme : Object.keys(REG.themes)[0];
 }
 async function openProject(id) {
   const p = await load("projects", id); if (!p) return;
-  P = p; P.opts = P.opts || {}; P.meta = P.meta || {}; undoStack = [];
+  P = p; P.opts = P.opts || {}; P.meta = P.meta || {}; undoStack = []; cur = -1;
   if (P.opts.covers === undefined) P.opts.covers = !!(P.pages.length && LAY(P.pages[0].l).kind === "cover");
   busy("Otvaram album…"); await loadProjectImages(); busy(false);
-  $("#projName").value = P.name;
-  fillThemeSel();
+  $("#projName").value = P.name; fillThemeSel();
   $("#home").classList.add("hidden");
   render(); $("#canvas").scrollTop = 0;
 }
-function fillThemeSel() {
-  const byCat = {};
-  for (const t of Object.values(REG.themes)) (byCat[t.cat] = byCat[t.cat] || []).push(t);
-  $("#themeSel").innerHTML = Object.entries(byCat).map(([c, list]) => `<optgroup label="${esc(catName(c))}">${list.map(t => `<option value="${t.id}">Tema: ${esc(t.name)}</option>`).join("")}</optgroup>`).join("");
-  if (P) $("#themeSel").value = REG.themes[P.theme] ? P.theme : Object.keys(REG.themes)[0];
-}
-$("#projName").addEventListener("input", e => { P.name = e.target.value; touch(false); });
-$("#themeSel").onchange = e => { P.theme = e.target.value; touch(true); };
-$("#zoomIn").onclick = () => { zoomF = Math.min(2.4, zoomF * 1.2); render(); };
-$("#zoomOut").onclick = () => { zoomF = Math.max(.4, zoomF / 1.2); render(); };
-let rT; window.addEventListener("resize", () => { clearTimeout(rT); rT = setTimeout(() => { if (P && !BLEED) $("#spreads").style.setProperty("--z", computeZoom()); fitAll(); }, 120); });
-
+$("#projName").addEventListener("input", e => { P.name = e.target.value; P.meta.title = e.target.value; touch(false); clearTimeout(window.__nT); window.__nT = setTimeout(() => render(), 500); });
+$("#themeSel").onchange = e => { P.theme = e.target.value; P.cat = (REG.themes[P.theme] || {}).cat || P.cat; touch(true); };
+$("#undoBtn").onclick = () => undo();
+document.addEventListener("keydown", e => {
+  if ((e.metaKey || e.ctrlKey) && e.key === "z" && P && !e.target.closest("[contenteditable],input")) { e.preventDefault(); undo(); }
+  if (e.key === "Escape" && !$(".pe-ov")) { closePop(); $("#dlgRoot").innerHTML = ""; }
+});
 async function showHome() {
   if (P) { clearTimeout(saveTimer); await save("projects", P); }
   const list = (await loadAll("projects")).sort((a, b) => b.updated - a.updated);
-  const card = q => {
-    const cov = q.pages.find(x => LAY(x.l).kind === "cover");
-    const title = (cov && cov.t.title) ?? (q.meta && q.meta.title) ?? "";
-    return `<div class="acard"><div data-open="${q.id}">${coverCard(q.theme, title)}</div>
-      <div class="meta"><div style="min-width:0"><b>${esc(q.name)}</b><small>${q.pages.length} strana · ${q.images.length} slika</small></div><button class="b sm" data-delp="${q.id}">Obriši</button></div></div>`;
-  };
-  $("#albums").innerHTML = `<button class="newcard" id="newAlb"><b>+</b>Novi album</button>` + list.map(card).join("");
+  const thumbs = {};
+  for (const q of list) { const f = q.pages[0] && (q.pages[0].s || []).find(Boolean); if (f) { const r = await load("images", f.img); if (r) thumbs[q.id] = URL.createObjectURL(r.thumb || r.prev); } }
+  $("#albums").innerHTML = `<button class="newcard" id="newAlb"><b>+</b>Novi album</button>` + list.map(q => {
+    const cov = thumbs[q.id] ? `<div class="cv" data-open="${q.id}"><img src="${thumbs[q.id]}" style="width:100%;height:100%;object-fit:cover;display:block" alt=""></div>` : `<div data-open="${q.id}">${coverCard(q.theme, (q.meta && q.meta.title) || q.name)}</div>`;
+    return `<div class="acard">${cov}<div class="meta"><div style="min-width:0"><b>${esc(q.name)}</b><small>${q.pages.length} ${plural(q.pages.length, "strana", "strane", "strana")}</small></div></div>
+      <div style="display:flex;gap:6px"><button class="b sm" data-bak="${q.id}" title="Sačuvaj kopiju albuma u fajl (.album)">Kopija</button><button class="b sm" data-delp="${q.id}">Obriši</button></div></div>`;
+  }).join("");
   $("#home").classList.remove("hidden");
   $("#newAlb").onclick = openNewDlg;
 }
 $("#albums").addEventListener("click", async e => {
   const o = e.target.closest("[data-open]"); if (o) { openProject(o.dataset.open); return; }
+  const bk = e.target.closest("[data-bak]"); if (bk) { backupProject(bk.dataset.bak); return; }
   const d = e.target.closest("[data-delp]");
   if (d) {
     if (!d.classList.contains("armed")) { d.classList.add("armed"); d.textContent = "Obriši zauvijek?"; d.style.background = "#B4562C"; d.style.color = "#fff"; setTimeout(() => { d.classList.remove("armed"); d.textContent = "Obriši"; d.style.cssText = ""; }, 3500); return; }
@@ -1514,262 +1487,83 @@ $("#albums").addEventListener("click", async e => {
   }
 });
 $("#homeBtn").onclick = showHome;
-
-/* ---------------- novi album ---------------- */
 function openNewDlg() {
-  const cats = Object.keys(REG.cats).filter(c => Object.values(REG.themes).some(t => t.cat === c));
-  let mode = "empty", cat = cats.includes("putovanja") ? "putovanja" : cats[0], theme = null, files = null, recipe = "";
-  const themesOf = c => Object.values(REG.themes).filter(t => t.cat === c);
-  $("#dlgRoot").innerHTML = `<div class="ov" id="nOv"><div class="dlg" style="max-width:780px" role="dialog" aria-label="Novi album">
-    <h2>Novi album</h2>
-    <div class="chips" style="margin:10px 0 16px"><button class="chipb on" data-mode="empty">Sama dizajniram stranu po stranu</button><button class="chipb" data-mode="rec">Gotov šablon</button><button class="chipb" data-mode="auto">Program složi album</button></div>
-    <p class="s" id="nLead"></p>
-    <div class="form">
-      <div id="nCatW"><label>Vrsta albuma</label><div class="chips" id="nCats">${cats.map(c => `<button class="chipb ${c === cat ? "on" : ""}" data-cat="${c}">${esc(catName(c))}</button>`).join("")}</div></div>
-      <div id="nRecW"><label>Šablon</label><div class="plist" id="nRecs"></div></div>
-      <div id="nThW"><label>Stil (tema)</label><div class="themes" id="nThemes"></div></div>
-      <div class="r"><label>Naziv / naslov na koricama<input id="nTitle" autocomplete="off"></label><label class="xx">Podnaslov<input id="nSub" autocomplete="off"></label></div>
-      <div class="r xx"><label>Datum (tekst)<input id="nDate" placeholder="npr. jul 2026"></label><label>Godina<input id="nYear" value="${new Date().getFullYear()}"></label></div>
-      <div id="nTravel" class="r xx"><label>Destinacija (za mapu)<input id="nPlace" list="placesDL3" placeholder="npr. Grčka" autocomplete="off"></label><label>Gradovi<input id="nCities" placeholder="Atina · Santorini · Krit"></label></div>
-      <datalist id="placesDL3">${placeOptions()}</datalist>
-      <label id="nNameL" class="xx">Ime / imena<input id="nName"></label>
-      <label id="nCovW" style="flex-direction:row;align-items:center;gap:8px;color:var(--ink);font-weight:400;font-size:14px"><input type="checkbox" id="nCov" checked> Sa koricama (prednja i zadnja, dizajniraš ih kao i ostale strane)</label>
-      <div id="nAutoW"><label>Broj slika<input id="nCount" type="number" min="0" step="1" value="40"></label><label style="display:none">Koliko slika po strani<select id="nDens">${Object.entries(DENS_NAMES).map(([k, v]) => `<option value="${k}" ${k === "srednje" ? "selected" : ""}>${v}</option>`).join("")}</select></label></div>
-      <label id="nCoverW" style="display:none">Korice<select id="nCover">${Object.values(REG.layouts).filter(l => l.kind === "cover").map(l => `<option value="${l.id}">${esc(l.name)}</option>`).join("")}</select></label>
-      <div id="nFilesW" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><button class="b" id="nFiles">Izaberi slike odmah (nije obavezno)</button><span id="nFilesInfo" style="color:var(--muted);font-size:13px"></span></div>
-      <div class="note ok plan" id="nPlan"></div>
-    </div>
-    <div class="acts"><button class="b" id="nX">Odustani</button><button class="b dark" id="nOk">Napravi album</button></div></div></div>
-    <input type="file" id="nFileIn" accept="image/*" multiple hidden>`;
-  const ov = $("#nOv"), show = (id, on) => { const el = typeof id === "string" ? $(id) : id; if (el) el.style.display = on ? "" : "none"; };
-  const recCap = r => r.pages.reduce((a, id) => a + (hasLay(id) ? realSlots(LAY(id)) : 0), 0);
-  const draw = () => {
-    $("#nLead").textContent = mode === "auto" ? "Izaberi vrstu, stil i koliko slika imaš. Program složi strane (kolaži teme i jednostavni rasporedi), a sve kasnije mijenjaš." : mode === "rec" ? "Gotov album sa unaprijed izabranim stranama. Kasnije mijenjaš bilo koju stranu." : "Svaku stranu dizajniraš sama: klikneš „+ Nova strana”, izabereš raspored (1, 2, 3, 4… slike, sa marginama ili do ivice) i ubaciš slike. Korice dizajniraš isto tako.";
-    show("#nCatW", mode === "auto"); show("#nRecW", mode === "rec"); show("#nAutoW", mode === "auto"); show("#nCovW", mode === "empty");
-    show("#nFilesW", mode !== "empty");
-    const list = mode === "auto" ? themesOf(cat) : Object.values(REG.themes);
-    if (mode === "empty" && !theme) theme = "bijela";
-    if (mode === "rec" && !theme && REG.recipes[recipe]) theme = REG.recipes[recipe].theme;
-    if (!theme || !list.find(t => t.id === theme)) theme = list[0] && list[0].id;
-    $("#nThemes").innerHTML = (mode !== "auto" ? list.slice().sort((a, b) => { const pf = mode === "empty" ? "bijela" : (REG.recipes[recipe] || {}).theme; return (b.id === pf) - (a.id === pf); }) : list).map(t => `<button class="tpick ${t.id === theme ? "on" : ""}" data-th="${t.id}">${coverCard(t.id, t.ph && t.ph.title || t.name)}${esc(t.name)}</button>`).join("");
-    if (mode === "rec") $("#nRecs").innerHTML = Object.values(REG.recipes).map(r => `<button class="prow" data-rec="${r.id}" style="text-align:left;${r.id === recipe ? "border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)" : ""}"><b>${esc(r.name)}</b><small>${esc(catName(r.cat))} · ${recCap(r)} slika</small></button>`).join("");
-    const ccat = mode === "rec" && REG.recipes[recipe] ? REG.recipes[recipe].cat : mode === "empty" ? (REG.themes[theme] || {}).cat : cat;
-    const t = REG.themes[theme];
-    $("#nTitle").placeholder = t && t.ph ? t.ph.title : "";
-    $$(".xx", ov).forEach(el => show(el, ccat !== "osnovno"));
-    show("#nTravel", ccat === "putovanja"); show("#nNameL", ccat !== "putovanja" && ccat !== "osnovno");
-    $("#nName").placeholder = ccat === "beba" ? "Ime bebe" : ccat === "vjencanje" ? "Ana & Marko" : ccat === "rodjendan" ? "Ime slavljenika" : "Prezime porodice";
-    updatePlan();
-  };
-  const updatePlan = () => {
-    const pl = $("#nPlan");
-    if (mode === "empty") { pl.textContent = $("#nCov").checked ? "Album počinje sa prednjom i zadnjom koricom. Strane dodaješ između njih." : "Album počinje prazan."; return; }
-    if (mode === "rec") { const r = REG.recipes[recipe]; pl.textContent = r ? `${r.pages.length} ${plural(r.pages.length, "strana", "strane", "strana")}, mjesta za ${recCap(r)} slika.` : "Izaberi šablon."; return; }
-    const n = Math.max(0, parseInt($("#nCount").value) || 0), plan = planAlbum(cat, n, $("#nDens").value, $("#nCover").value), cap = plan.reduce((a, id) => a + realSlots(LAY(id)), 0);
-    pl.textContent = n ? `Album će imati ${plan.length} ${plural(plan.length, "stranu", "strane", "strana")} (djeljivo sa 4) i ${cap} ${plural(cap, "mjesto", "mjesta", "mjesta")} za slike.` : `Napraviće se osnovni album od ${plan.length} strana. Slike dodaješ kasnije.`;
-  };
-  recipe = Object.keys(REG.recipes)[0] || "";
+  const ths = Object.values(REG.themes).sort((a, b) => (b.id === "bijela") - (a.id === "bijela"));
+  let theme = "bijela";
+  $("#dlgRoot").innerHTML = `<div class="ov" id="nOv"><div class="dlg" style="max-width:720px" role="dialog" aria-label="Novi album">
+    <h2>Novi album</h2><p class="s">Stil određuje boje, slova i ukrase. Možeš ga promijeniti i kasnije.</p>
+    <div class="form"><label>Naziv albuma<input id="nName" placeholder="npr. Ljeto 2026" autocomplete="off"></label>
+      <label>Stil</label><div class="themes" id="nThemes"></div>
+      <label style="flex-direction:row;align-items:center;gap:8px;color:var(--ink);font-weight:400;font-size:14px"><input type="checkbox" id="nCov" checked> Album ima prednju i zadnju koricu</label></div>
+    <div class="acts"><button class="b" id="nX">Odustani</button><button class="b dark" id="nOk">Napravi album</button></div></div></div>`;
+  const draw = () => { if (!$("#nName")) return; $("#nThemes").innerHTML = ths.map(t => `<button class="tpick ${t.id === theme ? "on" : ""}" data-th="${t.id}">${coverCard(t.id, $("#nName").value.trim() || (t.ph && t.ph.title) || t.name)}${esc(t.name)}</button>`).join(""); };
   draw();
-  ov.addEventListener("click", e => {
-    const m = e.target.closest("[data-mode]"); if (m) { mode = m.dataset.mode; $$("[data-mode]", ov).forEach(b => b.classList.toggle("on", b === m)); theme = null; draw(); return; }
-    const c = e.target.closest("[data-cat]"); if (c) { cat = c.dataset.cat; $$("#nCats .chipb").forEach(b => b.classList.toggle("on", b === c)); draw(); return; }
-    const r = e.target.closest("[data-rec]"); if (r) { recipe = r.dataset.rec; theme = null; draw(); return; }
-    const t = e.target.closest("[data-th]"); if (t) { theme = t.dataset.th; draw(); return; }
-    if (e.target.id === "nOv" || e.target.id === "nX") $("#dlgRoot").innerHTML = "";
-  });
-  ["nCount", "nDens", "nCover", "nCov"].forEach(id => $("#" + id).addEventListener("input", updatePlan));
-  $("#nFiles").onclick = () => $("#nFileIn").click();
-  $("#nFileIn").onchange = e => { files = [...e.target.files]; $("#nFilesInfo").textContent = files.length ? `Izabrano slika: ${files.length}` : ""; if (files.length) $("#nCount").value = files.length; updatePlan(); };
+  const ov = $("#nOv");
+  $("#nName").addEventListener("input", () => { clearTimeout(window.__dT); window.__dT = setTimeout(draw, 300); });
+  ov.addEventListener("click", e => { const t = e.target.closest("[data-th]"); if (t) { theme = t.dataset.th; draw(); return; } if (e.target.id === "nOv" || e.target.id === "nX") $("#dlgRoot").innerHTML = ""; });
   $("#nOk").onclick = async () => {
-    if (mode === "rec" && !REG.recipes[recipe]) { toast("Izaberi šablon."); return; }
-    const t = REG.themes[theme], n = Math.max(0, parseInt($("#nCount").value) || 0), dens = $("#nDens").value;
-    const ccat = mode === "rec" ? REG.recipes[recipe].cat : mode === "empty" ? t.cat : cat;
-    const title = $("#nTitle").value.trim() || (t.ph && t.ph.title) || t.name;
-    const placeName = $("#nPlace").value.trim(), v = MAPDATA.places[placeName];
-    const meta = { title, sub: $("#nSub").value.trim() || (ccat !== "osnovno" && t.ph && t.ph.sub) || "", date: $("#nDate").value.trim(), year: ccat === "osnovno" ? "" : $("#nYear").value.trim(), name: $("#nName").value.trim(),
-      place: ccat === "putovanja" ? (placeName || title) : "", cities: $("#nCities").value.split(/[,·]/).map(s => s.trim()).filter(Boolean).join(" · "), loc: v ? { lat: v[0], lon: v[1], label: placeName } : null };
-    const ids = mode === "empty" ? ($("#nCov").checked ? ["kn1", "bk4"] : []) : mode === "rec" ? REG.recipes[recipe].pages.filter(hasLay) : planAlbum(cat, n, dens, $("#nCover").value);
-    const pr = { id: uid(), name: `${title}${meta.year ? " " + meta.year : ""}`, theme, cat: ccat, meta, opts: { folio: ccat !== "osnovno", dens, covers: !!(ids.length > 1 && LAY(ids[0]).kind === "cover") }, images: [], pages: ids.map(id => newPage(id)), created: Date.now(), updated: Date.now(), v: 2 };
-    await save("projects", pr); $("#dlgRoot").innerHTML = "";
-    await openProject(pr.id);
-    if (mode === "empty") { openPicker(insertPos()); return; }
-    if (files && files.length) { await importFiles(files); autoArrange(true); }
-    if (ccat === "putovanja" && placeName && !v) toast("Mjesto nije na spisku za mapu. Pin postavi preko „Podaci albuma” (koordinate).");
+    const t = REG.themes[theme], name = $("#nName").value.trim() || "Moj album", cov = $("#nCov").checked;
+    const pr = { id: uid(), name, theme, cat: t.cat, meta: { title: name, sub: "", date: "", year: "", name: "", place: "", cities: "", loc: null }, opts: { folio: false, covers: cov }, images: [], pages: cov ? [newPage("kn1"), newPage("bk4")] : [], created: Date.now(), updated: Date.now(), v: 4 };
+    await save("projects", pr); $("#dlgRoot").innerHTML = ""; await openProject(pr.id);
+    if (!cov) openPicker(0);
   };
-  setTimeout(() => $("#nTitle", ov).focus(), 30);
+  setTimeout(() => $("#nName").focus(), 30);
 }
 
-/* ======================================================================
-   KOLAŽI I TEME (paketi)
-   ====================================================================== */
-async function openLibrary() {
-  let tab = "kolazi", fcat = "*";
-  const draw = () => {
-    const cats = Object.keys(REG.cats);
-    const lay = Object.values(REG.layouts).filter(l => fcat === "*" || okCat(l, fcat));
-    const th = Object.values(REG.themes).filter(t => fcat === "*" || t.cat === fcat);
-    $("#dlgRoot").innerHTML = `<div class="ov" id="libOv"><div class="dlg" role="dialog" aria-label="Kolaži i teme">
-      <h2>Kolaži i teme</h2><p class="s">Sve što je ugrađeno u program. Za novi stil ili novi kolaž javi se Claude-u: opiši stil i koliko slika treba na strani, dobićeš mali fajl <b>.kolaz</b> koji ovdje dodaš. Albumi koje već imaš ostaju netaknuti.</p>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-        <button class="chipb ${tab === "kolazi" ? "on" : ""}" data-tab="kolazi">Kolaži (${Object.keys(REG.layouts).length})</button>
-        <button class="chipb ${tab === "teme" ? "on" : ""}" data-tab="teme">Teme (${Object.keys(REG.themes).length})</button>
-        <button class="chipb ${tab === "paketi" ? "on" : ""}" data-tab="paketi">Paketi (${REG.packs.length})</button>
-        <div class="grow"></div><button class="b dark" id="libAdd">+ Dodaj paket (.kolaz)</button>
-      </div>
-      ${tab !== "paketi" ? `<div class="chips" style="margin-top:12px"><button class="chipb ${fcat === "*" ? "on" : ""}" data-fc="*">Sve</button>${cats.map(c => `<button class="chipb ${fcat === c ? "on" : ""}" data-fc="${c}">${esc(catName(c))}</button>`).join("")}</div>` : ""}
-      ${tab === "kolazi" ? [["Jednostavni rasporedi (sa marginama ili do ivice)", lay.filter(l => l.kind === "grid")], ["Korice", lay.filter(l => l.kind === "cover" || l.kind === "back")], ...libraryGroups(fcat === "*" ? "_" : fcat, fcat === "*")].map(([t, list]) => list.length ? `<h4>${esc(t)}</h4><div class="picker">${list.map(l => pickCard(l, false)).join("")}</div>` : "").join("") : ""}
-      ${tab === "teme" ? `<div class="themes" style="margin-top:14px">${th.map(t => `<div class="tpick">${coverCard(t.id, t.ph && t.ph.title || t.name)}${esc(t.name)}<small style="color:var(--muted);font-weight:400">${esc(catName(t.cat))}</small></div>`).join("")}</div>` : ""}
-      ${tab === "paketi" ? `<div class="plist" style="margin-top:14px">${REG.packs.map(p => `<div class="prow"><b>${esc(p.name)}</b><small>${p.themes} tema · ${p.layouts} kolaža${p.recipes ? ` · ${p.recipes} šablona` : ""}</small>${p.builtin ? `<small>ugrađen</small>` : `<button class="b sm" data-delpk="${esc(p.id)}">Ukloni</button>`}</div>`).join("")}</div>` : ""}
-      <div class="acts"><button class="b" id="libX">Zatvori</button></div></div></div>`;
-  };
-  draw();
-  $("#dlgRoot").onclick = async e => {
-    if (!$("#libOv")) return;
-    if (e.target.id === "libOv" || e.target.id === "libX") { $("#dlgRoot").innerHTML = ""; $("#dlgRoot").onclick = null; return; }
-    const tb = e.target.closest("[data-tab]"); if (tb) { tab = tb.dataset.tab; draw(); return; }
-    const fc = e.target.closest("[data-fc]"); if (fc) { fcat = fc.dataset.fc; draw(); return; }
-    if (e.target.id === "libAdd") { $("#filePack").click(); return; }
-    const dp = e.target.closest("[data-delpk]");
-    if (dp) {
-      const used = (await loadAll("projects")).filter(q => REG.themes[q.theme] && REG.themes[q.theme].pack === dp.dataset.delpk).length;
-      if (!dp.classList.contains("armed")) { dp.classList.add("armed"); dp.textContent = used ? `Koristi ga ${used} alb. Ukloni?` : "Sigurno?"; return; }
-      await remove("packs", dp.dataset.delpk); rebuildRegistry(await loadAll("packs")); draw(); toast("Paket uklonjen.");
-    }
-  };
-  window.__libRedraw = draw;
-}
-$("#libBtn").onclick = openLibrary;
-$("#filePack").addEventListener("change", async e => {
-  const fs = [...e.target.files]; e.target.value = ""; let ok = 0, msg = [];
-  for (const f of fs) {
-    try {
-      const data = JSON.parse(await f.text());
-      if (data.format !== "album-kolazi") throw new Error("format");
-      data.id = data.id || f.name.replace(/\.\w+$/, "");
-      delete data.builtin;
-      const info = installPack(data);
-      await save("packs", { id: info.id, data, added: Date.now() });
-      ok++; msg.push(`${info.name}: ${info.themes} tema, ${info.layouts} kolaža`);
-    } catch (err) { msg.push(`${f.name} nije ispravan paket`); }
-  }
-  rebuildRegistry(await loadAll("packs"));
-  if (P) { fillThemeSel(); render(); }
-  if (window.__libRedraw && $("#libOv")) window.__libRedraw();
-  toast((ok ? "Dodato. " : "") + msg.join(" · "));
-});
-
-/* ======================================================================
-   PDF ZA ŠTAMPU
-   ====================================================================== */
+/* ---------------- PDF ---------------- */
 function preflight() {
   const empty = [], low = [], bad = [];
   P.pages.forEach((p, idx) => {
-    const dims = slotDims(LAY(p.l), p);
-    p.s.forEach((s, i) => {
-      if (!dims[i]) return;
-      if (!s) { if (!dims[i].glue) empty.push(idx + 1); return; }
-      const d = dpiOf(s, dims[i].w, dims[i].h);
-      if (d < 100) bad.push(idx + 1); else if (d < 150) low.push(idx + 1);
-    });
+    const dims = slotDims(LAY(p.l), p), lb = pageLabel(idx).replace("Strana ", "");
+    p.s.forEach((s, i) => { if (!dims[i]) return; if (!s) { if (!dims[i].glue) empty.push(lb); return; } const d = dpiOf(s, dims[i].w, dims[i].h); if (d < 100) bad.push(lb); else if (d < 150) low.push(lb); });
   });
-  const u = a => [...new Set(a)];
-  return { empty: u(empty), low: u(low), bad: u(bad), n: P.pages.length };
+  const u = a => [...new Set(a)]; return { empty: u(empty), low: u(low), bad: u(bad), n: P.pages.length };
 }
 function openExport() {
-  if (!P) return;
-  const f = preflight();
-  const li = (cls, txt) => `<div class="note ${cls}" style="margin-top:8px">${txt}</div>`;
-  const pg = a => a.slice(0, 12).join(", ") + (a.length > 12 ? "…" : "");
-  $("#dlgRoot").innerHTML = `<div class="ov" id="exOv"><div class="dlg" style="max-width:620px" role="dialog" aria-label="PDF za štampu">
-    <h2>PDF za štampu</h2><p class="s">A4 (210 × 297 mm), slike u punom kvalitetu.</p>
-    ${f.n % 4 ? li("warn", `Album ima ${f.n} strana. Štamparije najčešće traže broj djeljiv sa 4. <button class="b sm" id="exPad">Dopuni do ${f.n + 4 - f.n % 4}</button>`) : li("ok", `${f.n} strana, djeljivo sa 4.`)}
-    ${f.empty.length ? li("warn", `Prazni okviri na stranama: ${pg(f.empty)}. Biće bez slike u PDF-u.`) : ""}
-    ${f.bad.length ? li("warn", `<b>Premale slike</b> (ispod 100 dpi, biće mutne) na stranama: ${pg(f.bad)}. Zamijeni ih ili stavi u manji okvir.`) : ""}
-    ${f.low.length ? li("", `Slike niže rezolucije (100–150 dpi) na stranama: ${pg(f.low)}. Biće prihvatljive, ali ne savršeno oštre.`) : ""}
-    <h4>Format fajla</h4>
-    <div class="form">
-      <label class="ck" style="flex-direction:row;align-items:center;gap:8px;color:var(--ink);font-weight:400;font-size:14px"><input type="radio" name="bl" value="0" ${!P.opts.bleed ? "checked" : ""}> Tačno A4, 210 × 297 mm</label>
-      <label class="ck" style="flex-direction:row;align-items:center;gap:8px;color:var(--ink);font-weight:400;font-size:14px"><input type="radio" name="bl" value="3" ${P.opts.bleed ? "checked" : ""}> A4 + 3 mm bleed (216 × 303 mm), ako štamparija traži „bleed” ili „napust”</label>
-      <label style="flex-direction:row;align-items:center;gap:8px;color:var(--ink);font-weight:400;font-size:14px">Kvalitet <select id="exDpi" style="padding:6px 8px"><option value="300" selected>300 dpi – za štampu (preporučeno)</option><option value="200">200 dpi – manji fajl</option></select></label>
-    </div>
-    <div class="note" style="margin-top:14px"><b>Preuzmi PDF</b> radi na telefonu i na laptopu: PDF se napravi ovdje i onda ga preuzmeš ili odmah pošalješ štampariji.</div>
-    <div class="acts" style="flex-wrap:wrap"><button class="b" id="exX">Odustani</button><button class="b" id="exGo" title="Stari način, preko prozora za štampu (samo laptop, Chrome)">Preko štampe (laptop)</button><button class="b dark" id="exDirect">Preuzmi PDF</button></div></div></div>`;
+  if (!P || !P.pages.length) { toast("Album nema strana."); return; }
+  const f = preflight(), li = (c, t) => `<div class="note ${c}" style="margin-top:8px">${t}</div>`, pg = a => a.slice(0, 12).join(", ") + (a.length > 12 ? "…" : "");
+  const rad = (v, t, on) => `<label style="flex-direction:row;align-items:center;gap:8px;color:var(--ink);font-weight:400;font-size:14px"><input type="radio" name="bl" value="${v}" ${on ? "checked" : ""}> ${t}</label>`;
+  $("#dlgRoot").innerHTML = `<div class="ov" id="exOv"><div class="dlg" style="max-width:520px" role="dialog" aria-label="PDF za štampu">
+    <h2>PDF za štampu</h2><p class="s">${f.n} ${plural(f.n, "strana", "strane", "strana")}, A4, 300 dpi.</p>
+    ${f.empty.length ? li("warn", `Prazni okviri: ${pg(f.empty)}. U PDF-u će ostati bijeli.`) : ""}
+    ${f.bad.length ? li("warn", `<b>Premale slike</b> (biće mutne): ${pg(f.bad)}.`) : ""}
+    ${f.low.length ? li("", `Slike slabijeg kvaliteta: ${pg(f.low)}.`) : ""}
+    ${f.n % 4 ? li("", `Štamparije često traže broj strana djeljiv sa 4. Pitaj svoju štampariju.`) : ""}
+    <div class="form" style="margin-top:14px">${rad(0, "Tačno A4 (210 × 297 mm)", !P.opts.bleed)}${rad(3, "A4 sa 3 mm napusta / bleed (216 × 303 mm)", P.opts.bleed)}</div>
+    <div class="acts"><button class="b" id="exX">Odustani</button><button class="b dark" id="exGo" style="padding:10px 22px">Preuzmi PDF</button></div></div></div>`;
   $("#exOv").onclick = e => { if (e.target.id === "exOv" || e.target.id === "exX") $("#dlgRoot").innerHTML = ""; };
-  const pad = $("#exPad"); if (pad) pad.onclick = () => { padTo4(); openExport(); };
-  $("#exGo").onclick = () => { const bl = +$('input[name="bl"]:checked').value; P.opts.bleed = bl; touch(false); $("#dlgRoot").innerHTML = ""; doPrint(bl, true); };
-  $("#exDirect").onclick = async () => {
-    const bl = +$('input[name="bl"]:checked').value, dpi = +$("#exDpi").value; P.opts.bleed = bl; touch(false); $("#dlgRoot").innerHTML = "";
-    try { const blob = await makeDirectPDF(bl, dpi); offerPDF(blob); } catch (e) { busy(false); toast("PDF nije mogao da se napravi (" + (e && e.message || e) + "). Probaj sa kvalitetom 200 dpi."); }
+  $("#exGo").onclick = async () => {
+    const bl = +$('input[name="bl"]:checked').value; P.opts.bleed = bl; touch(false); $("#dlgRoot").innerHTML = "";
+    try { offerPDF(await makeDirectPDF(bl, 300)); }
+    catch (e) { try { offerPDF(await makeDirectPDF(bl, 200)); } catch (e2) { busy(false); toast("PDF nije mogao da se napravi. Probaj na laptopu."); } }
   };
 }
-let printURLs = [];
-async function doPrint(bleed, optimize) {
-  busy("Pripremam strane za štampu…");
-  BLEED = bleed;
-  $("#pageSize").textContent = `@page{size:${210 + 2 * bleed}mm ${297 + 2 * bleed}mm;margin:0}`;
-  render();
-  await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
-  fitAll();
-  try {
-    const imgs = $$("#spreads .slot img"), need = {};
-    for (const img of imgs) {
-      const slot = img.closest(".slot"), id = img.dataset.id, im = IMG.get(id), p = pageOf(slot), s = p.s[+slot.dataset.i];
-      const w = +slot.dataset.w, h = +slot.dataset.h, mmpp = Math.max(w / im.w, h / im.h) * (s.z || 1);
-      const f = Math.min(1, (300 / 25.4) * mmpp * 1.1);
-      need[id] = Math.max(need[id] || 0, f);
-    }
-    const map = {}, ids = Object.keys(need); let k = 0;
-    for (const id of ids) {
-      busy(`Pripremam slike u punoj rezoluciji… ${++k} / ${ids.length}`);
-      const r = await load("images", id); if (!r || !r.orig) continue;
-      let blob = r.orig;
-      if (optimize && need[id] < .85) { try { const bmp = await createImageBitmap(r.orig); blob = await scaled(bmp, Math.round(Math.max(bmp.width, bmp.height) * need[id]), .93); bmp.close && bmp.close(); } catch (e) { blob = r.orig; } }
-      const u = URL.createObjectURL(blob); map[id] = u; printURLs.push(u);
-    }
-    await Promise.all(imgs.map(img => { if (map[img.dataset.id]) { img.src = map[img.dataset.id]; return img.decode().catch(() => {}); } }));
-    await document.fonts.ready;
-  } catch (e) {}
-  busy(false);
-  setTimeout(() => window.print(), 60);
-}
-window.addEventListener("afterprint", () => {
-  if (!P) return;
-  BLEED = 0; $("#pageSize").textContent = "@page{size:210mm 297mm;margin:0}";
-  printURLs.forEach(u => URL.revokeObjectURL(u)); printURLs = [];
-  render();
-  toast("Ako PDF nije sačuvan: izaberi „Sačuvaj kao PDF”, margine „Nijedne” i uključi „Grafika u pozadini”.");
-});
 $("#printBtn").onclick = openExport;
 
-/* ======================================================================
-   KOPIJA (.album)
-   ====================================================================== */
-const b64 = blob => new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result); fr.readAsDataURL(blob); });
-async function backup() {
-  if (!P) return;
-  clearTimeout(saveTimer); await save("projects", P);
+/* ---------------- kopija albuma i paketi ---------------- */
+async function backupProject(id) {
+  if (P && P.id === id) { clearTimeout(saveTimer); await save("projects", P); }
+  const q = await load("projects", id); if (!q) return;
   const packs = (await loadAll("packs")).map(p => p.data);
-  const parts = [`{"format":"album-prica","version":2,"project":${JSON.stringify(P)},"packs":${JSON.stringify(packs)},"images":{`];
-  for (let i = 0; i < P.images.length; i++) {
-    busy(`Pakujem kopiju… ${i + 1} / ${P.images.length}`);
-    const r = await load("images", P.images[i]); if (!r) continue;
+  const used = [...new Set(q.pages.flatMap(p => (p.s || []).filter(Boolean).map(s => s.img)))];
+  const parts = [`{"format":"album-prica","version":3,"project":${JSON.stringify({ ...q, images: used })},"packs":${JSON.stringify(packs)},"images":{`];
+  for (let i = 0; i < used.length; i++) {
+    busy(`Pakujem kopiju… ${i + 1} / ${used.length}`);
+    const r = await load("images", used[i]); if (!r) continue;
     parts.push((i ? "," : "") + JSON.stringify(r.id) + ":" + JSON.stringify({ name: r.name, date: r.date, w: r.w, h: r.h, added: r.added, data: await b64(r.orig) }));
   }
   parts.push("}}"); busy(false);
-  const blob = new Blob(parts, { type: "application/json" }), a = document.createElement("a");
-  a.href = URL.createObjectURL(blob); a.download = (P.name || "album").replace(/[^\p{L}\p{N} _-]/gu, "").trim() + ".album";
-  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 30000);
-  toast("Kopija je sačuvana u Preuzimanja (Downloads). Sa njom album otvaraš na drugom računaru.");
+  const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob(parts, { type: "application/json" }));
+  a.download = (q.name || "album").replace(/[^\p{L}\p{N} _-]/gu, "").trim() + ".album"; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 30000);
+  toast("Kopija je sačuvana u Preuzimanja (Downloads).");
 }
-$("#backupBtn").onclick = backup;
 $("#restoreBtn").onclick = () => $("#fileBackup").click();
 $("#fileBackup").addEventListener("change", async e => {
-  const f = e.target.files[0]; e.target.value = ""; if (!f) return;
-  busy("Otvaram kopiju…");
+  const f = e.target.files[0]; e.target.value = ""; if (!f) return; busy("Otvaram kopiju…");
   try {
-    const d = JSON.parse(await f.text());
-    if (d.format !== "album-prica") throw new Error("format");
-    for (const pk of d.packs || []) { if (!(await load("packs", pk.id))) await save("packs", { id: pk.id, data: pk, added: Date.now() }); }
+    const d = JSON.parse(await f.text()); if (d.format !== "album-prica") throw 0;
+    for (const pk of d.packs || []) if (!(await load("packs", pk.id))) await save("packs", { id: pk.id, data: pk, added: Date.now() });
     rebuildRegistry(await loadAll("packs"));
     const ids = Object.keys(d.images); let k = 0;
     for (const id of ids) {
@@ -1777,35 +1571,30 @@ $("#fileBackup").addEventListener("change", async e => {
       const im = d.images[id], orig = await (await fetch(im.data)).blob(), bmp = await createImageBitmap(orig);
       await save("images", { id, orig, prev: await scaled(bmp, 1800), thumb: await scaled(bmp, 380, .8), w: im.w, h: im.h, date: im.date, name: im.name, added: im.added || 0 });
     }
-    const pr = d.project;
-    if (await load("projects", pr.id)) { pr.id = uid(); pr.name += " (kopija)"; }
+    const pr = d.project; if (await load("projects", pr.id)) { pr.id = uid(); pr.name += " (kopija)"; }
     await save("projects", pr); busy(false); openProject(pr.id);
   } catch (err) { busy(false); toast("Ovaj fajl nije kopija albuma. Izaberi fajl koji se završava na .album."); }
 });
+$("#packBtn").onclick = () => $("#filePack").click();
+$("#filePack").addEventListener("change", async e => {
+  const fs = [...e.target.files]; e.target.value = ""; const msg = [];
+  for (const f of fs) {
+    try { const data = JSON.parse(await f.text()); if (data.format !== "album-kolazi") throw 0; data.id = data.id || f.name.replace(/\.\w+$/, ""); delete data.builtin; const info = installPack(data); await save("packs", { id: info.id, data, added: Date.now() }); msg.push(`${info.name}: ${info.themes} stilova, ${info.layouts} izgleda`); }
+    catch (err) { msg.push(`${f.name} nije ispravan fajl`); }
+  }
+  rebuildRegistry(await loadAll("packs")); toast("Dodato. " + msg.join(" · "));
+});
 
-/* ======================================================================
-   POKRETANJE
-   ====================================================================== */
+/* ---------------- pokretanje ---------------- */
 (async function start() {
   await DB.open();
-  if (!DB.ok) {
-    const w = document.createElement("div"); w.className = "warnbar";
-    w.textContent = "Ovaj pregledač ne dozvoljava automatsko čuvanje. Otvori fajl u Google Chrome-u, ili prije zatvaranja klikni „Sačuvaj kopiju”.";
-    document.body.insertBefore(w, $("#main")); $("#main").style.top = "92px";
-  }
+  if (!DB.ok) { const w = document.createElement("div"); w.className = "warnbar"; w.textContent = "Ovaj pregledač ne dozvoljava čuvanje. Otvori u Google Chrome-u ili Safariju (ne u privatnom prozoru)."; document.body.insertBefore(w, $("#main")); $("#main").style.top = "92px"; }
   try { await navigator.storage?.persist?.(); } catch (e) {}
   rebuildRegistry(await loadAll("packs"));
-  const list = await loadAll("projects");
-  if (!list.length) {
-    const meta = { title: "Zanzibar", sub: "ljeto za pamćenje", date: "avgust 2026", year: "2026", name: "", place: "Zanzibar", cities: "Stone Town · Nungwi · Paje", loc: { lat: -6.1, lon: 39.3, label: "Zanzibar" } };
-    const pr = { id: uid(), name: "Zanzibar 2026 (primjer)", theme: "tropi", cat: "putovanja", meta, opts: { folio: true, dens: "srednje" }, images: [], pages: planAlbum("putovanja", 36, "srednje", "cover").map(id => newPage(id)), created: Date.now(), updated: Date.now(), v: 2 };
-    await save("projects", pr);
-    await openProject(pr.id);
-    toast("Ovo je primjer albuma. Dodaj slike lijevo i klikni „Složi automatski”, ili otvori „Svi albumi” → „Novi album”.");
-  } else showHome();
+  showHome();
   document.fonts && document.fonts.ready.then(() => P && fitAll());
-  if (document.fonts) document.fonts.onloadingdone = () => P && fitAll();
 })();
+
 /* ======================================================================
    DIREKTNI PDF (radi i na telefonu, bez prozora za štampu)
    Svaka strana se nacrta u punoj rezoluciji i spakuje u A4 PDF.
@@ -1989,7 +1778,7 @@ async function makeDirectPDF(bleed, dpi) {
   try {
     for (let i = 0; i < P.pages.length; i++) {
       busy(`Pravim PDF… strana ${i + 1} od ${P.pages.length}`);
-      const el = $(`.page[data-id="${P.pages[i].id}"]`);
+      const el = $(`#spreads .page[data-id="${P.pages[i].id}"]`);
       const cv = await drawPageCanvas(el, P.pages[i], i, k, bleed);
       const blob = await new Promise(r => cv.toBlob(r, "image/jpeg", .92));
       out.push({ jpg: new Uint8Array(await blob.arrayBuffer()), w: cv.width, h: cv.height });
@@ -2016,4 +1805,5 @@ function offerPDF(blob) {
   $("#pdOv").onclick = e => { if (e.target.id === "pdOv" || e.target.id === "pdX") { $("#dlgRoot").innerHTML = ""; setTimeout(() => URL.revokeObjectURL(url), 60000); } };
   const sh = $("#pdShare"); if (sh) sh.onclick = async () => { try { await navigator.share({ files: [file], title: name }); } catch (e) {} };
 }
+
 </script></body></html>
