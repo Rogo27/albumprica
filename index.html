@@ -209,25 +209,26 @@ body{overflow:hidden}
 #bar{gap:8px}
 #bar .brand{margin-right:4px}
 #main{position:absolute;top:56px;left:0;right:0;bottom:0;display:flex}
-#side{width:184px;flex:none;background:var(--bar);border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
+#side{width:250px;flex:none;background:var(--bar);border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
 #side .sh{display:flex;align-items:center;gap:8px;padding:12px 12px 8px;border-bottom:1px solid var(--line)}
 #side .sh b{font-size:12px;letter-spacing:.14em;text-transform:uppercase}
 #side .sh .cnt{font-size:12px;color:var(--muted);margin-left:auto}
 #sideX{display:none}
-#thumbs{user-select:none;-webkit-user-select:none;flex:1;overflow-y:auto;padding:10px 12px 16px;display:flex;flex-direction:column;gap:10px;position:relative}
-.thb{position:relative;display:flex;gap:6px;align-items:flex-start;border-radius:6px;padding:4px;cursor:grab;user-select:none;-webkit-user-select:none}
+#thumbs{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;flex:1;overflow-y:auto;padding:10px 12px 16px;display:grid;grid-template-columns:1fr 1fr;gap:10px 10px;align-content:start;position:relative}
+.thb{position:relative;border-radius:6px;padding:3px;cursor:grab;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;display:flex;justify-content:center;transition:transform .15s}
 .thb.fixed{cursor:pointer}
 .thb:hover{background:var(--chip)}
 .thb.cur{background:var(--chip);box-shadow:inset 0 0 0 2px var(--ink)}
-.thb .no{font:700 11px var(--ui);color:var(--muted);width:20px;text-align:right;padding-top:2px;flex:none}
-.thb .tz{zoom:.155;pointer-events:none;box-shadow:0 1px 4px rgba(0,0,0,.2);flex:none}
+.thb.press{transform:scale(.94)}
+.thb .no{position:absolute;left:0;top:0;z-index:2;min-width:20px;height:20px;padding:0 5px;border-radius:10px;background:var(--btn);color:var(--btn-ink);font:700 11px/20px var(--ui);text-align:center}
+.thb .tz{zoom:var(--tzz,.12);pointer-events:none;box-shadow:0 1px 4px rgba(0,0,0,.2)}
 .thb .tz .page{box-shadow:none}
-.thb .hd{position:absolute;right:4px;top:4px;width:26px;height:26px;border-radius:6px;background:rgba(0,0,0,.55);color:#fff;font:700 13px/26px var(--ui);text-align:center;touch-action:none;display:none}
+.thb .hd{position:absolute;right:0;top:0;width:24px;height:24px;border-radius:6px;background:rgba(0,0,0,.55);color:#fff;font:700 13px/24px var(--ui);text-align:center;touch-action:none;display:none;z-index:2}
 .thb:not(.fixed) .hd{display:block}
 @media (hover:hover){.thb .hd{opacity:0}.thb:hover .hd{opacity:1}}
-.thb.dragging{opacity:.35}
-.insline{position:absolute;left:12px;right:12px;height:4px;border-radius:2px;background:var(--focus);pointer-events:none;z-index:5}
-.ghost{position:fixed;z-index:80;pointer-events:none;opacity:.85;transform:translate(-50%,-50%) rotate(-3deg);box-shadow:0 10px 30px rgba(0,0,0,.3);border-radius:4px;overflow:hidden}
+.thb.dragging{opacity:.3}
+.insline{position:absolute;width:5px;box-shadow:0 0 0 2px rgba(46,107,230,.25);border-radius:2px;background:var(--focus);pointer-events:none;z-index:5}
+.ghost{position:fixed;z-index:80;pointer-events:none;opacity:.9;transform:translate(-50%,-50%) rotate(-3deg);box-shadow:0 10px 30px rgba(0,0,0,.3);border-radius:4px;overflow:hidden}
 #side .sf{padding:10px 12px;border-top:1px solid var(--line)}
 #side .sf .b{width:100%;padding:10px}
 #canvas{flex:1;overflow:auto;position:relative;min-width:0}
@@ -267,6 +268,7 @@ body{overflow:hidden}
 .pe-acts{display:flex;gap:8px;flex-wrap:wrap}
 .pe-acts .b{background:#2A2B2F;color:#fff;border-color:#3A3B40}
 .pe-acts .b.dark{background:#fff;color:#141416;border-color:#fff;margin-left:auto;padding:9px 22px}
+@media (max-width:760px){.pe-acts .b{padding:8px 10px;font-size:13px}.pe-acts .b.dark{width:100%;margin-left:0;padding:12px}}
 .pe-hint{font-size:12px;color:#A39F98}
 @media (max-width:760px){.pe-hint{display:none}}
 .pe-dpi{font-size:12px;color:#F2B28F}
@@ -275,7 +277,7 @@ body{overflow:hidden}
   #bar{overflow-x:auto;padding:0 8px;scrollbar-width:none}
   #bar .brand,#bar .sep,#undoBtn{display:none}
   #bar input.name{width:130px;flex:none}
-  #side{position:fixed;left:0;top:56px;bottom:0;z-index:30;width:200px;transform:translateX(-102%);transition:transform .2s;box-shadow:6px 0 24px rgba(0,0,0,.2)}
+  #side{position:fixed;left:0;top:56px;bottom:0;z-index:30;width:min(300px,86vw);transform:translateX(-102%);transition:transform .2s;box-shadow:6px 0 24px rgba(0,0,0,.2)}
   #side.open{transform:none}
   #sideX{display:inline-block;margin-left:6px}
   #side .sh .cnt{margin-left:auto}
@@ -944,7 +946,7 @@ const FRAME_PAD = { polaroid: [3.5, 3.5, 13, 3.5], border: [2.5, 2.5, 2.5, 2.5],
 const DEF_FS = { display: 40, title: 24, script: 26, label: 7.5, body: 11, cap: 8, num: 40 };
 
 function slotDims(L, p) { return itemsOf(L, p).filter(i => i.t === "photo").map(i => { const p = FRAME_PAD[i.fr] || [0, 0, 0, 0]; return { w: i.w - p[1] - p[3], h: i.h - p[0] - p[2], glue: i.fr === "glue" }; }); }
-function dpiOf(sl, wmm, hmm) { const im = IMG.get(sl.img); if (!im) return 999; const s = Math.max(wmm / im.w, hmm / im.h) * (sl.z || 1); return 25.4 / s; }
+function dpiOf(sl, wmm, hmm) { const im = IMG.get(sl.img); if (!im) return 999; const q = (sl.r || 0) % 180, sw = q ? im.h : im.w, sh = q ? im.w : im.h; return 25.4 / (Math.max(wmm / sw, hmm / sh) * (sl.z || 1)); }
 function textVal(p, it, idx) { return p.t[it.k] !== undefined ? p.t[it.k] : tok(it.def || "", idx); }
 
 function renderItem(it, p, idx, mir, c, si) {
@@ -1085,6 +1087,13 @@ const b64 = blob => new Promise(r => { const fr = new FileReader(); fr.onload = 
    panel strana sa prevlačenjem, prozor za namještanje slike.
    ====================================================================== */
 let cur = -1;
+/* položaj slike u okviru (mm): x,y = 0–100 % pomjeraja, z = zum, r = okret 0/90/180/270 */
+function imgGeom(sl, im, wmm, hmm) {
+  const r = (((sl.r || 0) % 360) + 360) % 360, sw = r % 180 ? im.h : im.w, sh = r % 180 ? im.w : im.h;
+  const base = Math.max(wmm / sw, hmm / sh), z = sl.z || 1, ew = sw * base * z, eh = sh * base * z;
+  const left = (sl.x ?? 50) / 100 * (wmm - ew), top = (sl.y ?? 50) / 100 * (hmm - eh);
+  return { r, cx: left + ew / 2, cy: top + eh / 2, iw: r % 180 ? eh : ew, ih: r % 180 ? ew : eh };
+}
 function touch(structural) { P.updated = Date.now(); clearTimeout(saveTimer); saveTimer = setTimeout(() => save("projects", P), 400); if (structural) render(); else updateCount(); }
 const isCovered = () => !!P.opts.covers;
 function pageLabel(idx) { const c = covIdx(idx); return c === "front" ? "Prednja korica" : c === "back" ? "Zadnja korica" : "Strana " + (isCovered() ? idx : idx + 1); }
@@ -1094,7 +1103,8 @@ function S(p, i, style, cls, wmm, hmm) {
   let inner;
   if (im) {
     const dpi = dpiOf(sl, wmm, hmm);
-    inner = `<img src="${im.prev}" data-id="${sl.img}" alt="" draggable="false" style="object-position:${sl.x}% ${sl.y}%;transform:scale(${sl.z});transform-origin:${sl.x}% ${sl.y}%"><div class="ed">✎ Namjesti</div>${dpi < 150 ? `<div class="lr ${dpi < 100 ? "bad" : ""}" title="Slika je premala za ovaj okvir. Za oštru štampu treba bar 150, idealno 300 dpi.">${Math.round(dpi)} dpi</div>` : ""}`;
+    const g = imgGeom(sl, im, wmm, hmm);
+    inner = `<img src="${im.prev}" data-id="${sl.img}" alt="" draggable="false" style="inset:auto;object-fit:fill;left:${(g.cx - g.iw / 2).toFixed(2)}mm;top:${(g.cy - g.ih / 2).toFixed(2)}mm;width:${g.iw.toFixed(2)}mm;height:${g.ih.toFixed(2)}mm;${g.r ? `transform:rotate(${g.r}deg);` : ""}"><div class="ed">✎ Namjesti</div>${dpi < 150 ? `<div class="lr ${dpi < 100 ? "bad" : ""}" title="Slika je premala za ovaj okvir. Za oštru štampu treba bar 150, idealno 300 dpi.">${Math.round(dpi)} dpi</div>` : ""}`;
   } else inner = `<div class="hint">${CAM}<span>${glue ? "Za lijepljenje" : "Dodaj sliku"}</span></div>`;
   return `<div class="slot ${cls} ${im ? "has" : ""} ${Math.min(wmm, hmm) < 40 ? "sm" : ""}" data-i="${i}" data-w="${wmm}" data-h="${hmm}" style="${style}">${inner}</div>`;
 }
@@ -1124,7 +1134,8 @@ function render() {
   requestAnimationFrame(fitAll);
 }
 function renderThumbs(vars = themeVars()) {
-  const t = $("#thumbs"); t.setAttribute("style", vars);
+  const t = $("#thumbs"), colW = Math.max(60, (t.clientWidth || (innerWidth <= 760 ? 290 : 250)) - 24 - 10) / 2 - 2;
+  t.setAttribute("style", vars + `;--tzz:${(colW / (210 * MM)).toFixed(4)}`);
   t.innerHTML = P.pages.map((p, idx) => { const cv = covIdx(idx); return `<div class="thb ${cv ? "fixed" : ""} ${idx === cur ? "cur" : ""}" data-idx="${idx}"><span class="no">${cv ? (cv === "front" ? "K" : "Z") : (isCovered() ? idx : idx + 1)}</span><div class="tz">${renderPage(p, idx)}</div>${cv ? "" : `<span class="hd" title="Prevuci da premjestiš">⠿</span>`}</div>`; }).join("") || `<div class="empty-tray">Još nema strana.</div>`;
   t.querySelectorAll("[contenteditable]").forEach(el => el.removeAttribute("contenteditable"));
 }
@@ -1136,7 +1147,7 @@ function setCur(idx, scroll) {
   if (scroll) { const el = $(`#spreads .holder[data-idx="${idx}"]`); el && el.scrollIntoView({ behavior: "smooth", block: "start" }); const th = $(`#thumbs .thb[data-idx="${idx}"]`); th && th.scrollIntoView({ block: "nearest" }); }
 }
 function fitAll() { $$("#spreads .tx").forEach(fitText); }
-let rT; window.addEventListener("resize", () => { clearTimeout(rT); rT = setTimeout(() => { if (P && !BLEED) { $("#spreads").style.setProperty("--z", computeZoom()); fitAll(); } }, 120); });
+let rT; window.addEventListener("resize", () => { clearTimeout(rT); rT = setTimeout(() => { if (P && !BLEED) { $("#spreads").style.setProperty("--z", computeZoom()); fitAll(); renderThumbs(); } }, 120); });
 
 /* ---------------- slike ---------------- */
 async function importFiles(files) {
@@ -1261,45 +1272,39 @@ $("#spreads").addEventListener("drop", async e => {
 window.addEventListener("dragover", e => { if (e.dataTransfer && e.dataTransfer.types.includes("Files")) e.preventDefault(); });
 window.addEventListener("drop", e => { if (!e.target.closest(".slot")) e.preventDefault(); });
 
-/* ---------------- panel strana: klik = idi na stranu, prevlačenje = premjesti ---------------- */
-let td = null;
-$("#thumbs").addEventListener("click", e => {
-  if (td && td.moved) return;
-  const t = e.target.closest(".thb"); if (!t) return;
-  setCur(+t.dataset.idx, true);
-  if (innerWidth <= 760) $("#side").classList.remove("open");
-});
-$("#thumbs").addEventListener("pointerdown", e => {
-  const t = e.target.closest(".thb"); if (!t || t.classList.contains("fixed")) return;
-  if (e.pointerType !== "mouse" && !e.target.closest(".hd")) return;
-  if (e.pointerType === "mouse" && e.button !== 0) return;
-  td = { t, from: +t.dataset.idx, x0: e.clientX, y0: e.clientY, moved: false };
-  try { t.setPointerCapture(e.pointerId); } catch (er) {}
-  e.preventDefault();
-});
-$("#thumbs").addEventListener("pointermove", e => {
-  if (!td) return;
-  if (!td.moved && Math.hypot(e.clientX - td.x0, e.clientY - td.y0) < 6) return;
-  const box = $("#thumbs");
-  if (!td.moved) {
-    td.moved = true; td.t.classList.add("dragging");
-    td.g = document.createElement("div"); td.g.className = "ghost"; td.g.style.background = "#fff"; td.g.style.cssText += themeVars().replace(/;/g, ";");
-    td.g.innerHTML = `<div style="zoom:.2">${renderPage(P.pages[td.from], td.from)}</div>`; document.body.appendChild(td.g);
-    td.line = document.createElement("div"); td.line.className = "insline"; box.appendChild(td.line);
-  }
-  td.g.style.left = e.clientX + "px"; td.g.style.top = e.clientY + "px";
-  const thbs = $$(".thb", box), r = box.getBoundingClientRect();
-  let to = thbs.filter(el => { const b = el.getBoundingClientRect(); return b.top + b.height / 2 < e.clientY; }).length;
-  to = Math.max(isCovered() ? 1 : 0, Math.min(insertPos(), to));
-  td.to = to;
-  const y = to < thbs.length ? thbs[to].offsetTop - 7 : thbs[thbs.length - 1].offsetTop + thbs[thbs.length - 1].offsetHeight + 3;
-  td.line.style.top = y + "px";
-  if (e.clientY < r.top + 40) box.scrollTop -= 12; else if (e.clientY > r.bottom - 40) box.scrollTop += 12;
-});
+/* ---------------- panel strana: klik = idi na stranu, prevlačenje = premjesti ----------------
+   Miš: uhvati sličicu i prevuci. Telefon: drži prst na sličici pola sekunde pa prevuci
+   (ili odmah povuci za ručku ⠿). Sličice su po dvije u redu.                              */
+let td = null, lp = null, noClickUntil = 0;
+function thumbTarget(x, y) {
+  const thbs = $$("#thumbs .thb"); let best = null, bd = 1e9;
+  for (const el of thbs) { const b = el.getBoundingClientRect(), cx = b.left + b.width / 2, cy = b.top + b.height / 2, d = Math.hypot((x - cx) / b.width, (y - cy) / b.height * 1.3); if (d < bd) { bd = d; best = { el, cx }; } }
+  if (!best) return null;
+  const to = +best.el.dataset.idx + (x > best.cx ? 1 : 0);
+  return Math.max(isCovered() ? 1 : 0, Math.min(insertPos(), to));
+}
+function startThumbDrag(t, x, y, touch) {
+  const from = +t.dataset.idx, box = $("#thumbs");
+  td = { t, from, moved: true, touch };
+  t.classList.add("dragging");
+  td.g = document.createElement("div"); td.g.className = "ghost"; td.g.style.cssText = themeVars() + (touch ? ";transform:translate(-115%,-75%) rotate(-3deg)" : "");
+  td.g.innerHTML = `<div style="zoom:.17">${renderPage(P.pages[from], from)}</div>`; document.body.appendChild(td.g);
+  td.line = document.createElement("div"); td.line.className = "insline v"; box.appendChild(td.line);
+  moveThumbDrag(x, y);
+}
+function moveThumbDrag(x, y) {
+  if (!td || !td.g) return;
+  const box = $("#thumbs"), r = box.getBoundingClientRect(), thbs = $$(".thb", box);
+  td.g.style.left = x + "px"; td.g.style.top = y + "px";
+  const to = thumbTarget(x, y); if (to === null) return; td.to = to;
+  const ref = thbs[Math.min(to, thbs.length - 1)], after = to >= thbs.length;
+  td.line.style.left = (after ? ref.offsetLeft + ref.offsetWidth + 1 : ref.offsetLeft - 5) + "px";
+  td.line.style.top = ref.offsetTop + "px"; td.line.style.height = ref.offsetHeight + "px";
+  if (y < r.top + 50) box.scrollTop -= 14; else if (y > r.bottom - 50) box.scrollTop += 14;
+}
 function endThumbDrag() {
-  if (!td) return; const d = td;
-  setTimeout(() => { if (td === d) td = null; }, 30);
-  if (!d.moved) { td = null; return; }
+  if (!td) return; const d = td; td = null;
+  noClickUntil = Date.now() + 400;
   d.g && d.g.remove(); d.line && d.line.remove(); d.t.classList.remove("dragging");
   let to = d.to, from = d.from;
   if (to === undefined || to === from || to === from + 1) return;
@@ -1308,9 +1313,49 @@ function endThumbDrag() {
   cur = to; touch(true); setCur(to, true);
   toast(`Strana je premještena na mjesto ${pageLabel(to).replace("Strana ", "")}.`, { label: "Poništi", fn: undo });
 }
-$("#thumbs").addEventListener("pointerup", endThumbDrag);
-$("#thumbs").addEventListener("pointercancel", endThumbDrag);
-$("#sideBtn").onclick = () => $("#side").classList.toggle("open");
+const thumbsEl = $("#thumbs");
+thumbsEl.addEventListener("click", e => {
+  if (Date.now() < noClickUntil) return;
+  const t = e.target.closest(".thb"); if (!t) return;
+  setCur(+t.dataset.idx, true);
+  if (innerWidth <= 760) $("#side").classList.remove("open");
+});
+/* miš, i ručka ⠿ na telefonu */
+let pd = null;
+thumbsEl.addEventListener("pointerdown", e => {
+  const t = e.target.closest(".thb"); if (!t || t.classList.contains("fixed")) return;
+  const handle = !!e.target.closest(".hd");
+  if (e.pointerType !== "mouse" && !handle) return;
+  if (e.pointerType === "mouse" && e.button !== 0) return;
+  pd = { t, x0: e.clientX, y0: e.clientY, touch: e.pointerType !== "mouse" };
+  try { t.setPointerCapture(e.pointerId); } catch (er) {}
+  e.preventDefault();
+});
+thumbsEl.addEventListener("pointermove", e => {
+  if (!pd) return;
+  if (!td) { if (Math.hypot(e.clientX - pd.x0, e.clientY - pd.y0) < 6) return; startThumbDrag(pd.t, e.clientX, e.clientY, pd.touch); }
+  moveThumbDrag(e.clientX, e.clientY);
+});
+const pEnd = () => { if (!pd) return; pd = null; if (td) endThumbDrag(); };
+thumbsEl.addEventListener("pointerup", pEnd); thumbsEl.addEventListener("pointercancel", pEnd);
+/* telefon: drži prst na sličici, pa prevuci */
+thumbsEl.addEventListener("touchstart", e => {
+  if (e.touches.length !== 1 || e.target.closest(".hd")) return;
+  const t = e.target.closest(".thb"); if (!t || t.classList.contains("fixed")) return;
+  const p = e.touches[0];
+  lp = { t, x0: p.clientX, y0: p.clientY, x: p.clientX, y: p.clientY, active: false };
+  t.classList.add("press");
+  lp.timer = setTimeout(() => { if (!lp) return; lp.active = true; t.classList.remove("press"); try { navigator.vibrate && navigator.vibrate(25); } catch (er) {} startThumbDrag(t, lp.x, lp.y, true); }, 420);
+}, { passive: true });
+thumbsEl.addEventListener("touchmove", e => {
+  if (!lp) return; const p = e.touches[0]; lp.x = p.clientX; lp.y = p.clientY;
+  if (!lp.active) { if (Math.hypot(p.clientX - lp.x0, p.clientY - lp.y0) > 10) { clearTimeout(lp.timer); lp.t.classList.remove("press"); lp = null; } return; }
+  e.preventDefault(); moveThumbDrag(p.clientX, p.clientY);
+}, { passive: false });
+const tEnd = () => { if (!lp) return; clearTimeout(lp.timer); lp.t.classList.remove("press"); const a = lp.active; lp = null; if (a) endThumbDrag(); };
+thumbsEl.addEventListener("touchend", tEnd); thumbsEl.addEventListener("touchcancel", tEnd);
+thumbsEl.addEventListener("contextmenu", e => { if (e.target.closest(".thb")) e.preventDefault(); });
+$("#sideBtn").onclick = () => { $("#side").classList.toggle("open"); renderThumbs(); };
 $("#sideX").onclick = () => $("#side").classList.remove("open");
 $("#addPageBtn").onclick = () => { const at = cur >= 0 && covIdx(cur) !== "back" ? cur + 1 : insertPos(); if (innerWidth <= 760) $("#side").classList.remove("open"); openPicker(at); };
 
@@ -1367,27 +1412,29 @@ function openPhotoEditor(p, i) {
   const ov = document.createElement("div"); ov.className = "pe-ov";
   ov.innerHTML = `<div class="pe-top"><b>Namjesti sliku</b><span class="pe-hint">Prevuci sliku prstom ili mišem. Zumiraj klizačem ili sa dva prsta.</span><div class="grow"></div><button class="b" data-pe="x" style="background:#2A2B2F;color:#fff;border-color:#3A3B40">Odustani</button></div>
     <div class="pe-stage"><img src="${im.prev}" alt=""><div class="pe-frame"></div></div>
-    <div class="pe-bot"><div class="pe-zoom"><span>−</span><input type="range" min="100" max="500" step="1"><span>+</span></div><div class="pe-dpi"></div>
-    <div class="pe-acts"><button class="b" data-pe="c">Centriraj</button><button class="b" data-pe="r">Zamijeni sliku</button><button class="b" data-pe="d">Izbaci sliku</button><button class="b dark" data-pe="ok">Gotovo</button></div></div>`;
+    <div class="pe-bot"><div class="pe-zoom"><span>−</span><input type="range" min="100" max="500" step="1" aria-label="Zum"><span>+</span></div><div class="pe-dpi"></div>
+    <div class="pe-acts"><button class="b" data-pe="rl" title="Okreni ulijevo">↺ Okreni</button><button class="b" data-pe="rr" title="Okreni udesno">↻ Okreni</button><button class="b" data-pe="c">Centriraj</button><button class="b" data-pe="r">Zamijeni</button><button class="b" data-pe="d">Izbaci</button><button class="b dark" data-pe="ok">Gotovo</button></div></div>`;
   document.body.appendChild(ov);
   const stage = $(".pe-stage", ov), img = $("img", ov), fr = $(".pe-frame", ov), rng = $("input", ov), dpiEl = $(".pe-dpi", ov);
-  const rad = it => it; let fw, fh, fx, fy, dw, dh, z = s.z || 1, left, top;
+  let fw, fh, fx, fy, dw, dh, sw, sh, z = s.z || 1, r = (((s.r || 0) % 360) + 360) % 360, left, top;
   const it = itemsOf(LAY(p.l), p).filter(x => x.t === "photo")[i] || {};
   fr.style.borderRadius = (it.fr === "circle" || it.fr === "circleb") ? "50%" : it.fr === "arch" ? "50% 50% 4px 4px / 35% 35% 4px 4px" : "2px";
-  const layout = (keep) => {
-    const sw = stage.clientWidth, sh = stage.clientHeight, ar = d.w / d.h;
-    fw = Math.min(sw * .88, sh * .86 * ar); fh = fw / ar; fx = (sw - fw) / 2; fy = (sh - fh) / 2;
-    const base = Math.max(fw / im.w, fh / im.h); dw = im.w * base; dh = im.h * base;
-    const sx = keep ? keep.x : s.x, sy = keep ? keep.y : s.y;
-    left = sx / 100 * (fw - dw * z); top = sy / 100 * (fh - dh * z); draw();
+  const layout = keep => {
+    const stw = stage.clientWidth, sth = stage.clientHeight, ar = d.w / d.h;
+    fw = Math.min(stw * .88, sth * .86 * ar); fh = fw / ar; fx = (stw - fw) / 2; fy = (sth - fh) / 2;
+    sw = r % 180 ? im.h : im.w; sh = r % 180 ? im.w : im.h;
+    const base = Math.max(fw / sw, fh / sh); dw = sw * base; dh = sh * base;
+    const k = keep || { x: s.x ?? 50, y: s.y ?? 50 };
+    left = k.x / 100 * (fw - dw * z); top = k.y / 100 * (fh - dh * z); draw();
   };
   const clamp = () => { left = Math.min(0, Math.max(fw - dw * z, left)); top = Math.min(0, Math.max(fh - dh * z, top)); };
   const draw = () => {
     clamp();
-    Object.assign(img.style, { left: fx + left + "px", top: fy + top + "px", width: dw * z + "px", height: dh * z + "px" });
+    const ew = dw * z, eh = dh * z, iw = r % 180 ? eh : ew, ih = r % 180 ? ew : eh, cx = fx + left + ew / 2, cy = fy + top + eh / 2;
+    Object.assign(img.style, { left: cx - iw / 2 + "px", top: cy - ih / 2 + "px", width: iw + "px", height: ih + "px", transform: r ? `rotate(${r}deg)` : "" });
     Object.assign(fr.style, { left: fx + "px", top: fy + "px", width: fw + "px", height: fh + "px" });
     rng.value = Math.round(z * 100);
-    const dpi = 25.4 / (Math.max(d.w / im.w, d.h / im.h) * z);
+    const dpi = 25.4 / (Math.max(d.w / sw, d.h / sh) * z);
     dpiEl.textContent = dpi < 100 ? `Previše zumirano za štampu (${Math.round(dpi)} dpi), slika će biti mutna.` : dpi < 150 ? `Kvalitet štampe: prihvatljiv (${Math.round(dpi)} dpi).` : "";
   };
   const zoomAt = (nz, cx = fw / 2, cy = fh / 2) => { nz = Math.max(1, Math.min(5, nz)); const u = (cx - left) / (dw * z), v = (cy - top) / (dh * z); z = nz; left = cx - u * dw * z; top = cy - v * dh * z; draw(); };
@@ -1399,21 +1446,22 @@ function openPhotoEditor(p, i) {
     if (!pts.has(e.pointerId)) return; const pr = pts.get(e.pointerId), nx = e.clientX, ny = e.clientY;
     if (pts.size === 1) { left += nx - pr.x; top += ny - pr.y; draw(); }
     pts.set(e.pointerId, { x: nx, y: ny });
-    if (pts.size === 2 && pinch) { const [a, b] = [...pts.values()], r = stage.getBoundingClientRect(); zoomAt(pinch.z * Math.hypot(a.x - b.x, a.y - b.y) / pinch.d, (a.x + b.x) / 2 - r.left - fx, (a.y + b.y) / 2 - r.top - fy); }
+    if (pts.size === 2 && pinch) { const [a, b] = [...pts.values()], rc = stage.getBoundingClientRect(); zoomAt(pinch.z * Math.hypot(a.x - b.x, a.y - b.y) / pinch.d, (a.x + b.x) / 2 - rc.left - fx, (a.y + b.y) / 2 - rc.top - fy); }
   });
   const up = e => { pts.delete(e.pointerId); if (pts.size < 2) pinch = null; };
   stage.addEventListener("pointerup", up); stage.addEventListener("pointercancel", up);
-  stage.addEventListener("wheel", e => { e.preventDefault(); const r = stage.getBoundingClientRect(); zoomAt(z * (1 - e.deltaY * .0015), e.clientX - r.left - fx, e.clientY - r.top - fy); }, { passive: false });
+  stage.addEventListener("wheel", e => { e.preventDefault(); const rc = stage.getBoundingClientRect(); zoomAt(z * (1 - e.deltaY * .0015), e.clientX - rc.left - fx, e.clientY - rc.top - fy); }, { passive: false });
   rng.addEventListener("input", () => zoomAt(rng.value / 100));
-  const onResize = () => { const k = pos(); layout(k); }; window.addEventListener("resize", onResize);
+  const onResize = () => layout(pos()); window.addEventListener("resize", onResize);
   const close = () => { window.removeEventListener("resize", onResize); document.removeEventListener("keydown", onKey); ov.remove(); };
   const onKey = e => { if (e.key === "Escape") close(); if (e.key === "Enter") ov.querySelector('[data-pe="ok"]').click(); };
   document.addEventListener("keydown", onKey);
   ov.addEventListener("click", e => {
     const b = e.target.closest("[data-pe]"); if (!b) return; const a = b.dataset.pe;
     if (a === "x") close();
+    else if (a === "rl" || a === "rr") { r = (r + (a === "rr" ? 90 : 270)) % 360; z = 1; layout({ x: 50, y: 50 }); }
     else if (a === "c") { z = 1; left = (fw - dw) / 2; top = (fh - dh) / 2; draw(); }
-    else if (a === "ok") { snapshot(); const k = pos(); s.x = +k.x.toFixed(1); s.y = +k.y.toFixed(1); s.z = +z.toFixed(3); close(); touch(true); }
+    else if (a === "ok") { snapshot(); const k = pos(); s.x = +k.x.toFixed(1); s.y = +k.y.toFixed(1); s.z = +z.toFixed(3); if (r) s.r = r; else delete s.r; close(); touch(true); }
     else if (a === "d") { snapshot(); p.s[i] = null; close(); touch(true); }
     else if (a === "r") { close(); pickFiles({ page: p.id, slot: i }); }
   });
@@ -1690,13 +1738,13 @@ async function drawSlot(ctx, slot, bx, k, pageObj) {
   const img = slot.querySelector("img"); if (!img) return;
   const s = pageObj.s[+slot.dataset.i]; if (!s) return;
   const im = IMG.get(s.img); if (!im) return;
-  const w = bx.w * k, h = bx.h * k, z = s.z || 1;
-  const sc = Math.max(w / im.w, h / im.h) * z;
-  const bmp = await photoBitmap(s.img, Math.ceil(Math.max(im.w, im.h) * sc * 1.02)); if (!bmp) return;
-  const dw = im.w * Math.max(w / im.w, h / im.h), dh = im.h * Math.max(w / im.w, h / im.h);
-  const px = bx.x * k, py = bx.y * k, ox = (w - dw) * s.x / 100, oy = (h - dh) * s.y / 100, ax = w * s.x / 100, ay = h * s.y / 100;
-  ctx.save(); rrPath(ctx, px, py, w, h, radOf(slot, k, w)); ctx.clip();
-  ctx.drawImage(bmp, px + ax + (ox - ax) * z, py + ay + (oy - ay) * z, dw * z, dh * z);
+  const vw = +slot.dataset.w || bx.w, vh = +slot.dataset.h || bx.h;
+  const g = imgGeom(s, im, vw, vh), ox = (bx.w - vw) / 2, oy = (bx.h - vh) / 2;
+  const bmp = await photoBitmap(s.img, Math.ceil(Math.max(im.w, im.h) * (g.iw * k / im.w) * 1.02)); if (!bmp) return;
+  const px = bx.x * k, py = bx.y * k;
+  ctx.save(); rrPath(ctx, px, py, bx.w * k, bx.h * k, radOf(slot, k, bx.w * k)); ctx.clip();
+  ctx.translate(px + (ox + g.cx) * k, py + (oy + g.cy) * k); if (g.r) ctx.rotate(g.r * Math.PI / 180);
+  ctx.drawImage(bmp, -g.iw * k / 2, -g.ih * k / 2, g.iw * k, g.ih * k);
   ctx.restore();
 }
 async function drawPageCanvas(pageEl, pageObj, idx, k, B) {
